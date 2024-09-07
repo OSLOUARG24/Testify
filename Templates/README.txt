@@ -1,1 +1,3 @@
-Repositorio para subir las plantillas con formato del proyecto.
+#Repositorio para subir:
+  1) Plantillas con formato del proyecto.
+  2) Plantillas PSI a modo de guía.
