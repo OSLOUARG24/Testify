@@ -1,0 +1,29 @@
+import { NullValidationHandler } from './null-validation-handler';
+const err = `PLEASE READ THIS CAREFULLY:
+
+Beginning with angular-oauth2-oidc version 9, the JwksValidationHandler
+has been moved to an library of its own. If you need it for implementing
+OAuth2/OIDC **implicit flow**, please install it using npm:
+
+  npm i angular-oauth2-oidc-jwks --save
+
+After that, you can import it into your application:
+
+  import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
+
+Please note, that this dependency is not needed for the **code flow**,
+which is nowadays the **recommented** one for single page applications.
+This also results in smaller bundle sizes.
+`;
+/**
+ * This is just a dummy of the JwksValidationHandler
+ * telling the users that the real one has been moved
+ * to an library of its own, namely angular-oauth2-oidc-utils
+ */
+export class JwksValidationHandler extends NullValidationHandler {
+    constructor() {
+        super();
+        console.error(err);
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiandrcy12YWxpZGF0aW9uLWhhbmRsZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9wcm9qZWN0cy9saWIvc3JjL3Rva2VuLXZhbGlkYXRpb24vandrcy12YWxpZGF0aW9uLWhhbmRsZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLHFCQUFxQixFQUFFLE1BQU0sMkJBQTJCLENBQUM7QUFFbEUsTUFBTSxHQUFHLEdBQUc7Ozs7Ozs7Ozs7Ozs7OztDQWVYLENBQUM7QUFFRjs7OztHQUlHO0FBQ0gsTUFBTSxPQUFPLHFCQUFzQixTQUFRLHFCQUFxQjtJQUM5RDtRQUNFLEtBQUssRUFBRSxDQUFDO1FBQ1IsT0FBTyxDQUFDLEtBQUssQ0FBQyxHQUFHLENBQUMsQ0FBQztJQUNyQixDQUFDO0NBQ0YiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBOdWxsVmFsaWRhdGlvbkhhbmRsZXIgfSBmcm9tICcuL251bGwtdmFsaWRhdGlvbi1oYW5kbGVyJztcblxuY29uc3QgZXJyID0gYFBMRUFTRSBSRUFEIFRISVMgQ0FSRUZVTExZOlxuXG5CZWdpbm5pbmcgd2l0aCBhbmd1bGFyLW9hdXRoMi1vaWRjIHZlcnNpb24gOSwgdGhlIEp3a3NWYWxpZGF0aW9uSGFuZGxlclxuaGFzIGJlZW4gbW92ZWQgdG8gYW4gbGlicmFyeSBvZiBpdHMgb3duLiBJZiB5b3UgbmVlZCBpdCBmb3IgaW1wbGVtZW50aW5nXG5PQXV0aDIvT0lEQyAqKmltcGxpY2l0IGZsb3cqKiwgcGxlYXNlIGluc3RhbGwgaXQgdXNpbmcgbnBtOlxuXG4gIG5wbSBpIGFuZ3VsYXItb2F1dGgyLW9pZGMtandrcyAtLXNhdmVcblxuQWZ0ZXIgdGhhdCwgeW91IGNhbiBpbXBvcnQgaXQgaW50byB5b3VyIGFwcGxpY2F0aW9uOlxuXG4gIGltcG9ydCB7IEp3a3NWYWxpZGF0aW9uSGFuZGxlciB9IGZyb20gJ2FuZ3VsYXItb2F1dGgyLW9pZGMtandrcyc7XG5cblBsZWFzZSBub3RlLCB0aGF0IHRoaXMgZGVwZW5kZW5jeSBpcyBub3QgbmVlZGVkIGZvciB0aGUgKipjb2RlIGZsb3cqKixcbndoaWNoIGlzIG5vd2FkYXlzIHRoZSAqKnJlY29tbWVudGVkKiogb25lIGZvciBzaW5nbGUgcGFnZSBhcHBsaWNhdGlvbnMuXG5UaGlzIGFsc28gcmVzdWx0cyBpbiBzbWFsbGVyIGJ1bmRsZSBzaXplcy5cbmA7XG5cbi8qKlxuICogVGhpcyBpcyBqdXN0IGEgZHVtbXkgb2YgdGhlIEp3a3NWYWxpZGF0aW9uSGFuZGxlclxuICogdGVsbGluZyB0aGUgdXNlcnMgdGhhdCB0aGUgcmVhbCBvbmUgaGFzIGJlZW4gbW92ZWRcbiAqIHRvIGFuIGxpYnJhcnkgb2YgaXRzIG93biwgbmFtZWx5IGFuZ3VsYXItb2F1dGgyLW9pZGMtdXRpbHNcbiAqL1xuZXhwb3J0IGNsYXNzIEp3a3NWYWxpZGF0aW9uSGFuZGxlciBleHRlbmRzIE51bGxWYWxpZGF0aW9uSGFuZGxlciB7XG4gIGNvbnN0cnVjdG9yKCkge1xuICAgIHN1cGVyKCk7XG4gICAgY29uc29sZS5lcnJvcihlcnIpO1xuICB9XG59XG4iXX0=
