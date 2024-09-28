@@ -4,6 +4,8 @@ import { UpdateProjectComponent } from './project/update-project/update-project.
 import { ProjectSelectComponent } from './project/project-select/project-select.component';
 import { RoleComponent } from './role/role.component';
 import { UpdateRoleComponent } from './role/update-role/update-role.component';
+import { RoleAssigmentComponent } from './role-assigment/role-assigment.component';
+import { UpdateRoleAssigmentComponent } from './role-assigment/update-role-assigment/update-role-assigment.component';
 import { PermissionComponent } from './permission/permission.component';
 import { UpdatePermissionComponent } from './permission/update-permission/update-permission.component';
 import { AuthGoogleComponent } from './auth-google/auth-google.component';
@@ -20,6 +22,11 @@ export const routes: Routes = [
 { path: 'role/create', component: UpdateRoleComponent },
 { path: 'role/:id', component: RoleComponent },
 { path: 'role/edit/:id', component: UpdateRoleComponent },
+//
+{ path: 'roleAssigment', component: RoleAssigmentComponent },
+{ path: 'roleAssigment/create', component: UpdateRoleAssigmentComponent },
+{ path: 'roleAssigment/:id', component: RoleAssigmentComponent },
+{ path: 'roleAssigment/edit/:id', component: UpdateRoleAssigmentComponent },
 //
 { path: 'permission', component: PermissionComponent },
 { path: 'permission/create', component: UpdatePermissionComponent },

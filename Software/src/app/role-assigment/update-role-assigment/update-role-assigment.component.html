@@ -1,0 +1,34 @@
+<div class="project-container">
+<h2 *ngIf="isEditMode">Editar Asignacion de Rol</h2>
+<h2 *ngIf="!isEditMode">Nueva Asignacion de Rol</h2>
+
+<form [formGroup]="roleAssigmentForm" (ngSubmit)="saveRoleAssigment()">
+  <div class="form-group">
+    @if (!roleAssigmentForm.get('project')?.value){
+    <label for="project">Proyecto</label>
+    <select id="project" formControlName="project">
+      @for (project of projects; track project.id){
+        <option [value]="project.id">{{ project.name }}</option>
+      }
+    </select>
+    }
+  </div>
+
+  <div class="form-group">
+    <label for="role">Rol</label>
+    <select id="role" formControlName="role">
+      @for (role of roles; track role.id){
+      <option [value]="role.id"> {{ role.name }}</option>
+      }
+    </select>
+  </div>
+  <br/>
+
+  <div class="form-group d-flex justify-content-between">
+  <button type="submit" [disabled]="roleAssigmentForm.invalid">
+    {{ isEditMode ? 'Actualizar' : 'Crear' }}
+  </button>
+    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+  </div>
+</form>
+</div>
