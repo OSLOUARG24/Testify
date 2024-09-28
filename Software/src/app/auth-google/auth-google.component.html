@@ -1,0 +1,46 @@
+@if (!isAuthenticated) {
+<div class="container">
+  <section id="main-content">
+    <article>
+      <div class="card">
+        <div class="card-header">
+          <h3>Ingreso al sistema</h3>
+        </div>
+        <div class="card-body">
+
+          <h5>Bienvenido</h5>
+          <p>Estimado usuario: Bienvenido a la aplicaci&oacute;n Testify, una aplicaci&oacute;n desarrollada por OSLO para UNPA - UARG.</p>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="alert alert-danger" role="alert">
+                <div class="row vertical-align">
+                  <div class="col-1 text-center">
+                    <i class="oi oi-info"></i>
+                  </div>
+                  <div class="col-11">
+                    <strong>Importante:</strong> Para acceder al sistema es necesario disponer de un correo de <a href="http://mail.google.com" target="_blank">Gmail</a>.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <h5>Ingreso al Sistema</h5>
+          <p>Ud. puede ingresar el sistema si est&aacute; conectado a su e-mail. Por favor haga click en el bot&oacute;n a continuaci&oacute;n y elija su cuenta o realice el login.</p>
+          <div class="login-button">
+            <button id="google-login-button" type="button" class="login-with-google-btn" (click)="signInWithGoogle()">
+              Ingresar con Google
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </article>
+  </section>
+</div>
+} @else {
+<div>
+  <span>Redirigiendo al sistema...</span>
+</div>
+}
