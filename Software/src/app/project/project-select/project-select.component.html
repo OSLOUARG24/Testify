@@ -1,0 +1,17 @@
+<div class="project-select-container">
+  <h2>Seleccione un Proyecto para continuar</h2>
+  <div>
+  <select (change)="onProjectSelect($event)" class="project-dropdown">
+    <option [value]="null" disabled selected>Seleccione un Proyecto</option>
+    @if(isAdmin){
+      <option [value]="null">Todos</option>
+    }
+    @for (project of projects; track project.id) {
+    <option [value]="json.stringify(project)">
+      {{ project?.name }}
+    </option>
+}
+  </select>
+  <button class="btn-list" (click)="redirect()">Aceptar</button>
+  </div>
+</div>
