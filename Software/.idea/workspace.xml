@@ -4,65 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6bb17840-03f9-44b0-943d-0433adbf1b95" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/public/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app.routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/auth-google/auth-google.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/auth-google/auth-google.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/auth-google/auth-google.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/auth-google/auth-google.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/milestone/update-milestone/update-milestone.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/milestone/update-milestone/update-milestone.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/navbar/navbar.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/navbar/navbar.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/navbar/navbar.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/navbar/navbar.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/permission/update-permission/update-permission.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/permission/update-permission/update-permission.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/permission/update-permission/update-permission.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/permission/update-permission/update-permission.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/project/project-select/project-select.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/project/project-select/project-select.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/project/project-select/project-select.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/project/project-select/project-select.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/project/update-project/update-project.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/project/update-project/update-project.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/role-assigment/role-assigment.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/role-assigment/role-assigment.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/role-assigment/update-role-assigment/update-role-assigment.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/role-assigment/update-role-assigment/update-role-assigment.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/role-assigment/update-role-assigment/update-role-assigment.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/role-assigment/update-role-assigment/update-role-assigment.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/role-permission/update-role-permission/update-role-permission.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/role-permission/update-role-permission/update-role-permission.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/role/update-role/update-role.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/role/update-role/update-role.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/role/update-role/update-role.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/role/update-role/update-role.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/test-case/test-case-update/test-case-update.component.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/test-case/test-case-update/test-case-update.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/test-case/test-case-update/test-case-update.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/test-case/test-case-update/test-case-update.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/test-case/test-case.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/test-case/test-case.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/test-case/test-case.model.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/test-case/test-case.model.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/user/update-user/update-user.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/user/update-user/update-user.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/user/update-user/update-user.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/user/update-user/update-user.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/user/user.model.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/user/user.model.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/oslo/testify/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oslo/testify/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/oslo/testify/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oslo/testify/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/config/SecurityConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/config/WebConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/config/WebConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/controller/MilestoneController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/controller/MilestoneController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/controller/PermissionController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/controller/PermissionController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/controller/ProjectController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/controller/ProjectController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/controller/RoleAssigmentController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/controller/RoleAssigmentController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/controller/RoleController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/controller/RoleController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/controller/RolePermissionController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/controller/RolePermissionController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/controller/UserController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/Milestone.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/Milestone.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/Permission.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/Permission.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/Project.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/Project.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/Role.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/Role.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/RoleAssigment.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/RoleAssigment.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/RolePermission.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/RolePermission.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/Step.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/Step.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/TestCase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/TestCase.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/entity/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/repository/RoleAssigmentRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/repository/RoleAssigmentRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/service/MilestoneService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/service/MilestoneService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/service/PermissionService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/service/PermissionService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/service/ProjectService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/service/ProjectService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/service/RoleAssigmentService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/service/RoleAssigmentService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/service/RolePermissionService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/service/RolePermissionService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/service/RoleService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/service/RoleService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/oslo/testify/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/oslo/testify/service/UserService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-    </list>
+    <list default="true" id="6bb17840-03f9-44b0-943d-0433adbf1b95" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -78,7 +20,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
@@ -111,7 +53,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/app/precondition" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />

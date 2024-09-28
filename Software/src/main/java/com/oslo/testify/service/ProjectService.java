@@ -50,11 +50,6 @@ public class ProjectService {
       project.setStatus(projectDetails.getStatus());
       project.setRateApproval(projectDetails.getRateApproval());
 
-      // Si se proporciona una lista de hitos, actualiza los hitos
-      if (projectDetails.getMilestones() != null) {
-        project.getMilestones().clear();
-        project.getMilestones().addAll(projectDetails.getMilestones());
-      }
 
       // Guarda el proyecto actualizado
       return projectRepository.save(project);
