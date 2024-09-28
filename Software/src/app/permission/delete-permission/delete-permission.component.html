@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Eliminar Permiso</h1>
+<div mat-dialog-content>
+  <p>¿Estás seguro de que deseas eliminar el permiso {{ data.permission.name }}?</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-button color="warn" (click)="onConfirm()">Eliminar</button>
+</div>
