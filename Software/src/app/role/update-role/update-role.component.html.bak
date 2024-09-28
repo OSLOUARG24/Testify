@@ -1,0 +1,27 @@
+<div class="update-role-container">
+  <h2>{{ isEditMode ? 'Actualizar Rol' : 'Crear Nuevo Rol' }}</h2>
+
+  <form [formGroup]="updateRoleForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="name">Nombre del Rol</label>
+      <input id="name" type="text" formControlName="name" placeholder="Ingrese el nombre del rol" />
+    </div>
+
+    <div class="form-group d-flex justify-content-between">
+    <button type="submit" class="btn btn-primary" [disabled]="updateRoleForm.invalid">
+      {{ isEditMode ? 'Actualizar' : 'Crear' }}
+    </button>
+      <button type="button" class="btn btn-danger" (click)="cancel()">Cancelar</button>
+    </div>
+  </form>
+  @if (errorMessage) {
+  <div class="error">
+    {{ errorMessage }}
+  </div>
+  }
+  @if (successMessage) {
+  <div class="success">
+    {{ successMessage }}
+  </div>
+  }
+</div>
