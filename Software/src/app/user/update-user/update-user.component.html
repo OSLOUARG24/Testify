@@ -1,0 +1,50 @@
+<div class="project-container">
+  <h2>{{ isEditMode ? 'Editar Usuario' : 'Crear Usuario' }}</h2>
+
+  <form [formGroup]="userForm" (ngSubmit)="saveUser()">
+    <div class="form-group">
+      <label for="name">Nombre</label>
+      <input
+        id="name"
+        formControlName="name"
+        type="text"
+        class="form-control"
+        placeholder="Ingresa el nombre"
+        [ngClass]="{'is-invalid': userForm.get('name')?.invalid && userForm.get('name')?.touched}"
+      />
+      @if (userForm.get('name')?.invalid && userForm.get('name')?.touched) {
+      <div class="error">
+        El nombre es requerido.
+      </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="email">Correo Electrónico</label>
+      <input
+        type="email"
+        id="email"
+        class="form-control"
+        formControlName="email"
+        [ngClass]="{'is-invalid': userForm.get('email')?.invalid && userForm.get('email')?.touched}"
+      />
+      @if (userForm.get('email')?.invalid && userForm.get('email')?.touched) {
+      <div class="error">
+        Introduzca un correo electrónico válido.
+      </div>
+      }
+      <div class="form-group">
+        <label for="admin">¿Es Administrador?</label>
+        <input type="checkbox" id="admin" formControlName="admin" />
+      </div>
+    </div>
+
+    <!-- Campos adicionales para roles pueden agregarse aquí -->
+    <div class="form-group d-flex justify-content-between">
+    <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">
+      {{ isEditMode ? 'Actualizar' : 'Crear' }} Usuario
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+    </div>
+  </form>
+</div>
