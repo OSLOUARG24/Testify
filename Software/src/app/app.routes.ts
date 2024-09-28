@@ -8,6 +8,8 @@ import { RoleAssigmentComponent } from './role-assigment/role-assigment.componen
 import { UpdateRoleAssigmentComponent } from './role-assigment/update-role-assigment/update-role-assigment.component';
 import { PermissionComponent } from './permission/permission.component';
 import { UpdatePermissionComponent } from './permission/update-permission/update-permission.component';
+import { RolePermissionComponent } from './role-permission/role-permission.component';
+import { UpdateRolePermissionComponent } from './role-permission/update-role-permission/update-role-permission.component';
 import { AuthGoogleComponent } from './auth-google/auth-google.component';
 import { UserComponent } from './user/user.component';
 import { UpdateUserComponent } from './user/update-user/update-user.component';
@@ -32,6 +34,11 @@ export const routes: Routes = [
 { path: 'permission/create', component: UpdatePermissionComponent },
 { path: 'permission/:id', component: PermissionComponent },
 { path: 'permission/edit/:id', component: UpdatePermissionComponent },
+//
+{ path: 'rolePermission', component: RolePermissionComponent },
+{ path: 'rolePermission/create', component: UpdateRolePermissionComponent },
+{ path: 'rolePermission/:id', component: RolePermissionComponent },
+{ path: 'rolePermission/edit/:id', component: UpdateRolePermissionComponent },
 //
 { path: 'user', component: UserComponent },
 { path: 'user/create', component: UpdateUserComponent },
