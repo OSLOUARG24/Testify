@@ -1,18 +1,18 @@
 import { Routes } from '@angular/router';
-import { ProjectComponent } from './project/project.component';
-import { UpdateProjectComponent } from './project/update-project/update-project.component';
-import { ProjectSelectComponent } from './project/project-select/project-select.component';
-import { RoleComponent } from './role/role.component';
-import { UpdateRoleComponent } from './role/update-role/update-role.component';
-import { RoleAssigmentComponent } from './role-assigment/role-assigment.component';
-import { UpdateRoleAssigmentComponent } from './role-assigment/update-role-assigment/update-role-assigment.component';
-import { PermissionComponent } from './permission/permission.component';
-import { UpdatePermissionComponent } from './permission/update-permission/update-permission.component';
-import { RolePermissionComponent } from './role-permission/role-permission.component';
-import { UpdateRolePermissionComponent } from './role-permission/update-role-permission/update-role-permission.component';
+import { ProjectComponent } from './features/project/project.component';
+import { UpdateProjectComponent } from './features/project/update-project/update-project.component';
+import { ProjectSelectComponent } from './features/project/project-select/project-select.component';
+import { RoleComponent } from './features/role/role.component';
+import { UpdateRoleComponent } from './features/role/update-role/update-role.component';
+import { RoleAssigmentComponent } from './features/role-assigment/role-assigment.component';
+import { UpdateRoleAssigmentComponent } from './features/role-assigment/update-role-assigment/update-role-assigment.component';
+import { PermissionComponent } from './features/permission/permission.component';
+import { UpdatePermissionComponent } from './features/permission/update-permission/update-permission.component';
+import { RolePermissionComponent } from './features/role-permission/role-permission.component';
+import { UpdateRolePermissionComponent } from './features/role-permission/update-role-permission/update-role-permission.component';
 import { AuthGoogleComponent } from './auth-google/auth-google.component';
-import { UserComponent } from './user/user.component';
-import { UpdateUserComponent } from './user/update-user/update-user.component';
+import { UserComponent } from './features/user/user.component';
+import { UpdateUserComponent } from './features/user/update-user/update-user.component';
 
 export const routes: Routes = [
 { path: 'project', component: ProjectComponent },
@@ -46,5 +46,6 @@ export const routes: Routes = [
 { path: 'user/edit/:id', component: UpdateUserComponent },
 //
 { path: 'dashboard', component: ProjectSelectComponent },
+{ path: 'projectSelect', component: ProjectSelectComponent },
 { path: '', component: AuthGoogleComponent, pathMatch: 'full' }
 ];

@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet,RouterLinkActive,RouterLink } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { AuthGoogleService } from './auth-google.service';
-import { UserService } from '../user/user.service';
-import { User } from '../user/user.model';
+import { UserService } from '../features/user/user.service';
+import { User } from '../features/user/user.model';
 
 @Component({
   selector: 'app-auth-google',
@@ -41,6 +41,7 @@ export class AuthGoogleComponent implements OnInit {
                 },
                 error => {
                   console.error('Error al cargar el usuario:', error);
+                  this.authGoogleService.logOut();
                 }
               );
         //
@@ -48,7 +49,7 @@ export class AuthGoogleComponent implements OnInit {
     });
   }
 
-  signInWithGoogle(){
+  async signInWithGoogle(){
     this.authGoogleService.login();
   }
 

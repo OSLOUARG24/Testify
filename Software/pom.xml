@@ -98,14 +98,6 @@
         <version>2.0.16</version>
       </dependency>
 
-      <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
-      <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
-        <version>1.5.8</version>
-        <scope>test</scope>
-      </dependency>
-
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -156,8 +148,16 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.1</version>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                  <archive>
+                    <manifest>
+                      <addClasspath>true</addClasspath>
+                      <mainClass>com.oslo.testify.TestifyApp</mainClass>
+                    </manifest>
+                  </archive>
+                </configuration>
             </plugin>
           <plugin>
             <groupId>org.springframework.boot</groupId>

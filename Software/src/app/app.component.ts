@@ -2,10 +2,10 @@ import { Component,OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet,RouterLinkActive,RouterLink } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { Project } from './project/project.model';
+import { Project } from './features/project/project.model';
 import { AuthGoogleService } from './auth-google/auth-google.service';
-import { FooterComponent } from './footer/footer.component';
-import { NavbarComponent } from './navbar/navbar.component';
+import { FooterComponent } from './core/components/footer/footer.component';
+import { NavbarComponent } from './core/components/navbar/navbar.component';
 import { AuthGoogleComponent } from './auth-google/auth-google.component';
 
 

@@ -18,8 +18,9 @@ public class Project {
     @Column( name = "name")
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column( name = "status")
-    private Boolean status;
+    private ProjectStatus status;
 
     @Column( name = "rate_approval")
     private Float rateApproval;
@@ -28,11 +29,11 @@ public class Project {
 
     public Project(){}
 
-    public Project(Long id, String name, Boolean status, Float rateApproval, User owner) {
-        this.id = id;
-        this.name = name;
-        this.status = status;
-        this.rateApproval = rateApproval;
+  public Project(Long id, String name, ProjectStatus status, Float rateApproval) {
+    this.id = id;
+    this.name = name;
+    this.status = status;
+    this.rateApproval = rateApproval;
   }
 
   public Long getId() {
@@ -51,15 +52,15 @@ public class Project {
         this.name = name;
     }
 
-    public Boolean getStatus() {
-        return status;
-    }
+  public ProjectStatus getStatus() {
+    return status;
+  }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
+  public void setStatus(ProjectStatus status) {
+    this.status = status;
+  }
 
-    public Float getRateApproval() {
+  public Float getRateApproval() {
         return rateApproval;
     }
 
