@@ -50,11 +50,11 @@
 
 
         <!-- JPA API -->
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>javax.persistence-api</artifactId>
-            <version>2.2</version>
-        </dependency>
+      <dependency>
+          <groupId>javax.persistence</groupId>
+          <artifactId>javax.persistence-api</artifactId>
+          <version>2.2</version>
+      </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
         <dependency>
@@ -85,11 +85,11 @@
         </dependency>
 
       <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-maven-plugin -->
-      <dependency>
+      <!--<dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>3.3.3</version>
-      </dependency>
+      </dependency>-->
 
       <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
       <dependency>
@@ -146,7 +146,7 @@
                     <target>17</target>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.4.2</version>
@@ -158,18 +158,14 @@
                     </manifest>
                   </archive>
                 </configuration>
-            </plugin>
+            </plugin>-->
           <plugin>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-maven-plugin</artifactId>
             <version>3.3.3</version>
-            <dependencies>
-              <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>springloaded</artifactId>
-                <version>1.2.1.RELEASE</version>
-              </dependency>
-            </dependencies>
+            <configuration>
+              <mainClass>com.oslo.testify.TestifyApp</mainClass>
+            </configuration>
           </plugin>
         </plugins>
     </build>
