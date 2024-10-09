@@ -1,0 +1,81 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <!--<div class="container navbar-dark bg-dark">-->
+    <a class="navbar-brand" routerLink="/project">
+      <img src="assets/images/Logo-UNPA-UARG-azul.png" width="30" height="30" class="d-inline-block align-top" alt="">
+      Testify
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    @if(isAuthenticated) {
+      <ul class="navbar-nav mr-auto">
+        <!-- Verifica si el usuario es administrador -->
+        <!--<ng-container *ngIf="authGoogleService.isAdmin() | async">-->
+        <ng-container>
+          @if(isAdmin()) {
+          <a class="nav-link" routerLink="/project">
+            <span class="oi oi-home"></span>
+            Inicio
+          </a>
+          }
+          @if(!isAdmin()) {
+          <a class="nav-link" routerLink="/projectSelect">
+            <span class="oi oi-home"></span>
+            Inicio
+          </a>
+          }
+          @if(isAdmin()){
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/user">
+            <span class="oi oi-person"></span>
+              Usuarios
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/role">
+            <span class = "oi oi-graph"> </span>
+              Roles
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/permission">
+            <span class = "oi oi-lock-locked"> </span>
+              Permisos
+            </a>
+          </li>
+          }
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/projectSelect">
+              <span class = "oi oi-loop-circular"></span>
+              Seleccionar Proyecto
+            </a>
+          </li>
+        </ng-container>
+        <li class="nav-item">
+          <a id="Logoff"  class="nav-link" (click)="logoff()">
+          <span class="oi oi-account-logout"> </span>
+            Salir
+          </a>
+        </li>
+      </ul>
+    }
+    </div>
+  <!--</div>-->
+</nav>
+@if(isAuthenticated){
+<div class="alert alert-info alert-dismissible fade show" role="alert">
+  Ud. est&aacute; conectado como <strong>{{this.name}}</strong>.
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+}
+<!--Quitar cuando se corrija authorities-->
+<!-- Verifica si el usuario está autenticado -->
+<!--<a id="Logoff2" class="nav-link" (click)="logoff()">
+  Salir
+</a>-->
+<!--Quitar cuando se corrija authorities-->

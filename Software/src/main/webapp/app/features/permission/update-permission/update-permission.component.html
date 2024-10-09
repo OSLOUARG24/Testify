@@ -1,0 +1,35 @@
+<div class="container">
+  <form [formGroup]="updatePermissionForm" (ngSubmit)="onSubmit()">
+        <div class="card">
+        <div class="card-header">
+  <h3>{{ isEditMode ? 'Actualizar Permiso' : 'Crear Nuevo Permiso' }}</h3>
+        </div>
+        <div class="card-body">
+<div class="form-group">
+      <label for="name">Nombre</label>
+      <input id="name" type="text" class="form-control" formControlName="name" placeholder="Ingrese el nombre del permiso" />
+    </div>
+            </div>
+          <div class="card-footer">
+    <div class="form-group d-flex justify-content-end">
+    <button type="submit"  class="btn btn-outline-success" [disabled]="updatePermissionForm.invalid">
+                   <span class="oi oi-check"></span>
+      {{ isEditMode ? 'Actualizar' : 'Crear' }}
+    </button>
+    <button type="button"  class="btn btn-outline-danger" (click)="cancel()">
+                   <span class="oi oi-x"></span>Cancelar</button>
+    </div>
+          </div>
+      </div>
+  </form>
+  @if (errorMessage) {
+  <div class="error">
+    {{ errorMessage }}
+  </div>
+  }
+  @if (successMessage) {
+  <div class="success">
+    {{ successMessage }}
+  </div>
+  }
+</div>

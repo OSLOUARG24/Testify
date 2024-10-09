@@ -28,10 +28,11 @@
               }
             ],
             "styles": [
+              "src/main/webapp/app/assets/bootstrap-4.1.1-dist/css/bootstrap.css",
               "src/custom-theme.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "src/styles.css",
-              "src/app/assets/open-iconic-master/font/css/open-iconic-bootstrap.min.css"
+              "src/main/webapp/app/assets/open-iconic-master/font/css/open-iconic-bootstrap.min.css"
             ],
              "scripts": [
               "node_modules/jquery/dist/jquery.slim.min.js",
