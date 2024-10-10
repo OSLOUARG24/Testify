@@ -1,34 +1,39 @@
-<div class="project-container">
-<h2 *ngIf="isEditMode">Editar Asignacion de Rol</h2>
-<h2 *ngIf="!isEditMode">Nueva Asignacion de Rol</h2>
-
-<form [formGroup]="roleAssigmentForm" (ngSubmit)="saveRoleAssigment()">
-  <div class="form-group">
-    @if (!roleAssigmentForm.get('project')?.value){
-    <label for="project">Proyecto</label>
-    <select id="project" formControlName="project">
-      @for (project of projects; track project.id){
-        <option [value]="project.id">{{ project.name }}</option>
-      }
-    </select>
-    }
-  </div>
-
-  <div class="form-group">
-    <label for="role">Rol</label>
-    <select id="role" formControlName="role">
-      @for (role of roles; track role.id){
-      <option [value]="role.id"> {{ role.name }}</option>
-      }
-    </select>
-  </div>
-  <br/>
-
-  <div class="form-group d-flex justify-content-between">
-  <button type="submit" [disabled]="roleAssigmentForm.invalid">
-    {{ isEditMode ? 'Actualizar' : 'Crear' }}
-  </button>
-    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
-  </div>
-</form>
+<div class="container">
+  <form [formGroup]="roleAssigmentForm" (ngSubmit)="saveRoleAssigment()">
+      <div class="card">
+        <div class="card-header">
+          <h3>{{ isEditMode ? 'Actualizar' : 'Crear Nueva' }} Asignacion de Rol</h3>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="project">Proyecto</label>
+            <select id="project" formControlName="project" class="form-select">
+              @for (project of projects; track project.id){
+                <option [value]="project.id">{{ project.name }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="role">Rol</label>
+            <select id="role" formControlName="role" class="form-select">
+              @for (role of roles; track role.id){
+              <option [value]="role.id"> {{ role.name }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="form-group d-flex justify-content-end">
+            <button type="submit" class="btn btn-outline-success" [disabled]="roleAssigmentForm.invalid">
+            <span class="oi oi-check"></span>
+              {{ isEditMode ? 'Actualizar' : 'Crear' }}
+            </button>
+            <button type="button"  class="btn btn-outline-danger" (click)="cancel()">
+            <span class="oi oi-x"></span>
+            Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+  </form>
 </div>
