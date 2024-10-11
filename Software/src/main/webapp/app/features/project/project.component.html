@@ -27,6 +27,9 @@
       <td>{{ project.rateApproval || 'N/A' }}</td>
       <td>{{ project.status ? 'Activo' : 'Inactivo' }}</td>
       <td>
+        <a title="Export" class="btn btn-outline-info" [routerLink]="['/iteration', project.id]">
+          <span class="oi oi-file"></span>
+        </a>
         <a title="Iteraciones" class="btn btn-outline-info" [routerLink]="['/iteration', project.id]">
           <span class="oi oi-zoom-in"></span>
         </a>

@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { ProjectComponent } from './features/project/project.component';
 import { UpdateProjectComponent } from './features/project/update-project/update-project.component';
 import { ProjectSelectComponent } from './features/project/project-select/project-select.component';
+import { IterationComponent } from './features/iteration/iteration.component';
+import { UpdateIterationComponent } from './features/iteration/update-iteration/update-iteration.component';
 import { RoleComponent } from './features/role/role.component';
 import { UpdateRoleComponent } from './features/role/update-role/update-role.component';
 import { RoleAssigmentComponent } from './features/role-assigment/role-assigment.component';
@@ -19,6 +21,11 @@ export const routes: Routes = [
 { path: 'project/create', component: UpdateProjectComponent },
 { path: 'project/:id', component: ProjectComponent },
 { path: 'project/edit/:id', component: UpdateProjectComponent },
+//
+{ path: 'iteration', component: IterationComponent },
+{ path: 'iteration/create', component: UpdateIterationComponent },
+{ path: 'iteration/:id', component: IterationComponent },
+{ path: 'iteration/edit/:id', component: UpdateIterationComponent },
 //
 { path: 'role', component: RoleComponent },
 { path: 'role/create', component: UpdateRoleComponent },

@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable,BehaviorSubject } from 'rxjs';
 import { Project } from './project.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
+  private selectedProjectSubject = new BehaviorSubject<Project | null>(null);
+  selectedProject$ = this.selectedProjectSubject.asObservable();
 
   private apiUrl = 'http://localhost:8080/api';  // URL de tu API backend
 
@@ -39,5 +41,15 @@ export class ProjectService {
 
   getProjectsByEmail(email: string):  Observable<Project[]> {
     return this.http.get<Project[]>(`${this.apiUrl}/projects/user-email/${email}`);
+  }
+
+  setSelectedProject(project: Project): void {
+    this.selectedProjectSubject.next(project);
+    sessionStorage.setItem('project', JSON.stringify(project)); // También guardamos en SessionStorage
+  }
+
+  getSelectedProject(): Project | null {
+    const project = sessionStorage.getItem('project');
+    return project ? JSON.parse(project) : null;
   }
 }

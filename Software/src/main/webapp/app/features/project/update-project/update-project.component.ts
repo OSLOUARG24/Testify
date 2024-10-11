@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../project.service';
-import { Project, ProjectStatus   } from '../project.model';
+import { Project, ProjectStatus } from '../project.model';
 
 @Component({
   selector: 'app-update-project',
@@ -45,7 +45,7 @@ export class UpdateProjectComponent implements OnInit {
     this.projectForm = this.fb.group({
       id:  [''],
       name: ['', [Validators.required]],
-      status: [true, Validators.required],
+      status: ['', Validators.required],
       rateApproval:['', [Validators.required]]
     });
   }
@@ -74,7 +74,7 @@ export class UpdateProjectComponent implements OnInit {
     }
 
     const projectData: Project = this.projectForm.value;
-console.log(projectData);
+    console.log(projectData);
     if (this.isEditMode) {
       this.updateProject(this.projectId!, projectData);
     } else {
