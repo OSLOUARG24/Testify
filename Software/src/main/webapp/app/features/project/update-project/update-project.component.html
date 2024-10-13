@@ -1,0 +1,41 @@
+<div class="project-container">
+  <h2>{{ isEditMode ? 'Actualizar' : 'Crear' }} Proyecto</h2>
+
+  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Nombre</label>
+      <input id="name" formControlName="name" type="text" placeholder="Ingresa el nombre del proyecto" />
+      @if (projectForm.get('name')?.invalid && projectForm.get('name')?.touched) {
+      <div class="error">
+        El nombre es obligatorio.
+      </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="rateApproval">Tasa de Aprobación</label>
+      <input id="rateApproval" formControlName="rateApproval" type="text" placeholder="Ingresa una tasa de Aprobacion" />
+      @if (projectForm.get('rateApproval')?.invalid && projectForm.get('rateApproval')?.touched) {
+      <div class="error">
+        La descripción debe ser numerica.
+      </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="status">Estado del Proyecto</label>
+      <select id="status" formControlName="status">
+        <option [value]="projectStatuses.PENDIENTE">Pendiente</option>
+        <option [value]="projectStatuses.EN_PROCESO">En Proceso</option>
+        <option [value]="projectStatuses.FINALIZADO">Finalizado</option>
+      </select>
+    </div>
+
+    <div class="form-group d-flex justify-content-between">
+    <button type="submit" class="btn btn-primary" [disabled]="projectForm.invalid">
+      {{ isEditMode ? 'Actualizar' : 'Crear' }} Proyecto
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,103 @@
+/* Container for the role list */
+.role-list-container {
+  width: 80%;
+  margin: 0 auto;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Header section for title and add button */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 24px;
+  color: #333;
+}
+
+.header .btn-add {
+  background-color: #4CAF50; /* Verde */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.header .btn-add:hover {
+  background-color: #45a049;
+}
+
+/* Styles for the table */
+.role-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.role-table thead th {
+  background-color: #343a40;
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+
+.role-table tbody td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  color: #333;
+}
+
+.role-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.role-table tbody tr:hover {
+  background-color: #ddd;
+}
+
+/* Button styles for table actions */
+.btn-view, .btn-edit, .btn-delete {
+  padding: 8px 16px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* View button */
+.btn-view {
+  background-color: #007BFF;
+  color: white;
+}
+
+.btn-view:hover {
+  background-color: #0056b3;
+}
+
+/* Edit button */
+.btn-edit {
+  background-color: #FFC107;
+  color: white;
+}
+
+.btn-edit:hover {
+  background-color: #e0a800;
+}
+
+/* Delete button */
+.btn-delete {
+  background-color: #DC3545;
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #c82333;
+}

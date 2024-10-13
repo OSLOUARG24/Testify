@@ -1,0 +1,65 @@
+<div class="container">
+  <h2>{{ isEditMode ? 'Actualizar' : 'Crear' }} Iteración</h2>
+
+  <form [formGroup]="iterationForm" (ngSubmit)="onSubmit()">
+
+    <!-- Mostrar campo de proyecto si no hay uno en sessionStorage -->
+    @if (!projectFromSession) {
+    <div class="form-group" >
+      <label for="project">Selecciona un Proyecto</label>
+      <select id="project" formControlName="project" class="form-control">
+        @for (project of projects; track project.id){
+        <option [ngValue]="project">{{ project.name }}</option>
+        }
+      </select>
+      @if (iterationForm.get('project')?.invalid && iterationForm.get('project')?.touched){
+        <div class="text-danger">
+          Debes seleccionar un proyecto.
+        </div>
+      }
+    </div>
+    }
+
+    <div class="form-group">
+      <label for="name">Nombre</label>
+      <input id="name" formControlName="name" type="text" class="form-control" placeholder="Nombre de la iteración" />
+      @if (iterationForm.get('name')?.invalid && iterationForm.get('name')?.touched){
+      <div class="text-danger">
+        El nombre es obligatorio.
+      </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="startDate">Fecha de Inicio</label>
+      <input id="startDate" formControlName="startDate" type="date" class="form-control" />
+      @if (iterationForm.get('startDate')?.invalid && iterationForm.get('startDate')?.touched) {
+        <div class="text-danger">
+          La fecha de inicio es obligatoria.
+        </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="endDate">Fecha de Fin</label>
+      <input id="endDate" formControlName="endDate" type="date" class="form-control" />
+      @if (iterationForm.get('endDate')?.invalid && iterationForm.get('endDate')?.touched){
+        <div class="text-danger">
+          La fecha de fin es obligatoria.
+        </div>
+      }
+      @if (iterationForm.errors?.['endDateBeforeStartDate']) {
+        <div class="text-danger">
+          La fecha de fin no puede ser anterior a la fecha de inicio.
+        </div>
+      }
+    </div>
+
+    <div class="form-group d-flex justify-content-between">
+      <button type="submit" class="btn btn-primary" [disabled]="iterationForm.invalid">
+        {{ isEditMode ? 'Actualizar' : 'Crear' }} Iteración
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+    </div>
+  </form>
+</div>

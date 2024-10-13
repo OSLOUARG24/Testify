@@ -1,0 +1,21 @@
+
+/* Footer styles */
+.footer {
+  text-align: center;
+  background-color: #343a40;
+  color: #ffffff;
+  padding: 1rem 0;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  font-size: 0.9rem;
+}
+
+.footer .oi {
+  margin-left: 10px;
+}
+
+.footer span {
+  font-weight: bold;
+  font-size: 1rem;
+}

@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+       <h3>Usuarios</h3>
+    </div>
+    <div class="card-body">
+    <p class="d-flex justify-content-end">
+      <button type="button" class="btn btn-success" [routerLink]="['/user/create']">
+        <span class="oi oi-plus"></span> Nuevo Usuario
+      </button>
+    <button class="btn btn-danger float-right " (click)="Cancel()">Volver</button>
+    </p>
+
+    <table class="table table-hover table-sm">
+    <thead>
+    <tr class="table-info">
+      <th>Usuario</th>
+      <th>Opciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    @for (user of users; track user.id) {
+    <tr>
+      <td>{{ user.name }}<br />{{ user.email }}</td>
+      <td>
+        <a title="Roles Asignados" class="btn btn-outline-info" [routerLink]="['/roleAssigment', user.id]">
+          <span class="oi oi-zoom-in"></span>
+        </a>
+        <a title="Modificar" [routerLink]="['/user/edit', user.id]">
+          <button type="button" class="btn btn-outline-warning">
+            <span class="oi oi-pencil"></span>
+          </button></a>
+        <a title="Eliminar" mat-button color="warn" (click)="openDeleteModal(user)">
+          <button type="button" class="btn btn-outline-danger">
+            <span class="oi oi-trash"></span>
+          </button></a>
+      </td>
+    </tr>
+    }
+    </tbody>
+  </table>
+  </div>
+  </div>
+</div>

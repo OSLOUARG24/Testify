@@ -1,0 +1,32 @@
+<div class="project-container">
+<h2 *ngIf="isEditMode">Editar Asignacion de Permiso</h2>
+<h2 *ngIf="!isEditMode">Nueva Asignacion de Permiso</h2>
+
+<form [formGroup]="rolePermissionForm" (ngSubmit)="saveRolePermission()">
+
+  <div>
+    <label for="role">Rol</label>
+    <select id="role" formControlName="role">
+      @for (role of roles; track role.id){
+      <option [value]="role.id"> {{ role.name }}</option>
+      }
+    </select>
+  </div>
+  <div>
+    <label for="permission">Permiso</label>
+    <select id="permission" formControlName="permission">
+      @for (permission of permissions; track permission.id){
+      <option [value]="permission.id">{{ permission.name }}</option>
+      }
+    </select>
+  </div>
+  <br/>
+
+  <div class="form-group d-flex justify-content-between">
+    <button type="submit" [disabled]="rolePermissionForm.invalid">
+      {{ isEditMode ? 'Actualizar' : 'Crear' }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+  </div>
+</form>
+</div>

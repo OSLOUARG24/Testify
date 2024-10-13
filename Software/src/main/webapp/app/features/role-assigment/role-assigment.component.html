@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h3>Roles Asignados</h3>
+    </div>
+    <div class="card-body">
+    <p class="d-flex justify-content-end">
+      <button type="button" class="btn btn-success" [routerLink]="['/roleAssigment/create']">
+        <span class="oi oi-plus"></span> Asignar Rol
+      </button>
+    <button class="btn btn-danger float-right" (click)="Cancel()">Volver</button>
+    </p>
+
+    <table class="table table-hover table-sm">
+    <thead>
+    <tr class="table-info">
+      <th>Proyecto</th>
+      <th>Rol Asignado</th>
+      <th>Opciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    @for (role of roleAssigments; track role) {
+    <tr>
+      <td>{{ role.project?.name }}</td>
+      <td>{{ role.role?.name }}</td>
+      <td>
+        <a title="Modificar" [routerLink]="['/roleAssigment/edit', role.id]">
+        <button type="button" class="btn btn-outline-warning">
+            <span class="oi oi-pencil"></span>
+          </button></a>
+        <a title="Eliminar" mat-button color="warn" (click)="openDeleteModal(role)">
+          <button type="button" class="btn btn-outline-danger">
+            <span class="oi oi-trash"></span>
+          </button></a>
+      </td>
+    </tr>
+    }
+    </tbody>
+  </table>
+  </div>
+</div>

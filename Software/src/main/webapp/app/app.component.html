@@ -1,0 +1,8 @@
+<app-navbar></app-navbar>
+@if (isAuthenticated) {
+    <router-outlet></router-outlet>
+}
+@if (!isAuthenticated) {
+    <app-auth-google></app-auth-google>
+}
+<app-footer></app-footer>

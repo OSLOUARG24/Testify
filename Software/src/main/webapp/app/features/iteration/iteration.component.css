@@ -1,0 +1,45 @@
+.iteration-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 1em;
+  min-width: 400px;
+  text-align: left;
+}
+
+.iteration-table th, .iteration-table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+}
+
+.iteration-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.iteration-table tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.iteration-table tr:last-child {
+  border-bottom: none;
+}
+
+.iteration-table button {
+  padding: 6px 12px;
+  margin-right: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.iteration-table button:hover {
+  background-color: #0056b3;
+}
+
+.iteration-table button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
