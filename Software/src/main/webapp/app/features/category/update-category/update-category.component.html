@@ -1,0 +1,22 @@
+<div class="category-container">
+  <h2>{{ isEditMode ? 'Actualizar' : 'Crear' }} Categoría</h2>
+
+  <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Nombre de la Categoría</label>
+      <input id="name" formControlName="name" type="text" placeholder="Ingresa el nombre de la categoría" />
+      @if(categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched){
+      <div class="error">
+        El nombre es obligatorio.
+      </div>
+      }
+    </div>
+
+    <div class="form-group d-flex justify-content-between">
+      <button type="submit" class="btn btn-primary" [disabled]="categoryForm.invalid">
+        {{ isEditMode ? 'Actualizar' : 'Crear' }} Categoría
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+    </div>
+  </form>
+</div>
