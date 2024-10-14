@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '../project.service';
 import { UserService } from '../../user/user.service';
+import { RoleAssigmentService } from '../../role-assigment/role-assigment.service';
+import { RoleAssigment } from '../../role-assigment/role-assigment.model';
 import { AuthGoogleService } from '../../../auth-google/auth-google.service';
 import { Router, RouterLink } from '@angular/router';
 import { Project } from '../project.model';
@@ -21,10 +23,12 @@ export class ProjectSelectComponent implements OnInit {
   isAdmin = false;  // Variable para verificar si es administrador
   user?: User;
   googleAccount?: any;
+  roles?: RoleAssigment[];
 
   constructor(protected projectService: ProjectService,
               protected router: Router,
               protected userService: UserService,
+              protected roleAssigmentService: RoleAssigmentService,
               protected authGoogleService: AuthGoogleService) { }
 
   ngOnInit(): void {
@@ -91,10 +95,10 @@ export class ProjectSelectComponent implements OnInit {
   onProjectSelect(event: any): void {
     const selectElement = event?.target as HTMLSelectElement;
     const selectedValue = selectElement.value;
-
     if (selectedValue !== "null") {
       const selectedProject = JSON.parse(selectedValue);
       sessionStorage.setItem('project', JSON.stringify(selectedProject));
+      this.roleAssigmentService.getRoleAssigmentByUserId(this.user?.id!).subscribe((data: RoleAssigment[]) => {this.roles = data;});
       console.log('Proyecto seleccionado guardado en sessionStorage:', selectedProject);
     } else {
       sessionStorage.removeItem('project');
@@ -104,6 +108,7 @@ export class ProjectSelectComponent implements OnInit {
 
   redirect(){
     if (this.isAdmin){
+    window.location.reload();
     this.router.navigate(['/project']);
     } else {
     //TODO

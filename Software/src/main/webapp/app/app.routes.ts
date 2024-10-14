@@ -15,6 +15,10 @@ import { UpdateRolePermissionComponent } from './features/role-permission/update
 import { AuthGoogleComponent } from './auth-google/auth-google.component';
 import { UserComponent } from './features/user/user.component';
 import { UpdateUserComponent } from './features/user/update-user/update-user.component';
+import { TypeComponent } from './features/type/type.component';
+import { UpdateTypeComponent } from './features/type/update-type/update-type.component';
+import { SubTypeComponent } from './features/sub-type/sub-type.component';
+import { UpdateSubTypeComponent } from './features/sub-type/update-sub-type/update-sub-type.component';
 
 export const routes: Routes = [
 { path: 'project', component: ProjectComponent },
@@ -26,6 +30,16 @@ export const routes: Routes = [
 { path: 'iteration/create', component: UpdateIterationComponent },
 { path: 'iteration/:id', component: IterationComponent },
 { path: 'iteration/edit/:id', component: UpdateIterationComponent },
+//
+{ path: 'type', component: TypeComponent },
+{ path: 'type/create', component: UpdateTypeComponent },
+{ path: 'type/:id', component: TypeComponent },
+{ path: 'type/edit/:id', component: UpdateTypeComponent },
+//
+{ path: 'subType', component: SubTypeComponent },
+{ path: 'subType/create', component: UpdateSubTypeComponent },
+{ path: 'subType/:id', component: SubTypeComponent },
+{ path: 'subType/edit/:id', component: UpdateSubTypeComponent },
 //
 { path: 'role', component: RoleComponent },
 { path: 'role/create', component: UpdateRoleComponent },
