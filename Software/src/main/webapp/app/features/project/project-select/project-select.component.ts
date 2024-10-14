@@ -108,7 +108,6 @@ export class ProjectSelectComponent implements OnInit {
 
   redirect(){
     if (this.isAdmin){
-    window.location.reload();
     this.router.navigate(['/project']);
     } else {
     //TODO
