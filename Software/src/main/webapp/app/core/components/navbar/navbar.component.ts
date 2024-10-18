@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { AuthGoogleService } from '../../../auth-google/auth-google.service';
 import { Project } from '../../../features/project/project.model';
 import { CommonModule } from '@angular/common';
@@ -7,12 +7,14 @@ import { Observable} from 'rxjs';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { User } from '../../../features/user/user.model';
+import { RoleAssigmentService } from '../../../features/role-assigment/role-assigment.service';
+import { RoleAssigment } from '../../../features/role-assigment/role-assigment.model';
 
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, RouterModule ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
@@ -21,7 +23,7 @@ export class NavbarComponent implements OnInit {
   isAuthenticated = false;
 
   googleAccount?: any;
-  userRoles: string[] = [];
+  roleAssigments: RoleAssigment[] = [];
   name?: string;
   projects?: Project[] = [];
   selectedProjectId: number = 0;
@@ -30,6 +32,7 @@ export class NavbarComponent implements OnInit {
   constructor(
     protected router: Router,
     protected authGoogleService: AuthGoogleService,
+    protected roleAssigmentService: RoleAssigmentService,
     protected http: HttpClient
   ) {}
 
@@ -44,38 +47,27 @@ export class NavbarComponent implements OnInit {
         if (this.isAuthenticated) {
           this.googleAccount = this.authGoogleService.getProfile();
           this.name = this.googleAccount.family_name + ', ' + this.googleAccount.given_name;
-          this.getUserInfo(this.googleAccount.email).subscribe(userInfo => {
-                              console.log(JSON.stringify(userInfo));
-                            }
-            ,
-             error => {
-               console.error('Error fetching users', error);
-             }
-           )
+          this.getUserInfo(this.googleAccount.email);
         }
       });
     }
 
-    getUserInfo(email: string): Observable<any> {
+    getUserInfo(email: string){
           let project = sessionStorage.getItem('project');
-          const idProject = JSON.parse(project!).id;
-          if(idProject == null){this.router.navigate(['/selectedProject']);}
-          const params = new HttpParams()
-                .set('email', email)
-                .set('idProject', idProject);
-            return this.http.get<any>('http://localhost:8080/api/user-info',{ params }).pipe(
-              map(response => {
-                //this.name = response.name;
-                this.userRoles = response.roles;
-                sessionStorage.setItem('userRoles',JSON.stringify(this.userRoles));
-                return response;
-              })
-            );
-
+          if (project){
+            const idProject = JSON.parse(project).id;
+            if(idProject == null){this.router.navigate(['/selectedProject']);}
+             this.roleAssigmentService.getRoleAssigmentsByEmailAndProject(email,idProject).subscribe((data: RoleAssigment[]) => {
+             this.roleAssigments = data;
+             sessionStorage.setItem('userRoles',JSON.stringify(this.roleAssigments));
+             },
+           (error) => {console.log(error);
+             });
+           }
     }
 
-    hasRole(role: string): boolean {
-        return this.userRoles.includes(role);
+    hasRole(roleCode: string): boolean {
+      return this.roleAssigments.some((assignment: RoleAssigment) => assignment.role?.code === roleCode);
     }
 
   isAdmin() {
@@ -83,28 +75,38 @@ export class NavbarComponent implements OnInit {
    }
 
   isGestor() {
-     return this.hasRole('ROLE_GESTOR_DE_PRUEBAS');
+     return this.hasRole('GESTOR');
   }
 
   isInvitado() {
-     return this.hasRole('ROLE_INVITADO');
+     return this.hasRole('GUEST');
   }
 
   isTester(): boolean {
-           return this.hasRole('ROLE_TESTER');
-  }
-
-  isDeveloper(): boolean {
-           return this.hasRole('ROLE_DEVELOPER');
+     return this.hasRole('TESTER');
   }
 
   isAuth() {
-             return this.isAuthenticated;
-    }
+     return this.isAuthenticated;
+  }
 
   logoff() {
     this.authGoogleService.logOut();
     this.router.navigate(['/login']);
+  }
+
+  redirect() {
+    if (this.isGestor() || this.isInvitado() || this.isAdmin()){
+      this.router.navigate(['/project']);
+    } else {
+      if (this.isTester()){
+        this.router.navigate(['/tester']);
+      }
+      else {
+        alert("No es un sorete");
+        this.router.navigate(['/projectSelect']);
+      }
+    }
   }
 
 }

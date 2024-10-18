@@ -3,6 +3,8 @@ import { ActivatedRoute, Router, RouterOutlet,RouterLinkActive,RouterLink  } fro
 import { Type } from './type.model';
 import { TypeService } from './type.service';
 import { User } from '../user/user.model';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteTypeComponent } from './delete-type/delete-type.component';
 
 @Component({
   selector: 'app-type',
@@ -15,7 +17,8 @@ export class TypeComponent implements OnInit {
   types: Type[] = [];
   user: User = {};
 
-  constructor(private typeService: TypeService) {}
+  constructor(private typeService: TypeService,
+              public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.loadFromStorage();
@@ -36,10 +39,24 @@ export class TypeComponent implements OnInit {
     });
   }
 
-  // Método para eliminar la categoría
-  deleteType(typeId: number): void {
-    alert('Elimina Type ' + typeId);
-  }
+  openDeleteModal(type: any): void {
+  	        const dialogRef = this.dialog.open(DeleteTypeComponent, {
+  	          width: '600px',
+  	          data: { type: type }
+  	        });
+
+  	        dialogRef.afterClosed().subscribe(result => {
+  	          if (result) {
+  	            this.fetchTypes();
+  	          }
+  	        });
+  	      }
+
+  	      fetchTypes(): void {
+  	        this.typeService.getTypes().subscribe(types => {
+  	          this.types = types;
+  	        });
+  	      }
 
   Cancel(): void {
     window.history.back();

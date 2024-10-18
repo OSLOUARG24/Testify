@@ -48,4 +48,7 @@ export class UserService {
        return this.http.delete<void>(`${this.apiUrl}/user/${userId}`);
      }
 
+     getUsersByRole(projectId: number): Observable<User[]> {
+      return this.http.get<User[]>(`${this.apiUrl}/user/role/${projectId}`);
+     }
 }

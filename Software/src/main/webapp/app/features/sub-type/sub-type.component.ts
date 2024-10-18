@@ -6,6 +6,8 @@ import { TypeService } from '../type/type.service';
 import { SubType } from './sub-type.model';
 import { SubTypeService } from './sub-type.service';
 import { User } from '../user/user.model';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteSubTypeComponent } from './delete-sub-type/delete-sub-type.component';
 
 @Component({
   selector: 'app-sub-type',
@@ -20,7 +22,8 @@ export class SubTypeComponent implements OnInit {
   user: User = {};
 
   constructor(private typeService: TypeService,
-              private subTypeService: SubTypeService) {}
+              private subTypeService: SubTypeService,
+              public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.loadFromStorage();
@@ -41,10 +44,25 @@ export class SubTypeComponent implements OnInit {
     });
   }
 
-  // Método para eliminar la categoría
-  deleteSubType(subTypeId: number): void {
-    alert('Elimina Type ' + subTypeId);
-  }
+
+	openDeleteModal(subType: any): void {
+	        const dialogRef = this.dialog.open(DeleteSubTypeComponent, {
+	          width: '600px',
+	          data: { subType: subType }
+	        });
+
+	        dialogRef.afterClosed().subscribe(result => {
+	          if (result) {
+	            this.fetchSubTypes();
+	          }
+	        });
+	      }
+
+	      fetchSubTypes(): void {
+	        this.subTypeService.getSubTypes().subscribe(subTypes => {
+	          this.subTypes = subTypes;
+	        });
+	      }
 
   Cancel(): void {
     window.history.back();

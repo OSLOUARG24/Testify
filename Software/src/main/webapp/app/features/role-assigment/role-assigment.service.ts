@@ -53,5 +53,12 @@ export class RoleAssigmentService {
        return this.http.delete(`${this.apiUrl}/roleAssigment/${roleAssigmentId}`, { responseType: 'text' });
      }
 
+     getRoleAssigmentsByEmailAndProject(email: string, id: number): Observable<RoleAssigment[]> {
+       const params = new HttpParams()
+             .set('email', email)
+             .set('pId', id.toString());
+
+           return this.http.get<RoleAssigment[]>(`${this.apiUrl}/roleAssigments/roles`, { params });
+     }
 
 }

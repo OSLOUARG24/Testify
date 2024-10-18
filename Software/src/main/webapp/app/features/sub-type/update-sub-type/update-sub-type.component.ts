@@ -44,7 +44,6 @@ export class UpdateSubTypeComponent implements OnInit {
   loadTypes(): void {
       this.typeService.getTypes().subscribe((types: Type[]) => {
         this.types = types;
-        console.log(this.types); // Depuración
       });
     }
 
@@ -52,7 +51,7 @@ export class UpdateSubTypeComponent implements OnInit {
   initializeForm(): void {
     this.subTypeForm = this.fb.group({
       name: ['', [Validators.required]],
-      type: [null, Validators.required]
+      type: ['', [Validators.required]]
       });
   }
 
@@ -62,6 +61,7 @@ export class UpdateSubTypeComponent implements OnInit {
       (subType: SubType) => {
         this.subTypeForm.patchValue({
           name: subType.name,
+          type: subType.type
         });
       },
       (error) => {
@@ -77,6 +77,11 @@ export class UpdateSubTypeComponent implements OnInit {
     }
 
     const subTypeData: SubType = this.subTypeForm.value;
+
+    if (!subTypeData.type) {
+      console.error('No se ha seleccionado un tipo.');
+      return;
+    }
 
     if (this.isEditMode) {
       this.updateSubType(this.subTypeId!, subTypeData);

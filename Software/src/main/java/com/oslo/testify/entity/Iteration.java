@@ -1,12 +1,8 @@
 package com.oslo.testify.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "iterations")
@@ -28,7 +24,6 @@ public class Iteration {
 
     @ManyToOne
     @JoinColumn(name = "project_id")
-    @JsonBackReference(value = "project-iterations")
     private Project project;
 
     // Getters and Setters

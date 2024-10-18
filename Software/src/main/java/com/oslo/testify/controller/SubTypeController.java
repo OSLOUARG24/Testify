@@ -27,13 +27,13 @@ public class SubTypeController {
       return subTypes;
     }
 
-    @PostMapping("/subType")
+    @PostMapping(value = "/subType", consumes = "application/json", produces = "application/json")
     public SubType createSubType(@RequestBody SubType subType) {
         return subTypeService.saveSubType(subType);
     }
 
     @GetMapping("/subType/{id}")
-    public SubType getTypeById(@PathVariable(value = "id", required = false) final  Long id) {
+    public SubType getSubTypeById(@PathVariable(value = "id", required = false) final  Long id) {
         return subTypeService.getSubTypeById(id);
     }
 

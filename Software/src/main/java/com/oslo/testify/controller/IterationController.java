@@ -39,7 +39,7 @@ public class IterationController {
         return iterationService.saveIteration(iteration);
     }
 
-    @GetMapping("/iterations/{id}")
+    @GetMapping("/iteration/{id}")
     public Iteration getIterationById(@PathVariable(value = "id", required = false) final  Long id) {
         return iterationService.getIterationById(id);
     }

@@ -56,6 +56,12 @@ public class RoleAssigmentController {
         return roleAssigmentService.getRolesAssigmentsByUserId(id);
     }
 
+    @GetMapping("/roleAssigments/roles")
+    public List<RoleAssigment> getRoleAssigmentByUserIdAndProjectId( @RequestParam("email") String email,
+                                                                     @RequestParam("pId") Long id) {
+      return roleAssigmentService.getRolesAssigmentsByEmailAndProjectId(email,id);
+    }
+
     @DeleteMapping("/roleAssigment/{id}")
     public void deleteRole(@PathVariable(value = "id", required = false) final  Long id) {
       roleAssigmentService.deleteRoleAssigment(id);

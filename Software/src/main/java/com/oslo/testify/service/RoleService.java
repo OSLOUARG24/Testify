@@ -32,7 +32,7 @@ public class RoleService {
     public Role updateRole(Long id, Role updatedRole) {
       Role existingRole = roleRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
-
+      existingRole.setCode(updatedRole.getCode());
       existingRole.setName(updatedRole.getName());
       return roleRepository.save(existingRole);
     }

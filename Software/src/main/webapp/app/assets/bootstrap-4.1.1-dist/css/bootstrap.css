@@ -73,6 +73,13 @@ body {
     /* background-color: #e7edf9; */
     /* Estilo UARG eRecibo */
     background-color: #f2f2f2;
+    flex-grow: 1;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ocupa toda la ventana */
 }
 
 [tabindex="-1"]:focus {

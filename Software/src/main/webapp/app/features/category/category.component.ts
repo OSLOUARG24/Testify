@@ -45,7 +45,7 @@ export class CategoryComponent implements OnInit {
 
    openDeleteModal(category: any): void {
     const dialogRef = this.dialog.open(DeleteCategoryComponent, {
-      width: '300px',
+      width: '600px',
       data: { category: category }
     });
 

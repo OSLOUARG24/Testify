@@ -4,16 +4,15 @@
       <h3>Categorías</h3>
     </div>
     <div class="card-body">
-      <div class="d-flex justify-content-end">
+      <p class="d-flex justify-content-end">
         <!-- Si el usuario es administrador, se muestra el botón para agregar una nueva categoría -->
         @if(user.admin){
           <button type="button" class="btn btn-success" [routerLink]="['/category/create']">
             <span class="oi oi-plus"></span> Nueva Categoría
           </button>
         }
-        <button class="btn btn-danger float-right" (click)="Cancel()">Volver</button>
-      </div>
-    </div>
+        <button class="btn btn-danger float-right" [routerLink]="['/project']">Volver</button>
+      </p>
     <table class="table table-hover table-sm">
       <thead>
       <tr class="table-info">
@@ -35,9 +34,10 @@
                 <span class="oi oi-pencil"></span>
               </button>
             </a>
-            <button title="Eliminar" type="button" class="btn btn-outline-danger" (click)="openDeleteModal(category)">
+            <a title="Eliminar" mat-button color="warn" (click)="openDeleteModal(category)">
+            <button type="button" class="btn btn-outline-danger">
               <span class="oi oi-trash"></span>
-            </button>
+            </button></a>
             }
           </ng-container>
         </td>
@@ -46,4 +46,5 @@
       </tbody>
     </table>
   </div>
+      </div>
 </div>

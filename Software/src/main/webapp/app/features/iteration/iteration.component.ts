@@ -3,9 +3,11 @@ import { ActivatedRoute, Router, RouterOutlet, RouterLinkActive, RouterLink } fr
 import { IterationService } from './iteration.service';
 import { Iteration } from './iteration.model';
 import { AuthGoogleService } from '../../auth-google/auth-google.service'; // Servicio para manejar la autenticación y roles
-import { CommonModule } from '@angular/common';  // Importa CommonModule para usar el pipe date
+import { CommonModule } from '@angular/common';
 import { ProjectService } from '../project/project.service';
 import { Project } from '../project/project.model';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteIterationComponent } from './delete-iteration/delete-iteration.component';
 
 @Component({
   selector: 'app-iteration',
@@ -15,7 +17,6 @@ import { Project } from '../project/project.model';
   styleUrls: ['./iteration.component.css']
 })
 export class IterationComponent implements OnInit {
-
   iterations: Iteration[] = [];  // Array de iteraciones filtradas por el proyecto
   isAdmin: boolean = false;  // Para controlar la visibilidad de los botones
   project?: Project;
@@ -26,7 +27,8 @@ export class IterationComponent implements OnInit {
     private projectService: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
-    private authGoogleService: AuthGoogleService  // Servicio para verificar los roles del usuario
+    private authGoogleService: AuthGoogleService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -65,23 +67,26 @@ export class IterationComponent implements OnInit {
     );
   }
 
-  // Método para eliminar la iteración
-  deleteIteration(iterationId: number): void {
-    if (confirm('¿Estás seguro de eliminar esta iteración?')) {
-      this.iterationService.deleteIteration(iterationId).subscribe(
-        () => {
-          alert('Iteración eliminada');
-          // Filtrar la iteración eliminada del array
-          this.iterations = this.iterations.filter(i => i.id !== iterationId);
-        },
-        (error) => {
-          console.error('Error al eliminar la iteración', error);
-        }
-      );
-    }
-  }
-
   Cancel(): void {
     window.history.back();
   }
+
+	openDeleteModal(iteration: any): void {
+	        const dialogRef = this.dialog.open(DeleteIterationComponent, {
+	          width: '600px',
+	          data: { iteration: iteration }
+	        });
+
+	        dialogRef.afterClosed().subscribe(result => {
+	          if (result) {
+	            this.fetchIterations();
+	          }
+	        });
+	      }
+
+	      fetchIterations(): void {
+	        this.iterationService.getIterations().subscribe(iterations => {
+	          this.iterations = iterations;
+	        });
+	      }
 }

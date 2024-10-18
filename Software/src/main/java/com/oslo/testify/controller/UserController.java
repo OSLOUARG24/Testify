@@ -49,6 +49,11 @@ public class UserController {
        return userService.getUserByEmail(email);
     }
 
+    @GetMapping("/user/role/{id}")
+    public List<User> getTestersByProjectId(@PathVariable(value = "id", required = false) final Long id) {
+      return userService.getTestersByProjectId(id);
+    }
+
     @PutMapping("/user/{id}")
     public ResponseEntity<User> updateUser(@PathVariable(value = "id", required = false) final Long id, @RequestBody User userDetails) {
       log.debug("REST request to save User : {}", userDetails);

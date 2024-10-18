@@ -33,6 +33,7 @@ public class ProjectController {
 
     @PostMapping(value = "/project", consumes = "application/json", produces = "application/json")
     public Project createProject(@RequestBody Project project) {
+      log.debug("nombre del project: {}", project.getName());
       return projectService.saveProject(project);
     }
 

@@ -23,7 +23,11 @@ public class UserService {
       this.roleAssignmentRepository = roleAssignmentRepository;
     }
 
-  public List<User> getAllUsers() {
+    public List<User> getTestersByProjectId(Long id) {
+      return userRepository.findUsersByRoleTesterAndProjectId(id);
+    }
+
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 

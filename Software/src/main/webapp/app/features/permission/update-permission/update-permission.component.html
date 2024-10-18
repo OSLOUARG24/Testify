@@ -2,11 +2,11 @@
   <form [formGroup]="updatePermissionForm" (ngSubmit)="onSubmit()">
         <div class="card">
         <div class="card-header">
-  <h3>{{ isEditMode ? 'Actualizar Permiso' : 'Crear Nuevo Permiso' }}</h3>
+  <h3>{{ isEditMode ? 'Actualizar' : 'Crear' }} Permiso</h3>
         </div>
         <div class="card-body">
 <div class="form-group">
-      <label for="name">Nombre</label>
+      <label for="name">Nombre *</label>
       <input id="name" type="text" class="form-control" formControlName="name" placeholder="Ingrese el nombre del permiso" />
     </div>
             </div>

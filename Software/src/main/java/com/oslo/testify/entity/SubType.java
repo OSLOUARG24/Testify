@@ -23,7 +23,6 @@ public class SubType {
 
     @ManyToOne
     @JoinColumn(name = "type_id")
-    @JsonBackReference(value = "type-subtype")
     private Type type;
 
   // Getters and Setters

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Project } from './project.model';
+import { Project, ProjectStatus } from './project.model';
 import { ProjectService } from './project.service';
 import { Router, RouterOutlet,RouterLinkActive,RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,6 +17,7 @@ export class ProjectComponent {
    project?: Project | null;
    projects?: Project[];
    projectId?: number ;
+   projectStatus = ProjectStatus;
 
    constructor(protected route: ActivatedRoute
               ,protected projectService: ProjectService
@@ -37,6 +38,15 @@ export class ProjectComponent {
          this.getAllProjects();
        }
    }
+
+      getStatusDescription(status: ProjectStatus): string {
+          const descriptions = {
+            [ProjectStatus.PENDIENTE]: 'Pendiente',
+            [ProjectStatus.EN_PROCESO]: 'En Proceso',
+            [ProjectStatus.FINALIZADO]: 'Finalizado'
+          };
+        return descriptions[status] || status;
+      }
 
      // Obtener todos los proyectos
      getAllProjects() {

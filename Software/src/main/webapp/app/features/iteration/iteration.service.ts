@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
 import { Iteration } from './iteration.model';
 
 @Injectable({
@@ -34,7 +34,8 @@ export class IterationService {
       return this.http.put<void>(`${this.apiUrl}/iteration/${id}`, iteration);
     }
 
-  deleteIteration(iterationId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/iteration/${iterationId}`);
+  deleteIteration(iterationId: number): Observable<string> {
+    return this.http.delete(`${this.apiUrl}/iteration/${iterationId}`, { responseType: 'text' });
   }
+
 }

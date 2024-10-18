@@ -1,4 +1,3 @@
-import { Iteration } from '../iteration/iteration.model';
 
 export enum ProjectStatus {
   PENDIENTE = 'PENDIENTE',
@@ -11,5 +10,4 @@ export interface Project {
   name?: string | null;
   status?: ProjectStatus | null;
   rateApproval?: string | null;
-  iterations?: Iteration[];
 }
