@@ -7,6 +7,7 @@ import { AuthGoogleService } from '../../../auth-google/auth-google.service';
 import { Router, RouterLink } from '@angular/router';
 import { Project } from '../project.model';
 import { User } from '../../user/user.model';
+import { NavbarService } from '../../../core/components/navbar/navbar.service'; // Importa el servicio
 
 @Component({
   selector: 'app-project-select',
@@ -23,8 +24,10 @@ export class ProjectSelectComponent implements OnInit {
   isAdmin = false;  // Variable para verificar si es administrador
   user?: User;
   roles?: RoleAssigment[];
+  selProject?: Project;
 
-  constructor(protected projectService: ProjectService,
+  constructor(protected navbarService: NavbarService,
+              protected projectService: ProjectService,
               protected router: Router,
               protected userService: UserService,
               protected roleAssigmentService: RoleAssigmentService,
@@ -71,26 +74,16 @@ export class ProjectSelectComponent implements OnInit {
   onProjectSelect(event: any): void {
     const selectElement = event?.target as HTMLSelectElement;
     const selectedValue = selectElement.value;
-    if (selectedValue !== "null") {
-      const selectedProject = JSON.parse(selectedValue);
-      sessionStorage.setItem('project', JSON.stringify(selectedProject));
-
-      this.roleAssigmentService.getRoleAssigmentsByEmailAndProject(this.user?.email!,selectedProject.id).subscribe((data: RoleAssigment[]) => {
-                 this.roles = data;
-                 sessionStorage.setItem('userRoles',JSON.stringify(this.roles));
-                 },
-               (error) => {console.log(error);
-                 });
-
-      console.log('Proyecto seleccionado guardado en sessionStorage:', selectedProject);
-    } else {
-      sessionStorage.removeItem('project');
-      console.log('No se ha seleccionado ningún proyecto.');
-    }
+    this.selProject =JSON.parse(selectedValue);
   }
 
   hasRole(roleCode: string): boolean {
+      if (this.roles){
       return this.roles!.some((assignment: RoleAssigment) => assignment.role?.code === roleCode);
+      }
+      else {
+        return false;
+      }
   }
 
   isGestor() {
@@ -106,6 +99,24 @@ export class ProjectSelectComponent implements OnInit {
   }
 
   redirect() {
+      this.navbarService.notifyProjectChanged();
+      if (this.selProject){
+        sessionStorage.setItem('project', JSON.stringify(this.selProject));
+        console.log('Proyecto seleccionado guardado en sessionStorage:', JSON.stringify(this.selProject));
+        if (!this.isAdmin){
+          this.roleAssigmentService.getRoleAssigmentsByEmailAndProject(this.user?.email!,this.selProject.id).subscribe((data: RoleAssigment[]) => {
+           this.roles = data;
+           sessionStorage.setItem('userRoles',JSON.stringify(this.roles));
+           console.log('Roles guardados en sessionStorage:', JSON.stringify(this.roles));
+           },
+           (error) => {console.log(error);
+           });
+        }
+      } else {
+        sessionStorage.removeItem('project');
+        console.log('No se ha seleccionado ningún proyecto.');
+      }
+
     if (this.isGestor() || this.isInvitado() || this.isAdmin){
       this.router.navigate(['/project']);
     } else {
@@ -113,7 +124,6 @@ export class ProjectSelectComponent implements OnInit {
         this.router.navigate(['/tester']);
       }
       else {
-        alert(this.roles);
         this.router.navigate(['/projectSelect']);
       }
     }

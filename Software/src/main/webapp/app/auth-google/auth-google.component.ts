@@ -5,6 +5,8 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { AuthGoogleService } from './auth-google.service';
 import { UserService } from '../features/user/user.service';
 import { User } from '../features/user/user.model';
+import { NavbarService } from '../core/components/navbar/navbar.service'; // Importa el servicio
+
 
 @Component({
   selector: 'app-auth-google',
@@ -22,7 +24,8 @@ export class AuthGoogleComponent implements OnInit {
   constructor(
     protected router: Router,
     protected userService: UserService,
-    protected authGoogleService: AuthGoogleService
+    protected authGoogleService: AuthGoogleService,
+    protected navbarService: NavbarService
   ) {}
 
   ngOnInit() {
@@ -36,6 +39,11 @@ export class AuthGoogleComponent implements OnInit {
                   this.user = user;
                   if (this.user){
                      localStorage.setItem('user',JSON.stringify(this.user));
+
+                     if (this.user.admin) {
+                       this.navbarService.notifyProjectChanged();
+                     }
+
                      this.router.navigate(['/projectSelect']); // Cambia la ruta según tu lógica
                   }
                 },

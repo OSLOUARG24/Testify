@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
 import { User } from '../../../features/user/user.model';
 import { RoleAssigmentService } from '../../../features/role-assigment/role-assigment.service';
 import { RoleAssigment } from '../../../features/role-assigment/role-assigment.model';
+import { NavbarService } from './navbar.service'; // Asegúrate de importar el servicio
 
 
 @Component({
@@ -30,6 +31,7 @@ export class NavbarComponent implements OnInit {
   user?: User;
 
   constructor(
+    protected navbarService: NavbarService,
     protected router: Router,
     protected authGoogleService: AuthGoogleService,
     protected roleAssigmentService: RoleAssigmentService,
@@ -37,38 +39,40 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-      const user = localStorage.getItem('user');
-      if (user){
-         this.user = JSON.parse(user);
-      }
+      this.initializeNavbar();
+    }
+
+    initializeNavbar(){
+      this.getStorageValues();
       // Comprobar si el usuario está autenticado
       this.authGoogleService.isAuthenticated().subscribe((authStatus) => {
         this.isAuthenticated = authStatus;
         if (this.isAuthenticated) {
           this.googleAccount = this.authGoogleService.getProfile();
           this.name = this.googleAccount.family_name + ', ' + this.googleAccount.given_name;
-          this.getUserInfo(this.googleAccount.email);
         }
+      });
+
+      this.navbarService.projectChanged$.subscribe(() => {
+         this.getStorageValues();
       });
     }
 
-    getUserInfo(email: string){
-          let project = sessionStorage.getItem('project');
-          if (project){
-            const idProject = JSON.parse(project).id;
-            if(idProject == null){this.router.navigate(['/selectedProject']);}
-             this.roleAssigmentService.getRoleAssigmentsByEmailAndProject(email,idProject).subscribe((data: RoleAssigment[]) => {
-             this.roleAssigments = data;
-             sessionStorage.setItem('userRoles',JSON.stringify(this.roleAssigments));
-             },
-           (error) => {console.log(error);
-             });
-           }
+  getStorageValues() {
+    const user = localStorage.getItem('user');
+    if (user){
+       this.user = JSON.parse(user);
     }
 
-    hasRole(roleCode: string): boolean {
-      return this.roleAssigments.some((assignment: RoleAssigment) => assignment.role?.code === roleCode);
+    const roles = sessionStorage.getItem('userRoles');
+    if (roles){
+      this.roleAssigments = JSON.parse(roles);
     }
+  }
+
+  hasRole(roleCode: string): boolean {
+    return this.roleAssigments.some((assignment: RoleAssigment) => assignment.role?.code === roleCode);
+  }
 
   isAdmin() {
      return this.user?.admin;
@@ -96,6 +100,7 @@ export class NavbarComponent implements OnInit {
   }
 
   redirect() {
+    this.getStorageValues();
     if (this.isGestor() || this.isInvitado() || this.isAdmin()){
       this.router.navigate(['/project']);
     } else {
@@ -103,7 +108,6 @@ export class NavbarComponent implements OnInit {
         this.router.navigate(['/tester']);
       }
       else {
-        alert("No es un sorete");
         this.router.navigate(['/projectSelect']);
       }
     }
