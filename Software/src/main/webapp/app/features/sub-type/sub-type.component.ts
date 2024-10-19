@@ -20,14 +20,20 @@ export class SubTypeComponent implements OnInit {
   types: Type[] = [];
   subTypes: SubType[] = [];
   user: User = {};
+  typeId: number = 0;
 
   constructor(private typeService: TypeService,
               private subTypeService: SubTypeService,
+              private route: ActivatedRoute,
               public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.loadFromStorage();
-    this.loadSubTypes();
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      this.typeId = +idParam;
+      this.loadSubTypes();
+    }
   }
 
   loadFromStorage(): void {
@@ -39,7 +45,7 @@ export class SubTypeComponent implements OnInit {
   }
 
   loadSubTypes(): void {
-    this.subTypeService.getSubTypes().subscribe((subTypes: SubType[]) => {
+    this.subTypeService.getSubTypesByTypeId(this.typeId).subscribe((subTypes: SubType[]) => {
       this.subTypes = subTypes;
     });
   }

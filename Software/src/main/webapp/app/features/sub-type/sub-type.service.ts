@@ -34,4 +34,8 @@ export class SubTypeService {
   updateSubType(id: number, subType: SubType): Observable<SubType> {
     return this.http.put<SubType>(`${this.apiUrl}/subType/${id}`, subType);
   }
+
+  getSubTypesByTypeId(id: number): Observable<SubType[]> {
+    return this.http.get<SubType[]>(`${this.apiUrl}/subTypes/type/${id}`);
+  }
 }

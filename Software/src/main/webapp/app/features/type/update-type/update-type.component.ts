@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { TypeService } from '../type.service';
 import { Type } from '../type.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-update-type',
@@ -21,7 +22,8 @@ export class UpdateTypeComponent implements OnInit {
     private fb: FormBuilder,
     private typeService: TypeService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -87,7 +89,13 @@ export class UpdateTypeComponent implements OnInit {
   createType(type: Type): void {
     this.typeService.createType(type).subscribe(
       () => {
-        console.log('Categoría creada exitosamente');
+        console.log('Tipo creada exitosamente');
+        this.snackBar.open('Cambios guardados exitosamente', 'Cerrar', {
+              duration: 3000, // Duración de 3 segundos
+              horizontalPosition: 'end', // Aparece a la derecha
+              verticalPosition: 'bottom', // Aparece abajo
+              panelClass: ['success-snackbar'] // Clases CSS personalizadas
+            });
         this.router.navigate(['/type']);
       },
       (error) => {

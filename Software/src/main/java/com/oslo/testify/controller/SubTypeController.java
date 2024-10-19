@@ -37,6 +37,11 @@ public class SubTypeController {
         return subTypeService.getSubTypeById(id);
     }
 
+    @GetMapping("/subTypes/type/{id}")
+    public List<SubType> getSubTypesByTypeId(@PathVariable(value = "id", required = false) final  Long id) {
+      return subTypeService.getSubTypesByTypeId(id);
+    }
+
     @DeleteMapping("/subType/{id}")
     public void deleteRole(@PathVariable(value = "id", required = false) final  Long id) {
       subTypeService.deleteSubType(id);

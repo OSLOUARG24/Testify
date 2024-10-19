@@ -7,7 +7,7 @@
         <div class="card-body">
           <div class="form-group">
             <label for="name">Nombre *</label>
-            <input id="name" formControlName="name" type="text" placeholder="Ingresa el nombre" />
+            <input id="name" class="form-control" formControlName="name" type="text" placeholder="Ingresa el nombre" />
             @if(typeForm.get('name')?.invalid && typeForm.get('name')?.touched){
             <div class="error">
               El nombre es obligatorio.

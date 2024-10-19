@@ -50,5 +50,8 @@ public class SubTypeService {
     }
   }
 
+  public List<SubType> getSubTypesByTypeId(Long id) {
+      return subTypeRepository.findAllByTypeId(id);
+  }
 }
 
