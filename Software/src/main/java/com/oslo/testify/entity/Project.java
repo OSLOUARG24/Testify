@@ -1,6 +1,7 @@
 package com.oslo.testify.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -28,20 +29,19 @@ public class Project {
     private Float rateApproval;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference(value = "project-iterations")
+    @JsonIgnore
     private List<Iteration> iterations = new ArrayList<>();
 
     // Getters and Setters
 
     public Project(){}
 
-  public Project(Long id, String name, ProjectStatus status, Float rateApproval, List<Iteration> iterations) {
-    this.id = id;
-    this.name = name;
-    this.status = status;
-    this.rateApproval = rateApproval;
-    this.iterations = iterations;
-  }
+    public Project(Long id, String name, ProjectStatus status, Float rateApproval) {
+      this.id = id;
+      this.name = name;
+      this.status = status;
+      this.rateApproval = rateApproval;
+    }
 
   public Long getId() {
         return id;
