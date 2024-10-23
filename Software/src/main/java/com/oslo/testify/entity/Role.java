@@ -15,14 +15,18 @@ public class Role{
   @Column(name = "id")
   private Long id;
 
+  @Column(name = "code")
+  private String code;
+
   @Column(name = "name")
   private String name;
 
   public Role() {
   }
 
-  public Role(Long id, String name, Boolean status, List<RolePermission> permissions) {
+  public Role(Long id, String code, String name) {
     this.id = id;
+    this.code = code;
     this.name = name;
   }
 
@@ -32,6 +36,14 @@ public class Role{
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public String getCode() {
+    return code;
+  }
+
+  public void setCode(String code) {
+    this.code = code;
   }
 
   public String getName() {
@@ -46,7 +58,8 @@ public class Role{
   public String toString() {
     return "Role{" +
       "id=" + id +
-      ", name='" + name + '\'' +
+      ",code='" + code +
+      ", name='" + name +
       '}';
   }
 }

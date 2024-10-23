@@ -26,6 +26,7 @@ export class UpdateRoleComponent implements OnInit {
     private router: Router
   ) {
     this.updateRoleForm = this.fb.group({
+      code: ['', Validators.required],
       name: ['', Validators.required]
     });
   }
@@ -40,6 +41,7 @@ export class UpdateRoleComponent implements OnInit {
       this.roleService.getRoleById(this.roleId).subscribe(
         (role: Role) => {
           this.updateRoleForm.patchValue({
+            code: role.code,
             name: role.name
           });
         },
@@ -54,6 +56,7 @@ export class UpdateRoleComponent implements OnInit {
     if (this.updateRoleForm.valid) {
       const roleData: Role = {
         id: this.roleId ? this.roleId : undefined,
+        code: this.updateRoleForm.value.code,
         name: this.updateRoleForm.value.name
       };
 
