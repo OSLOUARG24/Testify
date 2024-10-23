@@ -6,7 +6,7 @@
         </div>
         <div class="card-body">
           <div class="form-group">
-            <label for="project">Proyecto</label>
+            <label for="project">Proyecto *</label>
             <select id="project" formControlName="project" class="form-select">
               @for (project of projects; track project.id){
                 <option [value]="project.id">{{ project.name }}</option>
@@ -14,7 +14,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="role">Rol</label>
+            <label for="role">Rol *</label>
             <select id="role" formControlName="role" class="form-select">
               @for (role of roles; track role.id){
               <option [value]="role.id"> {{ role.name }}</option>
