@@ -1,0 +1,22 @@
+<div class="card">
+  <div class="card-header">
+    <h3>Eliminar Iteracion</h3>
+  </div>
+  <div class="card-body">
+    <div>
+      <p>¿Estás seguro de que deseas eliminar la iteracion {{ data.iteration.name }}?</p>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="form-group d-flex justify-content-end">
+      <button class="btn btn-outline-success"  (click)="onCancel()">
+        <span class="oi oi-check"></span>
+        Cancelar
+      </button>
+      <button class="btn btn-outline-danger" (click)="onConfirm()">
+        <span class="oi oi-x"></span>
+        Eliminar
+      </button>
+    </div>
+  </div>
+</div>
