@@ -43,6 +43,10 @@ constructor(
   }
 
   logOut(){
+    sessionStorage.removeItem('project');
+    sessionStorage.removeItem('userRoles');
+    sessionStorage.removeItem('roleAssigUserId');
+    localStorage.removeItem('user');
     this.oAuthService.revokeTokenAndLogout();
     this.isAuthenticatedSubject.next(false);
     this.router.navigate(['/']);
