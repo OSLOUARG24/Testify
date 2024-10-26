@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h3>Tipos de Escenario</h3>
+    </div>
+    <div class="card-body">
+      <p class="d-flex justify-content-end">
+        <!-- Si el usuario es administrador, se muestra el botón para agregar una nueva categoría -->
+        <button type="button" class="btn btn-success" [routerLink]="['/type/create']">
+          <span class="oi oi-plus"></span> Nuevo Tipo de Escenario
+        </button>
+        <button class="btn btn-danger float-right" (click)="Cancel()">Volver</button>
+      </p>
+    <table class="table table-hover table-sm">
+      <thead>
+      <tr class="table-info">
+        <th>Nombre</th>
+        <th>Opciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Listar categorías -->
+      @for(type of types; track type.id){
+      <tr>
+        <td>{{ type.name }}</td>
+        <td>
+          <!-- Botones de editar y eliminar visibles solo si el usuario es admin o el proyecto coincide con el de SessionStorage -->
+          <ng-container>
+            <a title="Subtipos" class="btn btn-outline-info" [routerLink]="['/subType', type.id]">
+              <span class="oi oi-zoom-in"></span>
+            </a>
+            @if(user.admin){
+            <a title="Modificar" [routerLink]="['/type/edit', type.id]">
+              <button type="button" class="btn btn-outline-warning">
+                <span class="oi oi-pencil"></span>
+              </button>
+            </a>
+            <button title="Eliminar" type="button" class="btn btn-outline-danger" (click)="openDeleteModal(type)">
+              <span class="oi oi-trash"></span>
+            </button>
+            }
+          </ng-container>
+        </td>
+      </tr>
+      }
+      </tbody>
+    </table>
+  </div>
+  </div>
+</div>
