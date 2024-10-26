@@ -14,6 +14,7 @@
     <table class="table table-hover table-sm">
     <thead>
     <tr class="table-info">
+      <th>Rol</th>
       <th>Permiso</th>
       <th>Opciones</th>
     </tr>
@@ -21,6 +22,7 @@
     <tbody>
     @for (rolePermission of rolePermissions; track rolePermission.role) {
     <tr>
+      <td>{{ rolePermission.role?.name }}</td>
       <td>{{ rolePermission.permission?.name }}</td>
       <td>
         <a title="Modificar" [routerLink]="['/rolePermission/edit', rolePermission.id]">

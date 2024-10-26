@@ -19,7 +19,7 @@ export class UpdateIterationComponent implements OnInit {
   iterationId: number | null = null;
   isEditMode: boolean = false;
   projectFromSession: Project | null = null;  // Para almacenar el proyecto del sessionStorage
-    projects: Project[] = [];  // Lista de proyectos en caso de que el proyecto no esté en sessionStorage
+  projects: Project[] = [];  // Lista de proyectos en caso de que el proyecto no esté en sessionStorage
 
 
   constructor(
@@ -96,8 +96,6 @@ export class UpdateIterationComponent implements OnInit {
     }
 
     const iterationData: Iteration = this.iterationForm.value;
-
-    alert(JSON.stringify(iterationData));
 
     // Asegurar que el objeto project es el correcto
     if (!iterationData.project) {

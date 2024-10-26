@@ -12,20 +12,11 @@
     @if(isAuthenticated) {
       <ul class="navbar-nav mr-auto">
         <!-- Verifica si el usuario es administrador -->
-        <!--<ng-container *ngIf="authGoogleService.isAdmin() | async">-->
         <ng-container>
-          @if(isAdmin()) {
-          <a class="nav-link" routerLink="/project">
+          <a class="nav-link" (click)="redirect()">
             <span class="oi oi-home"></span>
             Inicio
           </a>
-          }
-          @if(!isAdmin()) {
-          <a class="nav-link" routerLink="/projectSelect">
-            <span class="oi oi-home"></span>
-            Inicio
-          </a>
-          }
           @if(isAdmin()){
           <li class="nav-item">
             <a class="nav-link" routerLink="/user">
@@ -33,7 +24,6 @@
               Usuarios
             </a>
           </li>
-
           <li class="nav-item">
             <a class="nav-link" routerLink="/role">
             <span class = "oi oi-graph"> </span>
@@ -63,7 +53,6 @@
       </ul>
     }
     </div>
-  <!--</div>-->
 </nav>
 @if(isAuthenticated){
 <div class="alert alert-info alert-dismissible fade show" role="alert">
@@ -73,9 +62,3 @@
   </button>
 </div>
 }
-<!--Quitar cuando se corrija authorities-->
-<!-- Verifica si el usuario está autenticado -->
-<!--<a id="Logoff2" class="nav-link" (click)="logoff()">
-  Salir
-</a>-->
-<!--Quitar cuando se corrija authorities-->

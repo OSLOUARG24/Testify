@@ -41,8 +41,8 @@ public class RoleAssigmentService {
   public List<RoleAssigment> getRolesAssigmentByProjectId(Long id) {return roleAssigmentRepository.findAllByProjectId(id);
   }
 
-  public List<RoleAssigment> getRolesAssigmentsByUserIdAndProjectId(Long id, Long idProject) {
-      return roleAssigmentRepository.findAllByUserIdAndProjectId(id,idProject);
+  public List<RoleAssigment> getRolesAssigmentsByEmailAndProjectId(String email, Long idProject) {
+      return roleAssigmentRepository.findAllByEmailAndProjectId(email,idProject);
   }
 
   public Optional<RoleAssigment> findById(Long id) {

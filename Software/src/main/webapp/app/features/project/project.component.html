@@ -25,7 +25,7 @@
     <tr>
       <td>{{ project.name || 'Sin nombre' }}</td>
       <td>{{ project.rateApproval || 'N/A' }}</td>
-      <td>{{ project.status ? 'Activo' : 'Inactivo' }}</td>
+      <td>{{ getStatusDescription(project.status!) }}</td>
       <td>
         <a title="Export" class="btn btn-outline-info" [routerLink]="['/iteration', project.id]">
           <span class="oi oi-file"></span>

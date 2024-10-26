@@ -10,7 +10,7 @@
           <span class="oi oi-plus"></span> Nueva Iteración
         </button>
         }
-        <button class="btn btn-danger float-right" (click)="Cancel()">Volver</button>
+        <button class="btn btn-danger float-right" [routerLink]="['/project']">Volver</button>
       </p>
     <table class="table table-hover table-sm">
       <thead>
@@ -30,7 +30,7 @@
         <td>{{ iteration.endDate | date:'dd/MM/yyyy' }}</td>
         <td>
           <!-- Botón para ver casos de prueba -->
-          <a title="Casos de Prueba" class="btn btn-outline-info" [routerLink]="['/stage', iteration.id]">
+          <a title="Escenarios" class="btn btn-outline-info" [routerLink]="['/stage', iteration.id]">
             <span class="oi oi-zoom-in"></span>
           </a>
 
@@ -40,7 +40,7 @@
             <button type="button" class="btn btn-outline-warning">
               <span class="oi oi-pencil"></span>
             </button></a>
-          <a title="Eliminar" mat-button color="warn" (click)="deleteIteration(iteration.id!)">
+          <a title="Eliminar" mat-button color="warn" (click)="openDeleteModal(iteration)">
             <button type="button" class="btn btn-outline-danger">
               <span class="oi oi-trash"></span>
             </button></a>

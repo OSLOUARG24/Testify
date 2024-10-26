@@ -1,2 +1,5 @@
 
-~$Nomenclaturas.xlsx
+/Software/target
+/Software/.idea
+/Software/node_modules
+/Software/.angular
