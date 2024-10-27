@@ -28,8 +28,13 @@ public class SubTypeController {
     }
 
     @PostMapping(value = "/subType", consumes = "application/json", produces = "application/json")
-    public SubType createSubType(@RequestBody SubType subType) {
-        return subTypeService.saveSubType(subType);
+    public ResponseEntity<?> createSubType(@RequestBody SubType subType) {
+      try {
+        subTypeService.saveSubType(subType);
+        return ResponseEntity.ok(subType);
+      } catch (RuntimeException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+      }
     }
 
     @GetMapping("/subType/{id}")
@@ -43,7 +48,7 @@ public class SubTypeController {
     }
 
     @DeleteMapping("/subType/{id}")
-    public void deleteRole(@PathVariable(value = "id", required = false) final  Long id) {
+    public void deleteSubType(@PathVariable(value = "id", required = false) final  Long id) {
       subTypeService.deleteSubType(id);
     }
 

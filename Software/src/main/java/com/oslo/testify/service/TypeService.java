@@ -21,6 +21,9 @@ public class TypeService {
     }
 
     public Type saveType(Type type) {
+    	if (typeRepository.existsByName(type.getName())) {
+          throw new RuntimeException("Ya existe un tipo de Escenario con este nombre");
+        }
         return typeRepository.save(type);
     }
 

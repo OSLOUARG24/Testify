@@ -28,8 +28,13 @@ public class CategoryController {
     }
 
     @PostMapping("/category")
-    public Category createCategory(@RequestBody Category category) {
-        return categoryService.saveCategory(category);
+    public ResponseEntity<?> createCategory(@RequestBody Category category) {
+      try {
+        categoryService.saveCategory(category);
+        return ResponseEntity.ok(category);
+      } catch (RuntimeException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+      }
     }
 
     @GetMapping("/category/{id}")
@@ -38,7 +43,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/category/{id}")
-    public void deleteRole(@PathVariable(value = "id", required = false) final  Long id) {
+    public void deleteCategory(@PathVariable(value = "id", required = false) final  Long id) {
       categoryService.deleteCategory(id);
     }
 

@@ -1,7 +1,6 @@
 package com.oslo.testify.controller;
 
 
-import com.oslo.testify.entity.RoleAssigment;
 import com.oslo.testify.service.RoleAssigmentService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,8 +32,13 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public User createUser(@RequestBody User user) {
-        return userService.saveUser(user);
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+      try {
+        userService.saveUser(user);
+        return ResponseEntity.ok(user);
+      } catch (RuntimeException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+      }
     }
 
     @GetMapping("/user/{id}")
@@ -47,6 +49,11 @@ public class UserController {
     @GetMapping("/user/email/{email}")
     public User getUserByEmail(@PathVariable(value = "email", required = false) final String email) {
        return userService.getUserByEmail(email);
+    }
+
+    @GetMapping("/user/role/{id}")
+    public List<User> getTestersByProjectId(@PathVariable(value = "id", required = false) final Long id) {
+      return userService.getTestersByProjectId(id);
     }
 
     @PutMapping("/user/{id}")

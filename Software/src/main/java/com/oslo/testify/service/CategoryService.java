@@ -21,7 +21,10 @@ public class CategoryService {
     }
 
     public Category saveCategory(Category category) {
-        return categoryRepository.save(category);
+      if (categoryRepository.existsByName(category.getName())) {
+        throw new RuntimeException("Ya existe una categoria con este nombre");
+      }
+      return categoryRepository.save(category);
     }
 
     public Category getCategoryById(Long id) {

@@ -35,8 +35,13 @@ public class IterationController {
     }
 
     @PostMapping(value = "/iteration", consumes = "application/json", produces = "application/json")
-    public Iteration createIteration(@RequestBody Iteration iteration) {
-        return iterationService.saveIteration(iteration);
+    public ResponseEntity<?> createIteration(@RequestBody Iteration iteration) {
+      try {
+        iterationService.saveIteration(iteration);
+        return ResponseEntity.ok(iteration);
+      } catch (RuntimeException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+      }
     }
 
     @GetMapping("/iteration/{id}")
@@ -45,7 +50,7 @@ public class IterationController {
     }
 
     @DeleteMapping("/iteration/{id}")
-    public void deleteRole(@PathVariable(value = "id", required = false) final  Long id) {
+    public void deleteIteration(@PathVariable(value = "id", required = false) final  Long id) {
       iterationService.deleteIteration(id);
     }
 

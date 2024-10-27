@@ -22,6 +22,9 @@ public class ProjectService {
   }
 
   public Project saveProject(Project project) {
+    if (projectRepository.existsByName(project.getName())) {
+      throw new RuntimeException("Ya existe un proyecto con este nombre");
+    }
     return projectRepository.save(project);
   }
 

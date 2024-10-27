@@ -21,7 +21,19 @@ public class IterationService {
     }
 
     public Iteration saveIteration(Iteration iteration) {
-        return iterationRepository.save(iteration);
+      if (iterationRepository.existsByNameAndProject(iteration.getName(),iteration.getProject())) {
+        throw new RuntimeException("Ya existe una iteracion con este nombre");
+      }
+      boolean isOverlapping = iterationRepository.existsOverlappingIterations(
+        iteration.getProject().getId(),
+        iteration.getStartDate(),
+        iteration.getEndDate()
+      );
+
+      if (isOverlapping) {
+        throw new RuntimeException("Las fechas de esta iteracion se superponen con las fechas de otra iteracion");
+      }
+      return iterationRepository.save(iteration);
     }
 
     public Iteration getIterationById(Long id) {

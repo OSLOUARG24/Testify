@@ -17,6 +17,7 @@ export class UpdateUserComponent implements OnInit {
   userForm!: FormGroup;
   userId: number | null = null;
   isEditMode = false;
+  errorMessage: string = '';
 
   constructor(
     private userService: UserService,
@@ -84,15 +85,16 @@ export class UpdateUserComponent implements OnInit {
         }
       );
     } else {
-      this.userService.createUser(user).subscribe(
-        () => {
-         console.log('Usuario creado exitosamente');
+      this.userService.createUser(user).subscribe({
+        next: (response) => {
+          console.log('Usuario creado exitosamente');
           this.router.navigate(['/user']);
         },
-        error => {
-          console.error('Error al crear el usuario:', error);
+        error: (error) => {
+          // Mostrar mensaje de error
+          this.errorMessage = error.message;
         }
-      );
+      });
     }
   }
 

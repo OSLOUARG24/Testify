@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface SubTypeRepository extends JpaRepository<SubType, Long> {
     List<SubType> findAllByTypeId(Long id);
+    
+    boolean existsByName(String name);
 }

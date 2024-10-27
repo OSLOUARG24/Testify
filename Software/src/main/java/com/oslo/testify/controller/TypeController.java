@@ -28,8 +28,13 @@ public class TypeController {
     }
 
     @PostMapping("/type")
-    public Type createType(@RequestBody Type type) {
-        return typeService.saveType(type);
+    public ResponseEntity<?> createType(@RequestBody Type type) {
+      try {
+        typeService.saveType(type);
+        return ResponseEntity.ok(type);
+      } catch (RuntimeException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+      }
     }
 
     @GetMapping("/type/{id}")
@@ -38,7 +43,7 @@ public class TypeController {
     }
 
     @DeleteMapping("/type/{id}")
-    public void deleteRole(@PathVariable(value = "id", required = false) final  Long id) {
+    public void deleteType(@PathVariable(value = "id", required = false) final  Long id) {
       typeService.deleteType(id);
     }
 

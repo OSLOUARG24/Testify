@@ -32,8 +32,13 @@ public class ProjectController {
     }
 
     @PostMapping(value = "/project", consumes = "application/json", produces = "application/json")
-    public Project createProject(@RequestBody Project project) {
-      return projectService.saveProject(project);
+    public ResponseEntity<?> createProject(@RequestBody Project project) {
+      try {
+        projectService.saveProject(project);
+        return ResponseEntity.ok(project);
+      } catch (RuntimeException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+      }
     }
 
     @PutMapping("/project/{id}")

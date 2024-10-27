@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
+  boolean existsByName(String name);
+
   @Query("SELECT DISTINCT p FROM Project p " +
     "JOIN RoleAssigment ra ON p.id = ra.project.id " +
     "JOIN User u ON u.id = ra.user.id " +

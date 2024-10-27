@@ -22,6 +22,9 @@ public class SubTypeService {
     }
 
     public SubType saveSubType(SubType subType) {
+    	if (subTypeRepository.existsByName(subType.getName())) {
+          throw new RuntimeException("Ya existe un subtipo con este nombre");
+        }
         return subTypeRepository.save(subType);
     }
 

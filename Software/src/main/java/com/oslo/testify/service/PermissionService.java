@@ -18,6 +18,9 @@ public class PermissionService {
     }
 
     public Permission savePermission(Permission permission) {
+    	if (permissionRepository.existsByName(permission.getName())) {
+          throw new RuntimeException("Ya existe un permiso con este nombre");
+        }
         return permissionRepository.save(permission);
     }
 

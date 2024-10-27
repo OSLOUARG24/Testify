@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, throwError } from 'rxjs';
 import { User } from './user.model';
+import { catchError } from 'rxjs/operators';
 
 export type EntityResponseType = HttpResponse<User>;
 export type EntityArrayResponseType = HttpResponse<User[]>;
@@ -35,8 +36,12 @@ export class UserService {
      }
 
      // Crear usuario
-     createUser(user: User): Observable<User> {
-       return this.http.post<User>(`${this.apiUrl}/user`, user);
+     createUser(user: User): Observable<any> {
+       return this.http.post(this.apiUrl + '/user', user).pipe(
+         catchError(error => {
+           return throwError(() => new Error(error.error || 'error al crear usuario'));
+         })
+       );
      }
 
      // Actualizar usuario
@@ -48,4 +53,7 @@ export class UserService {
        return this.http.delete<void>(`${this.apiUrl}/user/${userId}`);
      }
 
+     getUsersByRole(projectId: number): Observable<User[]> {
+      return this.http.get<User[]>(`${this.apiUrl}/user/role/${projectId}`);
+     }
 }
