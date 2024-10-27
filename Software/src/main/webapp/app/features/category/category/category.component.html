@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h3>Categorías</h3>
+    </div>
+    <div class="card-body">
+      <p class="d-flex justify-content-end">
+        <!-- Si el usuario es administrador, se muestra el botón para agregar una nueva categoría -->
+        @if(user.admin){
+          <button type="button" class="btn btn-success" [routerLink]="['/category/create']">
+            <span class="oi oi-plus"></span> Nueva Categoría
+          </button>
+        }
+        <button class="btn btn-danger float-right" [routerLink]="['/project']">Volver</button>
+      </p>
+    <table class="table table-hover table-sm">
+      <thead>
+      <tr class="table-info">
+        <th>Nombre</th>
+        <th>Opciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Listar categorías -->
+      @for(category of categories; track category.id){
+      <tr>
+        <td>{{ category.name }}</td>
+        <td>
+          <!-- Botones de editar y eliminar visibles solo si el usuario es admin o el proyecto coincide con el de SessionStorage -->
+          <ng-container>
+            @if(user.admin){
+            <a title="Modificar" [routerLink]="['/category/edit', category.id]">
+              <button type="button" class="btn btn-outline-warning">
+                <span class="oi oi-pencil"></span>
+              </button>
+            </a>
+            <a title="Eliminar" mat-button color="warn" (click)="openDeleteModal(category)">
+            <button type="button" class="btn btn-outline-danger">
+              <span class="oi oi-trash"></span>
+            </button></a>
+            }
+          </ng-container>
+        </td>
+      </tr>
+      }
+      </tbody>
+    </table>
+  </div>
+      </div>
+</div>
