@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h3>Subtipos de Escenarios</h3>
+    </div>
+    <div class="card-body">
+      <p class="d-flex justify-content-end">
+        <!-- Si el usuario es administrador, se muestra el botón para agregar una nueva categoría -->
+        @if(user.admin){
+        <button type="button" class="btn btn-success" [routerLink]="['/subType/create']">
+          <span class="oi oi-plus"></span> Nuevo Subtipo de Escenario
+        </button>
+        }
+        <button class="btn btn-danger float-right" (click)="Cancel()">Volver</button>
+      </p>
+
+    <table class="table table-hover table-sm">
+      <thead>
+      <tr class="table-info">
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Opciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Listar categorías -->
+      @for(subType of subTypes; track subType.id){
+      <tr>
+        <td>{{ subType.name }}</td>
+        <td>{{ subType.type?.name }}</td>
+        <td>
+          <!-- Botones de editar y eliminar visibles solo si el usuario es admin o el proyecto coincide con el de SessionStorage -->
+          <ng-container>
+            <a title="Modificar" [routerLink]="['/subType/edit', subType.id]">
+              <button type="button" class="btn btn-outline-warning">
+                <span class="oi oi-pencil"></span>
+              </button>
+            </a>
+            <button title="Eliminar" type="button" class="btn btn-outline-danger" (click)="openDeleteModal(subType)">
+              <span class="oi oi-trash"></span>
+            </button>
+          </ng-container>
+        </td>
+      </tr>
+      }
+      </tbody>
+    </table>
+</div>
+  </div>
+</div>
