@@ -108,25 +108,38 @@ export class ProjectSelectComponent implements OnInit {
            this.roles = data;
            sessionStorage.setItem('userRoles',JSON.stringify(this.roles));
            console.log('Roles guardados en sessionStorage:', JSON.stringify(this.roles));
+           if (this.isGestor() || this.isInvitado() || this.isAdmin){
+                 this.router.navigate(['/project']);
+               } else {
+                 if (this.isTester()){
+                   this.router.navigate(['/tester']);
+                 }
+                 else {
+                   this.router.navigate(['/projectSelect']);
+                 }
+               }
            },
            (error) => {console.log(error);
            });
-        }
+        } else {
+           this.router.navigate(['/project']);
+          }
       } else {
         sessionStorage.removeItem('project');
         console.log('No se ha seleccionado ningún proyecto.');
+        if (this.isGestor() || this.isInvitado() || this.isAdmin){
+              this.router.navigate(['/project']);
+            } else {
+              if (this.isTester()){
+                this.router.navigate(['/tester']);
+              }
+              else {
+                this.router.navigate(['/projectSelect']);
+              }
+            }
       }
 
-    if (this.isGestor() || this.isInvitado() || this.isAdmin){
-      this.router.navigate(['/project']);
-    } else {
-      if (this.isTester()){
-        this.router.navigate(['/tester']);
-      }
-      else {
-        this.router.navigate(['/projectSelect']);
-      }
-    }
+
   }
 
 }

@@ -26,7 +26,7 @@ export class NavbarComponent implements OnInit {
   googleAccount?: any;
   roleAssigments: RoleAssigment[] = [];
   name?: string;
-  projects?: Project[] = [];
+  project?: Project;
   selectedProjectId: number = 0;
   user?: User;
 
@@ -68,6 +68,11 @@ export class NavbarComponent implements OnInit {
     if (roles){
       this.roleAssigments = JSON.parse(roles);
     }
+
+    const project = sessionStorage.getItem('project');
+      if (project){
+        this.project = JSON.parse(project);
+      }
   }
 
   hasRole(roleCode: string): boolean {
@@ -102,10 +107,19 @@ export class NavbarComponent implements OnInit {
   redirect() {
     this.getStorageValues();
     if (this.isGestor() || this.isInvitado() || this.isAdmin()){
-      this.router.navigate(['/project']);
+      if (this.isAdmin() || (this.project && (this.isGestor() || this.isInvitado()))){
+        this.router.navigate(['/project']);
+      }
+      else {
+        this.router.navigate(['/projectSelect']);
+      }
     } else {
       if (this.isTester()){
-        this.router.navigate(['/tester']);
+        if (this.project){
+          this.router.navigate(['/tester']);
+        } else {
+          this.router.navigate(['/projectSelect']);
+        }
       }
       else {
         this.router.navigate(['/projectSelect']);
