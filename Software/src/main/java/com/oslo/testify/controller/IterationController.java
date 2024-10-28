@@ -55,8 +55,13 @@ public class IterationController {
     }
 
     @PutMapping("/iteration/{id}")
-    public ResponseEntity<Iteration> updateIteration(@PathVariable(value = "id", required = false) final Long id, @RequestBody Iteration iterationDetails) {
-        Iteration updatedIteration = iterationService.updateIteration(id, iterationDetails);
-        return ResponseEntity.ok(updatedIteration);
+    public ResponseEntity<?> updateIteration(@PathVariable(value = "id", required = false) final Long id, @RequestBody Iteration iterationDetails) {
+      try {
+          Iteration updatedIteration = iterationService.updateIteration(id, iterationDetails);
+          return ResponseEntity.ok(updatedIteration);
+      } catch (RuntimeException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+      }
+
     }
 }
