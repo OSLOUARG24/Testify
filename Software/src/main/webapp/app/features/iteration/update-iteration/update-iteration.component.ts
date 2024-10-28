@@ -118,7 +118,6 @@ export class UpdateIterationComponent implements OnInit {
           this.router.navigate(['/iteration']);
         },
         error: (error) => {
-          // Mostrar mensaje de error
           this.errorMessage = error.message;
         }
       });
@@ -126,15 +125,15 @@ export class UpdateIterationComponent implements OnInit {
 
   // Actualizar una iteración existente
   updateIteration(id: number, iteration: Iteration): void {
-    this.iterationService.updateIteration(id, iteration).subscribe(
-      () => {
+    this.iterationService.updateIteration(id, iteration).subscribe({
+      next: (response) => {
         console.log('Iteración actualizada exitosamente');
         this.router.navigate(['/iteration']);
       },
-      (error) => {
-        console.error('Error al actualizar la iteración', error);
+      error: (error) => {
+        this.errorMessage = error.message;
       }
-    );
+    });
   }
 
   endDateAfterStartDate(startDateKey: string, endDateKey: string) {

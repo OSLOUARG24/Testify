@@ -9,7 +9,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class IterationService {
 
-  private apiUrl = 'http://localhost:8080/api';  // URL de tu API
+  private apiUrl = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) {}
 
@@ -34,8 +34,12 @@ export class IterationService {
       }
 
     // Actualizar una iteración existente
-    updateIteration(id: number, iteration: Iteration): Observable<void> {
-      return this.http.put<void>(`${this.apiUrl}/iteration/${id}`, iteration);
+    updateIteration(id: number, iteration: Iteration): Observable<any> {
+      return this.http.put(`${this.apiUrl}/iteration/${id}`, iteration).pipe(
+         catchError(error => {
+           return throwError(() => new Error(error.error || 'Error updating iteration'));
+         })
+       );
     }
 
   deleteIteration(iterationId: number): Observable<string> {

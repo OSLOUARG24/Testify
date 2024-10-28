@@ -85,9 +85,6 @@ public class Iteration {
     return "Iteration{" +
       "id=" + id +
       ", name='" + name + '\'' +
-      ", startDate=" + startDate +
-      ", endDate=" + endDate +
-      ", project=" + project +
       '}';
   }
 }
