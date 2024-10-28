@@ -17,6 +17,7 @@ export class UpdateCategoryComponent implements OnInit {
   categoryId: number | null = null;
   isEditMode: boolean = false;
   isAdmin: boolean = false;
+  errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -86,28 +87,28 @@ export class UpdateCategoryComponent implements OnInit {
 
   // Crear una nueva categoría
   createCategory(category: Category): void {
-    this.categoryService.createCategory(category).subscribe(
-      () => {
+    this.categoryService.createCategory(category).subscribe({
+      next: (response) => {
         console.log('Categoría creada exitosamente');
         this.router.navigate(['/category']);
       },
-      (error) => {
-        console.error('Error al crear la categoría', error);
+      error: (error) => {
+        this.errorMessage = error.message;
       }
-    );
+    });
   }
 
   // Actualizar una categoría existente
   updateCategory(id: number, category: Category): void {
-    this.categoryService.updateCategory(id, category).subscribe(
-      () => {
+    this.categoryService.updateCategory(id, category).subscribe({
+      next: (response) => {
         console.log('Categoría actualizada exitosamente');
         this.router.navigate(['/category']);
       },
-      (error) => {
-        console.error('Error al actualizar la categoría', error);
+      error: (error) => {
+        this.errorMessage = error.message;
       }
-    );
+    });
   }
 
   // Cancelar y volver a la lista de categorías

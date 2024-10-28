@@ -2,6 +2,7 @@ package com.oslo.testify.controller;
 
 
 import com.oslo.testify.entity.Category;
+import com.oslo.testify.entity.Iteration;
 import com.oslo.testify.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,12 @@ public class CategoryController {
       return categories;
     }
 
-    @PostMapping("/category")
+    @GetMapping("/category/{id}")
+    public Category getCategoryById(@PathVariable(value = "id", required = false) final  Long id) {
+        return categoryService.getCategoryById(id);
+    }
+
+    @PostMapping(value = "/category", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> createCategory(@RequestBody Category category) {
       try {
         categoryService.saveCategory(category);
@@ -37,19 +43,18 @@ public class CategoryController {
       }
     }
 
-    @GetMapping("/category/{id}")
-    public Category getCategoryById(@PathVariable(value = "id", required = false) final  Long id) {
-        return categoryService.getCategoryById(id);
+    @PutMapping("/category/{id}")
+    public ResponseEntity<?> updateCategory(@PathVariable(value = "id", required = false) final Long id, @RequestBody Category categoryDetails) {
+        try {
+          Category updatedCategory = categoryService.updateCategory(id, categoryDetails);
+          return ResponseEntity.ok(updatedCategory);
+        } catch (RuntimeException ex) {
+          return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 
     @DeleteMapping("/category/{id}")
     public void deleteCategory(@PathVariable(value = "id", required = false) final  Long id) {
       categoryService.deleteCategory(id);
-    }
-
-    @PutMapping("/category/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable(value = "id", required = false) final Long id, @RequestBody Category categoryDetails) {
-        Category updatedCategory = categoryService.updateCategory(id, categoryDetails);
-        return ResponseEntity.ok(updatedCategory);
     }
 }

@@ -5,8 +5,6 @@
   <h3>{{ isEditMode ? 'Actualizar' : 'Crear' }} Categoría</h3>
         </div>
         <div class="card-body">
-
-
     <div class="form-group">
       <label for="name">Nombre *</label>
       <input id="name" formControlName="name" type="text" class="form-control" placeholder="Ingresa el nombre de la categoría" />
@@ -31,4 +29,9 @@
                 </div>
     </div>
   </form>
+  @if (errorMessage){
+  <div class="text-danger">
+    {{ errorMessage }}
+  </div>
+  }
 </div>

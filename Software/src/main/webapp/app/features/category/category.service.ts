@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { Observable, tap, throwError } from 'rxjs';
 import { Category } from './category.model';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class CategoryService {
 
   private apiUrl = 'http://localhost:8080/api';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getCategoryById(id: number): Observable<Category> {
     return this.http.get<Category>(`${this.apiUrl}/category/${id}`);
@@ -20,18 +21,23 @@ export class CategoryService {
     return this.http.get<Category[]>(this.apiUrl + '/categories');
   }
 
-  // Método para eliminar una categoría por su ID
-  deleteCategory(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/category/${id}`);
+  createCategory(category: Category): Observable<any> {
+    return this.http.post(this.apiUrl + '/category', category).pipe(
+          catchError(error => {
+            return throwError(() => new Error(error.error || 'Error creating category'));
+          })
+        );
   }
 
-  // Método para crear una nueva categoría
-  createCategory(category: Category): Observable<Category> {
-    return this.http.post<Category>(this.apiUrl + '/category', category);
+  updateCategory(id: number, category: Category): Observable<any> {
+    return this.http.put(`${this.apiUrl}/category/${id}`, category).pipe(
+         catchError(error => {
+           return throwError(() => new Error(error.error || 'Error updating category'));
+         })
+       );
   }
-
-  // Método para actualizar una categoría
-  updateCategory(id: number, category: Category): Observable<Category> {
-    return this.http.put<Category>(`${this.apiUrl}/category/${id}`, category);
+  
+  deleteCategory(id: number): Observable<string> {
+    return this.http.delete(`${this.apiUrl}/category/${id}`, { responseType: 'text' });
   }
 }
