@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { Observable, tap, throwError  } from 'rxjs';
 import { SubType } from './sub-type.model';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -20,22 +21,28 @@ export class SubTypeService {
     return this.http.get<SubType[]>(this.apiUrl + '/subTypes');
   }
 
-  // Método para eliminar un subtipo por su ID
-  deleteSubType(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/subType/${id}`);
+  createSubType(subType: SubType): Observable<any> {
+    return this.http.post(this.apiUrl + '/subType', subType).pipe(
+          catchError(error => {
+            return throwError(() => new Error(error.error || 'Error creating category'));
+          })
+        );
   }
 
-  // Método para crear un nuevo subtipo
-  createSubType(subType: SubType): Observable<SubType> {
-    return this.http.post<SubType>(this.apiUrl + '/subType', subType);
-  }
-
-  // Método para actualizar una categoría
-  updateSubType(id: number, subType: SubType): Observable<SubType> {
-    return this.http.put<SubType>(`${this.apiUrl}/subType/${id}`, subType);
+  updateSubType(id: number, subType: SubType): Observable<any> {
+    return this.http.put(`${this.apiUrl}/subType/${id}`, subType).pipe(
+         catchError(error => {
+           return throwError(() => new Error(error.error || 'Error updating category'));
+         })
+       );
   }
 
   getSubTypesByTypeId(id: number): Observable<SubType[]> {
     return this.http.get<SubType[]>(`${this.apiUrl}/subTypes/type/${id}`);
+  }
+  
+  // Método para eliminar un subtipo por su ID
+  deleteSubType(id: number): Observable<string> {
+    return this.http.delete(`${this.apiUrl}/subType/${id}`, { responseType: 'text' });
   }
 }

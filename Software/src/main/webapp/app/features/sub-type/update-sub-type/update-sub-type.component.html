@@ -9,7 +9,7 @@
             <label for="type">Tipo</label>
             <select id="type" formControlName="type" class="form-select">
               @for (type of types; track type.id){
-              <option [ngValue]="type">{{ type.name }}</option>
+              <option [ngValue]="type.id">{{ type.name }}</option>
               }
             </select>
             @if (subTypeForm.get('type')?.invalid && subTypeForm.get('type')?.touched) {
@@ -31,11 +31,20 @@
     <div class="card-footer">
       <div class="form-group d-flex justify-content-end">
         <button type="submit" class="btn btn-primary" [disabled]="subTypeForm.invalid">
+          <span class="oi oi-check"></span>
           {{ isEditMode ? 'Actualizar' : 'Crear' }} Subtipo de Escenarios
         </button>
-        <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+        <button type="button" class="btn btn-secondary" (click)="cancel()">
+        <span class="oi oi-x"></span>
+        Cancelar
+        </button>
       </div>
     </div>
       </div>
   </form>
+  @if (errorMessage){
+  <div class="text-danger">
+    {{ errorMessage }}
+  </div>
+  }
 </div>

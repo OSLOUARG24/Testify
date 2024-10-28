@@ -29,7 +29,6 @@
             <a title="Subtipos" class="btn btn-outline-info" [routerLink]="['/subType', type.id]">
               <span class="oi oi-zoom-in"></span>
             </a>
-            @if(user.admin){
             <a title="Modificar" [routerLink]="['/type/edit', type.id]">
               <button type="button" class="btn btn-outline-warning">
                 <span class="oi oi-pencil"></span>
@@ -39,7 +38,6 @@
             <button type="button" class="btn btn-outline-danger">
               <span class="oi oi-trash"></span>
             </button></a>
-            }
           </ng-container>
         </td>
       </tr>

@@ -29,11 +29,7 @@ export class SubTypeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadFromStorage();
-    const idParam = this.route.snapshot.paramMap.get('id');
-    if (idParam) {
-      this.typeId = +idParam;
-      this.loadSubTypes();
-    }
+    this.loadSubTypes();
   }
 
   loadFromStorage(): void {
@@ -45,32 +41,42 @@ export class SubTypeComponent implements OnInit {
   }
 
   loadSubTypes(): void {
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      this.typeId = +idParam;
+      localStorage.setItem('IdType',this.typeId.toString());
+    } else {
+       const idstorage = localStorage.getItem('IdType');
+       if (idstorage){
+        this.typeId = +idstorage;
+       }
+    }
+    if (this.typeId){
     this.subTypeService.getSubTypesByTypeId(this.typeId).subscribe((subTypes: SubType[]) => {
       this.subTypes = subTypes;
     });
+    } else {
+    this.subTypeService.getSubTypes().subscribe((subTypes: SubType[]) => {
+      this.subTypes = subTypes;
+    });
+    }
   }
 
 
-	openDeleteModal(subType: any): void {
-	        const dialogRef = this.dialog.open(DeleteSubTypeComponent, {
-	          width: '600px',
-	          data: { subType: subType }
-	        });
-
-	        dialogRef.afterClosed().subscribe(result => {
-	          if (result) {
-	            this.fetchSubTypes();
-	          }
-	        });
-	      }
-
-	      fetchSubTypes(): void {
-	        this.subTypeService.getSubTypes().subscribe(subTypes => {
-	          this.subTypes = subTypes;
-	        });
-	      }
-
   Cancel(): void {
     window.history.back();
+  }
+
+  openDeleteModal(subType: any): void {
+    const dialogRef = this.dialog.open(DeleteSubTypeComponent, {
+      width: '600px',
+      data: { subType: subType }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadSubTypes();
+      }
+    });
   }
 }

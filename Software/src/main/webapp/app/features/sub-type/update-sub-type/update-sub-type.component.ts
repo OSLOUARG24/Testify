@@ -18,6 +18,7 @@ export class UpdateSubTypeComponent implements OnInit {
   subTypeId: number | null = null;
   isEditMode: boolean = false;
   types: Type[] = [];
+  errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -28,15 +29,18 @@ export class UpdateSubTypeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
     this.initializeForm();
-    this.loadTypes();
 
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
         this.subTypeId = +id;
         this.isEditMode = true;
+        this.loadTypes();
         this.loadSubTypeData(this.subTypeId);
+      } else {
+        this.loadTypes();
       }
     });
   }
@@ -59,9 +63,10 @@ export class UpdateSubTypeComponent implements OnInit {
   loadSubTypeData(id: number): void {
     this.subTypeService.getSubTypeById(id).subscribe(
       (subType: SubType) => {
+
         this.subTypeForm.patchValue({
-          name: subType.name,
-          type: subType.type
+          type: subType.type?.id,
+          name: subType.name
         });
       },
       (error) => {
@@ -92,28 +97,28 @@ export class UpdateSubTypeComponent implements OnInit {
 
   // Crear uno nuevo SubTipo
   createSubType(subType: SubType): void {
-    this.subTypeService.createSubType(subType).subscribe(
-      () => {
+    this.subTypeService.createSubType(subType).subscribe({
+      next: (response) => {
         console.log('SubTipo creado exitosamente');
         this.router.navigate(['/subType']);
       },
-      (error) => {
-        console.error('Error al crear el Subtipo', error);
+      error: (error) => {
+        this.errorMessage = error.message;
       }
-    );
+    });
   }
 
   // Actualizar una Tipo existente
   updateSubType(id: number, subType: SubType): void {
-    this.subTypeService.updateSubType(id, subType).subscribe(
-      () => {
+    this.subTypeService.updateSubType(id, subType).subscribe({
+      next: (response) => {
         console.log('Subtipo actualizado exitosamente');
         this.router.navigate(['/subType']);
       },
-      (error) => {
-        console.error('Error al actualizar el Sub tipo', error);
+      error: (error) => {
+        this.errorMessage = error.message;
       }
-    );
+    });
   }
 
   // Cancelar y volver a la lista de Subtipos

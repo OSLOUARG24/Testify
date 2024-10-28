@@ -39,7 +39,6 @@ export class TypeComponent implements OnInit {
     });
   }
 
-  
 
   Cancel(): void {
     window.history.back();
