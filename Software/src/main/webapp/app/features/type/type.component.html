@@ -9,7 +9,7 @@
         <button type="button" class="btn btn-success" [routerLink]="['/type/create']">
           <span class="oi oi-plus"></span> Nuevo Tipo de Escenario
         </button>
-        <button class="btn btn-danger float-right" (click)="Cancel()">Volver</button>
+        <button class="btn btn-danger float-right" [routerLink]="['/project']">Volver</button>
       </p>
     <table class="table table-hover table-sm">
       <thead>
@@ -35,9 +35,10 @@
                 <span class="oi oi-pencil"></span>
               </button>
             </a>
-            <button title="Eliminar" type="button" class="btn btn-outline-danger" (click)="openDeleteModal(type)">
+            <a title="Eliminar" mat-button color="warn" (click)="openDeleteModal(type)">
+            <button type="button" class="btn btn-outline-danger">
               <span class="oi oi-trash"></span>
-            </button>
+            </button></a>
             }
           </ng-container>
         </td>
@@ -45,6 +46,9 @@
       }
       </tbody>
     </table>
+      @if (types.length === 0){
+      <p>No hay Tipos de escenario disponibles.</p>
+      }
   </div>
   </div>
 </div>

@@ -1,6 +1,7 @@
 package com.oslo.testify.controller;
 
 
+import com.oslo.testify.entity.Category;
 import com.oslo.testify.entity.Type;
 import com.oslo.testify.service.TypeService;
 import org.slf4j.Logger;
@@ -27,7 +28,12 @@ public class TypeController {
       return types;
     }
 
-    @PostMapping("/type")
+    @GetMapping("/type/{id}")
+    public Type getTypeById(@PathVariable(value = "id", required = false) final  Long id) {
+        return typeService.getTypeById(id);
+    }
+
+    @PostMapping(value = "/type", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> createType(@RequestBody Type type) {
       try {
         typeService.saveType(type);
@@ -37,19 +43,19 @@ public class TypeController {
       }
     }
 
-    @GetMapping("/type/{id}")
-    public Type getTypeById(@PathVariable(value = "id", required = false) final  Long id) {
-        return typeService.getTypeById(id);
+    @PutMapping("/type/{id}")
+    public ResponseEntity<?> updateType(@PathVariable(value = "id", required = false) final Long id, @RequestBody Type typeDetails) {
+      try {
+        Type updatedType = typeService.updateType(id, typeDetails);
+        return ResponseEntity.ok(updatedType);
+      } catch (RuntimeException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+      }
     }
 
     @DeleteMapping("/type/{id}")
     public void deleteType(@PathVariable(value = "id", required = false) final  Long id) {
-      typeService.deleteType(id);
-    }
+    typeService.deleteType(id);
+  }
 
-    @PutMapping("/type/{id}")
-    public ResponseEntity<Type> updateType(@PathVariable(value = "id", required = false) final Long id, @RequestBody Type typeDetails) {
-        Type updatedType = typeService.updateType(id, typeDetails);
-        return ResponseEntity.ok(updatedType);
-    }
 }

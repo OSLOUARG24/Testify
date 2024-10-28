@@ -18,11 +18,20 @@
     <div class="card-footer">
       <div class="form-group d-flex justify-content-end">
         <button type="submit" class="btn btn-primary" [disabled]="typeForm.invalid">
+          <span class="oi oi-check"></span>
           {{ isEditMode ? 'Actualizar' : 'Crear' }} Tipo de Escenario
         </button>
-        <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+        <button type="button" class="btn btn-secondary" (click)="cancel()">
+        <span class="oi oi-x"></span>
+        Cancelar
+        </button>
       </div>
     </div>
       </div>
   </form>
+  @if (errorMessage){
+  <div class="text-danger">
+    {{ errorMessage }}
+  </div>
+  }
 </div>

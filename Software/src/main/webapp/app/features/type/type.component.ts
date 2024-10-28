@@ -11,7 +11,7 @@ import { DeleteTypeComponent } from './delete-type/delete-type.component';
   standalone: true,
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './type.component.html',
-  styleUrl: './type.component.css'
+  styleUrls: ['./type.component.css']
 })
 export class TypeComponent implements OnInit {
   types: Type[] = [];
@@ -39,26 +39,28 @@ export class TypeComponent implements OnInit {
     });
   }
 
-  openDeleteModal(type: any): void {
-  	        const dialogRef = this.dialog.open(DeleteTypeComponent, {
-  	          width: '600px',
-  	          data: { type: type }
-  	        });
-
-  	        dialogRef.afterClosed().subscribe(result => {
-  	          if (result) {
-  	            this.fetchTypes();
-  	          }
-  	        });
-  	      }
-
-  	      fetchTypes(): void {
-  	        this.typeService.getTypes().subscribe(types => {
-  	          this.types = types;
-  	        });
-  	      }
+  
 
   Cancel(): void {
     window.history.back();
+  }
+
+  openDeleteModal(type: any): void {
+    const dialogRef = this.dialog.open(DeleteTypeComponent, {
+      width: '600px',
+      data: { type: type }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.fetchTypes();
+      }
+    });
+  }
+
+  fetchTypes(): void {
+    this.typeService.getTypes().subscribe(types => {
+      this.types = types;
+    });
   }
 }

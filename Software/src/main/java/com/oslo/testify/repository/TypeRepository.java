@@ -10,4 +10,6 @@ import java.util.List;
 public interface TypeRepository extends JpaRepository<Type, Long> {
 
   boolean existsByName(String name);
+  
+  boolean existsByNameAndIdNot(String name, Long id);
 }
