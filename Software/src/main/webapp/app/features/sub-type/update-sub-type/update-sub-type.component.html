@@ -9,7 +9,7 @@
             <label for="type">Tipo</label>
             <select id="type" formControlName="type" class="form-select">
               @for (type of types; track type.id){
-              <option [ngValue]="type.id">{{ type.name }}</option>
+              <option [ngValue]="type">{{ type.name }}</option>
               }
             </select>
             @if (subTypeForm.get('type')?.invalid && subTypeForm.get('type')?.touched) {

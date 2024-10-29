@@ -24,7 +24,7 @@ export class SubTypeService {
   createSubType(subType: SubType): Observable<any> {
     return this.http.post(this.apiUrl + '/subType', subType).pipe(
           catchError(error => {
-            return throwError(() => new Error(error.error || 'Error creating category'));
+            return throwError(() => new Error(error.error || 'Error creando subtipo'));
           })
         );
   }
@@ -40,7 +40,7 @@ export class SubTypeService {
   getSubTypesByTypeId(id: number): Observable<SubType[]> {
     return this.http.get<SubType[]>(`${this.apiUrl}/subTypes/type/${id}`);
   }
-  
+
   // Método para eliminar un subtipo por su ID
   deleteSubType(id: number): Observable<string> {
     return this.http.delete(`${this.apiUrl}/subType/${id}`, { responseType: 'text' });

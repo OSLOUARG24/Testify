@@ -32,24 +32,50 @@ export class UpdateSubTypeComponent implements OnInit {
 
     this.initializeForm();
 
-    this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
-      if (id) {
-        this.subTypeId = +id;
-        this.isEditMode = true;
-        this.loadTypes();
-        this.loadSubTypeData(this.subTypeId);
-      } else {
-        this.loadTypes();
-      }
-    });
+    this.loadTypes();
+
+        this.route.paramMap.subscribe(params => {
+          const id = params.get('id');
+          if (id) {
+               this.subTypeId = +id;
+               this.isEditMode = true;
+               this.loadSubTypeData(this.subTypeId);
+          }
+        });
   }
 
   loadTypes(): void {
-      this.typeService.getTypes().subscribe((types: Type[]) => {
-        this.types = types;
-      });
+    const idTypeSS = localStorage.getItem('IdType');
+    if (idTypeSS) {
+      // Cargar un tipo específico según el ID almacenado
+      this.typeService.getTypeById(+idTypeSS).subscribe(
+        (type: Type) => {
+          this.types = [type]; // Solo se carga un tipo
+          if (!this.isEditMode) {
+            // Si no estamos en modo edición, asignar el tipo por defecto al formulario
+            this.subTypeForm.patchValue({ type: type });
+          }
+        },
+        (error) => {
+          console.error('Error al cargar el tipo por ID desde el LocalStorage', error);
+        }
+      );
+    } else {
+      // Cargar todos los tipos si no hay un ID en el LocalStorage
+      this.typeService.getTypes().subscribe(
+        (types: Type[]) => {
+          this.types = types;
+          if (!this.isEditMode) {
+            // Si no estamos en modo edición, puedes elegir un tipo predeterminado
+            this.subTypeForm.patchValue({ type: types[0] }); // Selecciona el primer tipo como predeterminado, por ejemplo
+          }
+        },
+        (error) => {
+          console.error('Error al cargar los tipos', error);
+        }
+      );
     }
+  }
 
   // Inicializa el formulario
   initializeForm(): void {
@@ -63,9 +89,11 @@ export class UpdateSubTypeComponent implements OnInit {
   loadSubTypeData(id: number): void {
     this.subTypeService.getSubTypeById(id).subscribe(
       (subType: SubType) => {
-
+         const selectedType = this.types.find(type => type.id === subType.type?.id);
+         console.log('SubTipo cargado:', subType);
+               console.log('Tipo seleccionado:', selectedType);
         this.subTypeForm.patchValue({
-          type: subType.type?.id,
+          type: selectedType,
           name: subType.name
         });
       },
