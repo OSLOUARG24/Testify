@@ -73,6 +73,9 @@ export class NavbarComponent implements OnInit {
       if (project){
         this.project = JSON.parse(project);
       }
+    else {
+      this.project = undefined;
+      }
   }
 
   hasRole(roleCode: string): boolean {

@@ -67,7 +67,10 @@
 </nav>
 @if(isAuthenticated){
 <div class="alert alert-info alert-dismissible fade show" role="alert">
-  Ud. est&aacute; conectado como <strong>{{this.name}}</strong>.
+  Ud. est&aacute; conectado como <strong>{{this.name}}</strong>
+  @if (this.project){
+  en <strong>{{this.project!.name}}</strong>
+  }.
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>

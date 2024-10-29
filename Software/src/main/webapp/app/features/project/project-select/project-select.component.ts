@@ -99,10 +99,11 @@ export class ProjectSelectComponent implements OnInit {
   }
 
   redirect() {
-      this.navbarService.notifyProjectChanged();
+
       if (this.selProject){
         sessionStorage.setItem('project', JSON.stringify(this.selProject));
         console.log('Proyecto seleccionado guardado en sessionStorage:', JSON.stringify(this.selProject));
+        this.navbarService.notifyProjectChanged();
         if (!this.isAdmin){
           this.roleAssigmentService.getRoleAssigmentsByEmailAndProject(this.user?.email!,this.selProject.id).subscribe((data: RoleAssigment[]) => {
            this.roles = data;
@@ -127,6 +128,7 @@ export class ProjectSelectComponent implements OnInit {
       } else {
         sessionStorage.removeItem('project');
         console.log('No se ha seleccionado ningún proyecto.');
+        this.navbarService.notifyProjectChanged();
         if (this.isGestor() || this.isInvitado() || this.isAdmin){
               this.router.navigate(['/project']);
             } else {
