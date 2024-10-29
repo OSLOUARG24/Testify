@@ -1,0 +1,278 @@
+[33md849a5db[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge branch 'Desarrollo'
+[33m3acc1808[m Update GitIgnore
+[33m64ced77e[m FIX UX Botones Delete
+[33me3f6f846[m Fix GetRoles
+[33mfaa226ff[m Fixes Misc
+[33m33bc80d9[m Fix Project Status
+[33mb6fa1d60[m Fix Find Roles By User and Project
+[33m8ebfb0eb[m Added Dashboard
+[33m97d13a78[m Added Code to Roles
+[33m2274335f[m UX Botones Delete
+[33md0410a25[m Added * to Mandatory Fields
+[33m8a861818[m Fixed Iteration
+[33m244ec8ef[m Added SubType Backend
+[33mac66a8cf[m Fixed JsonIgnore Project - Iteration
+[33m81801645[m Fixed Auto_increment in BBDD
+[33m828cd493[m Added Category Backend
+[33md4b50ce3[m Added Type Backend
+[33m91799a04[m Fix Iteration Backend
+[33m6d5b34d7[m Delete Bak Files
+[33m4c17e38c[m Modified Application.properties
+[33m37090ede[m Fix Login y NavBar
+[33m843243b3[m Merge pull request #28 from OSLOUARG24/Documentacion to Main
+[33m7db76269[m Merge branch 'Documentacion' of https://github.com/OSLOUARG24/Testify into Documentacion
+[33me2fc761d[m 18/10
+[33m579a93fc[m Create TP052-OO-PCU y PCU Ajustados_Testify V4.xlsx
+[33mb9fb1735[m Update MD y c102
+[33m23954a95[m Arquitectura v2
+[33maad91657[m Update C103 - Arquitectura del Sistema.docx
+[33mb9870e75[m Documentación - Preparación entorno SQA
+[33m6d8409ac[m Documentación - Confección resumen de reunión 18.
+[33mce1e1b72[m Documentación - Gestión SQA
+[33m098fe9d0[m Documentación - Revisión SQA rutinaria
+[33m2f5b04a8[m Se actualizo el documento de nomenclaturas
+[33m6ddc3ea0[m Seguimiento de Riesgos Cierre Iteración 2 Fase 2
+[33ma2ba3c1b[m Create C103 - Arquitectura del Sistema.docx
+[33m98f4f6f3[m Plantilla Arquitectura del Sistema
+[33ma93945a9[m Diagrama de CU
+[33m1835398e[m Desarrollo - Preparación de repositorios
+[33m892c4da8[m Merge pull request #27 from OSLOUARG24/main
+[33md00060cb[m Fusion de ramas para resolver conflicto y sincronizacion local
+[33m029f7fe8[m c01
+[33m5309b6c3[m Update Nomenclaturas.xlsx
+[33m9a5178f9[m C01
+[33mef065a5d[m Added Iteration
+[33m3f3df6c3[m Eliminado node_modules para corregir Clone
+[33md2d4ed83[m Fix UARGflow
+[33m5a11d890[m Refactor
+[33mf476da5d[m Documentación - Confección RTF plan de pruebas.
+[33mef628f5b[m Documentación - Confección resumen de reunión 17 y gestión SQA
+[33m1836bcf4[m Jar Repackage
+[33m20f60d48[m Merge branch 'Documentacion' of https://github.com/OSLOUARG24/Testify into Documentacion
+[33m4af0da4a[m Update Modelo de Diseño.docx
+[33m6e0dc3be[m Documento - Plan de Pruebas
+[33m1ebd838f[m vvrs
+[33m0e78f7c7[m Documento Plan de Pruebas
+[33m3843a0b8[m Documentos MCU MD DCU DC
+[33m1a23443b[m Fix CSS boton Project Select
+[33m6b32a840[m Clean
+[33m84522072[m Refactor Estructura UARGflow
+[33m297da58e[m Merge branch 'Documentacion' of https://github.com/OSLOUARG24/Testify into Documentacion
+[33m8f2d3753[m Update E104-OSLO-Especificación de Requerimientos.docx
+[33mcc7d5778[m Plantilla de Modelo
+[33m0cf1ed7b[m mod
+[33ma1f14b34[m Modificacion E104 Y E202
+[33m5b3841be[m Actualizacion Prototipo y Modelo de Datos
+[33mc22c2598[m Documentación - Actualización de reuniones y gestión SQA.
+[33m5fe64afa[m Update E209-OSLO-Modelo de Datos.docx
+[33mf82c712b[m Update README.md
+[33m21c42f51[m E209- Modelo de Datos
+[33m95684392[m Update Modelo de Datos.docx
+[33md3e1561e[m Merge branch 'Documentacion' of https://github.com/OSLOUARG24/Testify into Documentacion
+[33m67934fc9[m vNotebook
+[33ma49c0487[m Update E208-OSLO-Prototipo Funcional Testify.xlsx
+[33meea61e96[m Update Modelo de Datos.docx
+[33m9337aad4[m Update E202-OSLO-Modelo de Casos de Uso.docx
+[33m2aed5a7b[m Update E208-OSLO-Prototipo Funcional Testify.xlsx
+[33mcfa54c3d[m Documentación - Prototipo alternativo
+[33m380d648a[m MCU y Estimación
+[33m39cd5fd8[m Merge branch 'Documentacion' of https://github.com/OSLOUARG24/Testify into Documentacion
+[33m2aff8b83[m Update E202-OSLO-Modelo de Casos de Uso.docx
+[33m0be474c3[m Documentación - Prototipo alternativa
+[33m96466277[m Documentación - Prototipo alternativa
+[33m4864da7e[m Documentación - Revisión SQA prototipo
+[33mc0eb8911[m Prototipos Final y Alternativo
+[33mb9fa36cf[m Update Prototipo Funcional Testify v1.xlsx
+[33mc7749121[m Update Prototipo Funcional Testify v1.xlsx
+[33m521d6edd[m Documentación - Actualización Gestión SQA
+[33m2766c1b1[m Documentación - Revisión rutinaria SQA
+[33m444a7b96[m Documentación - Actualización de reuniones
+[33mdf8fcb97[m Documentación - Actualización Gestión SQA
+[33md2839df4[m Merge branch 'Documentacion' of https://github.com/OSLOUARG24/Testify into Documentacion
+[33mb7597983[m Merge pull request #25 from OSLOUARG24/Documentacion
+[33ma2c0d38c[m Documentación - Actualización nomenclatura
+[33md8c79173[m Documentación - Actualización Gestión SQA.
+[33mc102b0c6[m Documentación - Actualización de plantillas
+[33m5f737100[m Documentación y Plantillas
+[33m7c09c7d4[m Documentación - Actualización de Gestión SQA
+[33m1be4b59d[m Modelo de Datos
+[33m6b8db2a2[m Requerimientos y Modelo de Datos
+[33mba80e9f0[m Front: RolePermission
+[33m94128737[m Merge branch 'Documentacion' of https://github.com/OSLOUARG24/Testify into Documentacion
+[33m69218776[m Modelo de CU
+[33m2ac48d4e[m Front: RoleAssigment
+[33m5f15f245[m NavBar
+[33me429d234[m Front: Permission
+[33m84bd8aaa[m Front: Role
+[33md5348294[m Clean Angular Cache
+[33m9f9083bf[m Front: Project
+[33mc1d136db[m Update app.routes.ts
+[33m5175808c[m Bootstrap 4.1 UARGflow
+[33md37e6062[m Front User
+[33m002b80d5[m Footer
+[33m9720d91b[m Clean Angular Cache v2
+[33m641da25a[m Clean Angular Cache
+[33mb88c04e2[m Bootstrap
+[33mcc509517[m Google Auth
+[33m2d0745f3[m APP Component
+[33m2213454f[m Create .gitignore
+[33m72440e5d[m Fix ProjectService
+[33m2d270e27[m Create ProjectController.java
+[33m672e8d89[m Logos
+[33m6c10b23b[m Controllers
+[33ma3e8614d[m Services
+[33ma7efec77[m Create RoleRepository.java
+[33mbc5b26fd[m Repositories
+[33mf4bdb5dd[m Create banner.txt
+[33mae6ef73e[m RoleAssigment y Project
+[33mce475a45[m Create RolePermission.java
+[33md0970eb1[m Clases User, Role y Permission
+[33mb6d1add6[m Create WebConfig.java
+[33mda32a5b8[m Spring Security
+[33m10f640aa[m Create application.properties
+[33m2b78c2bd[m Desarrollo Testify Commit Inicial
+[33m1cc7340b[m Documentación - Gestión SQA.
+[33m68ba646c[m Documentación - Se actualizan documentos de gestión de calidad.
+[33mdc818f64[m Documentación - Corrección acorde al estándar.
+[33ma863333d[m Merge branch 'Documentacion' of https://github.com/OSLOUARG24/Testify into Documentacion
+[33m1c5d08d4[m Update Modelo de Casos de Uso.docx
+[33m415ebece[m Merge branch 'Documentacion' of https://github.com/OSLOUARG24/Testify into Documentacion
+[33m37a3ac27[m Update Prototipo Funcional (Adjuntos)
+[33m8f50ab01[m Update E117-OSLO - Seguimiento de Riesgos II 23-09-2024.docx
+[33m701e5f43[m Actualizado Prototipo Funcional
+[33m73ac9352[m Update E117-OSLO - Seguimiento de Riesgos II 23-09-2024.docx
+[33m4a237af8[m Modificación E103
+[33m81fbab05[m Prototipo Funcional v1
+[33me2053356[m Merge pull request #24 from OSLOUARG24/Documentacion
+[33m109544ab[m Nomenclatura Planes de Iteración
+[33mfd575361[m Update E103-OSLO-Plan de Iteración - copia.docx
+[33maec66708[m Update E103-OSLO-Plan de Iteración - copia.docx
+[33m82360159[m Ajuste Estimaciones
+[33mfbd7fd5c[m Documentacion Riesgos
+[33mef2b9c16[m Merge branch 'Documentacion' of https://github.com/OSLOUARG24/Testify into Documentacion
+[33m311a47e0[m Modelo de CU
+[33ma401b617[m Documentación - Modificación plan de iteración Elaboración 2
+[33m416a3846[m Merge branch 'Documentacion' of https://github.com/OSLOUARG24/Testify into Documentacion
+[33mb3ee0378[m Planes de iteración (cierre)
+[33m0257a384[m Documentación - Actualización Plan de iteración
+[33m34e94ac7[m Documentación - Se actualiza repositorio de reuniones.
+[33m318ea155[m Update E103-OSLO-Plan de Iteración.docx
+[33m180e1faa[m Documentación - Corrección acorde al estándar
+[33m37d3e18e[m Documentación - Se añade plan de pruebas
+[33m0f710beb[m Documentación - Actualización de plantillas
+[33ma67de2c4[m Plantilla Casos de Uso
+[33ma1f2b9c1[m Plantillas OSLO
+[33m60cd6e64[m Plantillas
+[33m55e16e2b[m Create E103-OSLO-Plan de Iteración - copia.docx
+[33m318f9f63[m Update E104-OSLO-Especificación de Requerimientos.docx
+[33mbe7398d2[m Documentación - Actualizacion Reuniones
+[33mcb9030bb[m Documentación - Repositorio Reuniones
+[33m4364b2af[m Merge branch 'Documentacion' of https://github.com/OSLOUARG24/Testify into Documentacion
+[33m2d9eb4c3[m PDFs Entrega 20/09
+[33m0053aeb0[m Merge pull request #23 from OSLOUARG24/Documentacion To Main
+[33mace0ccb4[m Documentos de Riesgos
+[33mbcfe99a1[m Update Nomenclaturas.xlsx
+[33ma8710bd3[m Correcciones Especificacion de Requerimientos
+[33m11c9ab86[m Documentación - Se actualiza Plan de Calidad.
+[33m19d18928[m Ajustes y correccion Plan de Calidad
+[33mecd86cbe[m Documentación - Se actualiza Plan de Calidad.
+[33maf55c9c6[m Documentación - Se actualiza plan de Calidad.
+[33m5b3fe058[m Documentación - Informe Final SQA
+[33m6c7f04cb[m Revision Especificacion de Requerimientos
+[33ma00376b9[m Merge branch 'Documentacion' of https://github.com/OSLOUARG24/Testify into Documentacion
+[33m6851b97e[m Esp de requerimientos y matriz
+[33m3e6e6ed2[m Documentación - Actualización de plantillas.
+[33m5b495d1a[m Documentación - Manejo del ambiente controlado.
+[33mecaa6814[m Documentación - Actualización de plantillas.
+[33m4bc44c1b[m Documentación - Actualización Plan Configuración.
+[33me1d7afe4[m Documentación - Actualización Plan Configuración.
+[33m3e507f75[m Documentación - Actualización Plan SQA
+[33m169f7e0c[m Documentación - Corrección acorde al estándar.
+[33mdf61e11c[m Entregable Herramientas y Tecnologias
+[33md7f9f1fa[m Documentación - Correcion ortografica.
+[33mf80839eb[m Actualizacion Herramientas y Tecnologias
+[33me5101fe6[m Esp. de Req., Trazabilidad, Herramientas
+[33mdf57a6af[m Documentación - Corrección acorde al Estándar
+[33mc389021d[m Merge pull request #22 from OSLOUARG24/main To Documentación
+[33m377b8f0f[m Documentacion - se actualiza archivo Templates/Plan de Proyecto.dotx de Documentacion
+[33mec9f7b5a[m Merge branch 'Documentacion' of https://github.com/OSLOUARG24/Testify into Documentacion
+[33m45063965[m Documento Inicial Herramientas y Tecnologias
+[33mc4483b10[m Prueba Readme de Val
+[33m0d686ef3[m Update README.md
+[33m1bfe9aa0[m Main - Merge from Documentación
+[33mfce09c20[m Documentación - Corrección acorde al estándar
+[33m4a111caf[m Doc Nomenclaturas
+[33mf1fbe6d3[m Update E01 Plan de Iteración.docx
+[33m0eda5b8b[m Actualizacion Estimaciones
+[33me9074b1d[m Create Especificación de Requerimientos.docx
+[33m920ede13[m Merge branch 'Documentacion' of https://github.com/OSLOUARG24/Testify into Documentacion
+[33m34728c3c[m Update Plan de Proyecto.dotx
+[33m870c2785[m Documentación - Actualización Plan SQA
+[33m2c888f20[m Plan de Estimación e Iteración
+[33m2f802c60[m Documentación - Se añade Plan SQA
+[33m44944f2b[m Documentación - Corrección acorde al estándar
+[33m9499d656[m Merge pull request #18 from OSLOUARG24/Documentacion To Main
+[33m2fce14bc[m Documentación - Reubicación entregables
+[33m9718c381[m Merge pull request #17 from OSLOUARG24/main To Documentación
+[33mccc3080e[m Plan de estimación
+[33m858c4095[m Plan de Iteración
+[33mf90f5479[m Add files via upload
+[33m90321485[m Add files via upload
+[33m0d31187e[m Add files via upload
+[33m3a4df66a[m Readecuación de propuesta
+[33m2c9b45e3[m Create TP052-OO-PCU y PCU Ajustados_Testify V2.xlsx
+[33mafc46641[m Merge pull request #16 from OSLOUARG24/main To Documentación
+[33m9ff91884[m Merge branch 'Documentacion' of https://github.com/Proypb20/Testify into Documentacion
+[33mbd675093[m Flujogramas
+[33m2e72b09e[m Add files via upload
+[33m6e276074[m Merge pull request #15 from Proypb20/main To Documentación
+[33mf0b5cbee[m Add files via upload
+[33m7c92e4a6[m Merge pull request #14 from Proypb20/main
+[33m669f13cc[m Merge pull request #13 from Proypb20/Documentacion To Main
+[33m9e802825[m Documento Gestion de riesgos
+[33m3029f3f8[m Add files via upload
+[33m9c695152[m Merge pull request #12 from Proypb20/Documentacion To Main
+[33md2a2d964[m Documentación - Actualización README
+[33m764ef2b4[m Documentación - Actualización README
+[33mdce61732[m Documentación - Cronograma-Gantt
+[33m9a68c23d[m Create IN06-OSLO-Estudio e Implementacion UARGflow.pdf
+[33m3aff48ae[m Documentación - Actualización de entregables.
+[33m6268423d[m Documentacion - Correcciones de ortografía
+[33m2d7365ed[m Merge pull request #8 from Proypb20/main To Documentacion
+[33md90f897d[m Se añade diagrama de Gantt
+[33mc91b0b21[m Se añade diagrama de Gantt
+[33m41d1a075[m Se añade diagrama de Gantt
+[33mcedfda54[m Update INXX_OSLO_Estudio e Implementación UARGFLOW.docx
+[33m8a5c77f0[m Merge branch 'Documentacion' of https://github.com/Proypb20/Testify into Documentacion
+[33m1afc03ac[m Documento Estudio e Implementacion UARGflow
+[33md97631b7[m Documentacion - Actualizacion de entregables (Inicio)
+[33m6866f7f4[m Codespaces Buttom
+[33m7c1db3d0[m Merge pull request #7 from Proypb20/main To Documentacion
+[33m51922b44[m Main - Reestructuracion
+[33mdab8a579[m Merge pull request #6 from Proypb20/main to Documentacion
+[33m50247a65[m Merge pull request #5 from Proypb20/Documentacion To Main
+[33m1924e418[m Plantillas de PSI
+[33m8dbdc6b2[m Merge pull request #4 from Proypb20/Documentacion To Main
+[33m4396574e[m Merge pull request #3 from Proypb20/main to Documentacion
+[33m11c987e3[m Main-Actualizacion Template
+[33m301365a0[m Add files via upload
+[33mf7c24563[m Documentacion-Actualizacion de Templates
+[33mb1174b85[m Merge pull request #2 from Proypb20/main to documentacion
+[33m040981d8[m Add files via upload
+[33mf8f69495[m Merge branch 'Documentacion' of https://github.com/Proypb20/Testify into Documentacion
+[33m18dc40c5[m Documentacion-TrackTime
+[33mf8dcb611[m Prueba Commit
+[33mcdc5eab8[m Revert "saludo readme"
+[33m98b4b1a3[m saludo readme
+[33m28cb0cdf[m Documentacion - actualizacion txt
+[33me022430b[m Merge pull request #1 from Proypb20/Desarrollo
+[33m7e660c98[m Cambio Nombre Branch
+[33m6f465a6f[m Desarrollo - modifica txt
+[33m2b19bc9b[m Desarrollo-Actualizacion
+[33m36b98211[m Desarrollo-Logo
+[33m9b33563c[m Desarrollo-Templates
+[33m2b25cdea[m Main-PDF_track_time
+[33m87dfca38[m[33m ([m[1;31morigin/Soporte[m[33m, [m[1;31morigin/Mantenimiento[m[33m, [m[1;31morigin/Hotfixs[m[33m)[m Main-Gestion_de_tiempo
+[33mb0d2a893[m Main-Fase_de_desarrollo
+[33m9a48f08f[m Main-Fases_de_desarrollo
+[33m01957b9d[m First Commit
