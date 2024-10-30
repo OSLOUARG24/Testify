@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="card">
+  <div class="card-header">
+    <h3>Escenarios de prueba</h3>
+    </div>
+    <div class="card-body">
+    <p class="d-flex justify-content-end">
+      <button type="button" class="btn btn-success" [routerLink]="['/stage/create']">
+        <span class="oi oi-plus"></span>
+          Nuevo Escenario de prueba
+      </button>
+      <button class="btn btn-danger float-right " (click)="Cancel()">Volver</button>
+    </p>
+  <table class="table table-hover table-sm">
+    <thead>
+    <tr  class="table-info">
+      <th>Nombre</th>
+      <th>Tipo</th>
+      <th>Estado</th>
+      <th>Numero</th>
+      <th>Opciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    @for (stage of stages; track stage.id) {
+    <tr>
+      <td>{{ stage.name }}</td>
+      <td>{{ stage.type!.name }}</td>
+      <td>
+        <div class="d-flex align-items-center">
+          <span>{{ getStatusDescription(stage.status!) }}</span>
+          <div class="progress mx-2" style="height: 8px; width: 70px;">
+            <div class="progress-bar" [ngClass]="getProgressBarClass(getProgress(stage))"
+                 [style.width]="getProgress(stage) + '%'" role="progressbar">
+            </div>
+          </div>
+          <span class="ml-1">{{ getProgress(stage) }}%</span>
+        </div>
+      </td>
+      <td>{{ stage.number }}</td>
+      <td>
+        <a title="visualizar" class="btn btn-outline-info" [routerLink]="['/stage/detail', stage.id]">
+          <span class="oi oi-zoom-in"></span>
+        </a>
+        <a title="Modificar" [routerLink]="['/stage/edit', stage.id]">
+          <button type="button" class="btn btn-outline-warning">
+            <span class="oi oi-pencil"></span>
+          </button></a>
+        <a title="Eliminar" mat-button color="warn">
+          <button type="button" class="btn btn-outline-danger">
+            <span class="oi oi-trash"></span>
+          </button></a>
+      </td>
+    </tr>
+    }
+    </tbody>
+  </table>
+  @if (stages.length === 0) {
+      <div>
+        <p>No hay escenarios de prueba disponibles.</p>
+      </div>
+  }
+    </div>
+  </div>
+</div>
