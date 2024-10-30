@@ -1,0 +1,23 @@
+.btn-status {
+  border: none;
+  background: transparent;
+  cursor: default;
+}
+
+.btn-success {
+  color: green;
+}
+
+.btn-error {
+  color: red;
+}
+
+.btn-pending {
+  color: blue;
+}
+
+/* Para deshabilitar efectos de hover */
+.btn-status:hover {
+  opacity: 1;
+  cursor: default;
+}
