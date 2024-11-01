@@ -85,4 +85,9 @@ export class StageService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
+  // Eliminar un proyecto por ID
+  deleteStage(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/stage/${id}`);
+  }
+
 }

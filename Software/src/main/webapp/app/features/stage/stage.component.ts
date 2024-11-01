@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { StageService } from './stage.service';
 import { Stage, StageStatus } from './stage.model';
-
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router, RouterOutlet, RouterLinkActive, RouterLink  } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { DeleteStageComponent } from './delete-stage/delete-stage.component';
 
 @Component({
   selector: 'app-stage',
@@ -18,7 +19,8 @@ export class StageComponent implements OnInit {
 
   constructor(private stageService: StageService,
     private route: ActivatedRoute,
-    private router: Router,) {}
+    private router: Router,
+    public dialog: MatDialog) {}
 
   ngOnInit(): void {
   let iterationIdParam = this.route.snapshot.paramMap.get('id');
@@ -60,9 +62,30 @@ export class StageComponent implements OnInit {
       const descriptions = {
         [StageStatus.PENDIENTE]: 'Pendiente',
         [StageStatus.APROBADO]: 'Aprobado',
-        [StageStatus.ERROR]: 'Error'
+        [StageStatus.ERROR]: 'Error',
+        [StageStatus.FINALIZADO]: 'Finalizado'
       };
     return descriptions[status] || status;
   }
+
+openDeleteModal(stage: any): void {
+                const dialogRef = this.dialog.open(DeleteStageComponent, {
+                  width: '600px',
+                  data: { stage: stage }
+                });
+
+                dialogRef.afterClosed().subscribe(result => {
+                  if (result) {
+                    this.fetchStages();
+                  }
+                });
+              }
+
+              fetchStages(): void {
+                this.stageService.getStagesWithoutPrevious(this.iterationId!).subscribe(stages => {
+                  this.stages = stages;
+                });
+              }
+
 }
 
