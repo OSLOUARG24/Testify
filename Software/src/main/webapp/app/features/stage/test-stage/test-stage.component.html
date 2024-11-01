@@ -1,0 +1,294 @@
+<div class="container">
+  <form [formGroup]="stageForm" (ngSubmit)="onSubmit()">
+  <div class="card">
+    <div class="card-header">
+      <h3>Actualizar pruebas del Escenario</h3>
+    </div>
+    <div class="card-body">
+      <div class="row mb-3">
+        <div class="col-md-10">
+          <div class="form-group">
+            <p>Nombre</p>
+          	<h5><strong>{{ stage.name }}</strong></h5>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <p>Número</p>
+          	<h5><strong>{{ stage.number }}</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <p>Iteración</p>
+            <h5><strong>{{ stage.iteration?.name }}</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <p>Categoría</p>
+            <h5><strong>{{ stage.category?.name }}</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <div class="form-group">
+            <p>Tipo</p>
+            <h5><strong>{{ stage.type?.name }}</strong></h5>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <p>Subtipo</p>
+            <h5><strong>{{ stage.subType?.name }}</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <p>Tester</p>
+            <h5><strong>{{ stage.tester?.name }}</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-8">
+          <div class="form-group">
+            <p>Prioridad</p>
+            <h5><strong>{{ stage.priority }}</strong></h5>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <p>Fecha Requerido</p>
+            <h5><strong>{{ stage.dateRequired | date:'dd/MM/yyyy' }}</strong></h5>
+          </div>
+        </div>
+      </div>
+  <div class="form-group">
+  <label for="status">Estado </label>
+  <select id="status" formControlName="status" class="form-select">
+    @for (status of statuses; track status) {
+    <option [ngValue]="status">{{ status }}</option>
+    }
+  </select>
+
+  </div>
+<br/>
+      <div class="form-group">
+  <label for="checkLists">CheckList</label>
+  <div formArrayName="checkLists">
+    <div *ngFor="let checkList of checkLists.controls; let i = index" [formGroupName]="i">
+      <div class="form-check">
+        <div class="row mb-3">
+          <div class="col-md-2">
+          <input class="form-check mr-2" type="checkbox" formControlName="status">
+          </div>
+            <div class="col-md-9">
+              <h5 class="form-check-label">{{ checkList.get('description')?.value }}</h5>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+      <br/>
+  <div class="form-group">
+    <div class="row mb-3">
+      <div class="col-md-2">
+        <label for="steps">Pasos</label>
+      </div>
+      <div class="col-md-5">
+        <label for="steps">Nombre</label>
+      </div>
+      <div class="col-md-5">
+        <label for="steps">Comentario</label>
+      </div>
+    </div>
+  <div formArrayName="steps">
+    <div *ngFor="let step of steps.controls; let i = index" [formGroupName]="i">
+      <div class="form-check">
+        <div class="row mb-3">
+          <div class="col-md-2">
+           {{i + 1}}
+          </div>
+          <div class="col-md-4">
+              <h5 class="form-check-label">{{ step.get('description')?.value }}</h5>
+          </div>
+          <div class="col-md-4">
+            <input class="form-control" type="text" formControlName="comment">
+          </div>
+          <div class="col-md-2">
+            <button
+              type="button"
+              class="btn btn-success"
+              [ngClass]="{'active': step.get('status')?.value === 'APROBADO'}"
+              (click)="setStatus(i, 'APROBADO')">
+              <span class="oi oi-check"></span>
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              [ngClass]="{'active': step.get('status')?.value === 'ERROR'}"
+              (click)="setStatus(i, 'ERROR')">
+              <span class="oi oi-x"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <p>Resultado Esperado</p>
+            <h5><strong>{{ stage.expectedResult }}</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="gotResult">Resultado Obtenido</label>
+            <textarea id="gotResult" formControlName="gotResult" type="text" class="form-control" rows="5"
+                      placeholder="Ingresa el Resultado Obtenido"
+                      [ngClass]="{'is-invalid': stageForm.get('gotResult')?.invalid && stageForm.get('gotResult')?.touched}">
+                </textarea>
+            @if (stageForm.get('gotResult')?.invalid && stageForm.get('gotResult')?.touched) {
+            <div class="error">
+              El Resultado Obtenido es requerido.
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="comment">Comentarios</label>
+            <textarea id="comment" formControlName="comment" type="text" class="form-control" rows="5"
+                      placeholder="Ingresa un comentario">
+              </textarea>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <p>Tiempo Estimado</p>
+            <h5><strong>{{ stage.estimatedTime }} Horas</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="testedFrom">Fecha de Inicio de Pruebas *</label>
+            <input id="testedFrom" formControlName="testedFrom" type="datetime-local" class="form-control" />
+            @if (stageForm.get('testedFrom')?.invalid && stageForm.get('testedFrom')?.touched) {
+            <div class="text-danger">
+              La fecha de inicio de pruebas es obligatoria.
+            </div>
+            }
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="testedTo">Fecha de Fin de Pruebas *</label>
+            <input id="testedTo" formControlName="testedTo" type="datetime-local" class="form-control" />
+            @if (stageForm.get('testedTo')?.invalid && stageForm.get('testedTo')?.touched){
+            <div class="text-danger">
+              La fecha de fin de pruebas es obligatoria.
+            </div>
+            }
+            @if (stageForm.errors?.['testedFromBeforetestedTo']) {
+            <div class="text-danger">
+              La fecha de fin no puede ser anterior a la fecha de inicio.
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row mb-3">
+          <div class="col-md-1">
+          </div>
+          <div class="col-md-5">
+            <label for="documents">Adjunto</label>
+          </div>
+          <div class="col-md-5">
+            <label for="documents">Descripcion</label>
+          </div>
+        </div>
+      <div formArrayName="documents">
+        <div *ngFor="let document of documents.controls; let i = index" [formGroupName]="i">
+          <div class="form-check">
+            <div class="row mb-3">
+              <div class="col-md-1">
+                {{i + 1}}
+              </div>
+              <div class="col-md-5">
+                <input type="file"  class="form-control-file" (change)="onFileSelected($event, i)" id="document" />
+              </div>
+              <div class="col-md-5">
+                <input class="form-control" formControlName="description" type="text" id="description" />
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-outline-danger" (click)="removeDocument(i)">
+                  <span class="oi oi-minus"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end mb-2">
+        <button type="button" class="btn btn-outline-success" (click)="addDocument()">
+          <span class="oi oi-plus"></span>
+          Agregar
+        </button>
+      </div>
+      </div>
+      <!-- Agregar archivos arrastrandose
+      <div class="form-group">
+        <div class="row mb-8">
+        <div class="form-group">
+          <label for="fileUpload">Adjuntar Documentos</label>
+          <input type="file" id="fileUpload" (change)="onFileSelected($event)" multiple class="form-control">
+          <div class="drop-zone" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+            Arrastra aquí tus archivos o haz clic para seleccionar
+          </div>
+        </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="fileUpload">Adjuntar Documentos</label>
+            <h5><strong>{{ stage.estimatedTime }} Horas</strong></h5>
+          </div>
+        </div>
+      </div>-->
+    </div>
+    <div class="card-footer">
+
+      <div class="form-group d-flex justify-content-end">
+        <button type="submit" class="btn btn-outline-success" [disabled]="stageForm.invalid">
+          <span class="oi oi-check"></span>
+          Guardar Pruebas
+        </button>
+        <button type="button" class="btn btn-outline-danger" (click)="cancel()">
+          <span class="oi oi-x"></span>
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
