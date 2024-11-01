@@ -1,9 +1,6 @@
 package com.oslo.testify.service;
 
-import com.oslo.testify.entity.CheckList;
-import com.oslo.testify.entity.Document;
-import com.oslo.testify.entity.Stage;
-import com.oslo.testify.entity.Step;
+import com.oslo.testify.entity.*;
 import com.oslo.testify.repository.CheckListRepository;
 import com.oslo.testify.repository.DocumentRepository;
 import com.oslo.testify.repository.StageRepository;
@@ -177,6 +174,30 @@ public class StageService {
   }
 
   public void deleteStage(Long id) {
-    stageRepository.deleteById(id);
+    Optional<Stage> stage = stageRepository.findById(id);
+    if (stage.isPresent())
+    {
+      Stage currentStage = stage.get();
+
+      // Verificar si el estado del Stage no es PENDIENTE
+      if (currentStage.getStatus() != StageStatus.PENDIENTE) {
+        throw new RuntimeException("El escenario contiene pruebas realizadas o no está pendiente. Actualice el estado a Finalizado.");
+      }
+
+      // Verificar si existen steps con estado distinto de APROBADO
+      boolean hasApprovedSteps = currentStage.getSteps().stream()
+        .anyMatch(step -> step.getStatus() != StageStatus.PENDIENTE);
+      if (hasApprovedSteps) {
+        throw new RuntimeException("El escenario contiene pasos que no están Pendientes.");
+      }
+
+      // Verificar si existen checkLists con estado `true`
+      boolean hasActiveCheckLists = currentStage.getCheckLists().stream()
+        .anyMatch(checkList -> checkList.getStatus());
+      if (hasActiveCheckLists) {
+        throw new RuntimeException("El escenario contiene checklists activas.");
+      }
+      stageRepository.deleteById(id);
+    }
   }
 }

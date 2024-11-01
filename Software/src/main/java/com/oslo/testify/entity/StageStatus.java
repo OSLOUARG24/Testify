@@ -3,7 +3,8 @@ package com.oslo.testify.entity;
 public enum StageStatus {
   PENDIENTE("Pendiente"),
   APROBADO("Aprobado"),
-  ERROR("Con Errores");
+  ERROR("Con Errores"),
+  FINALIZADO("Finalizado");
 
   private String description;
 

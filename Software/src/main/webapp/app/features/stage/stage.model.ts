@@ -36,7 +36,8 @@ export enum Priority {
 export enum StageStatus {
   PENDIENTE = 'PENDIENTE',
   APROBADO = 'APROBADO',
-  ERROR = 'ERROR'
+  ERROR = 'ERROR',
+  FINALIZADO = 'FINALIZADO'
 }
 
 export interface Stage {

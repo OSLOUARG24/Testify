@@ -6,9 +6,11 @@
     <div class="card-body">
       <div class="row mb-3">
         <div class="d-flex justify-content-end">
+@if(canCopy()){
           <button type="button" class="btn btn-outline-primary mr-2" (click)="copyStage()">
             <span class="oi oi-clipboard"></span> Copiar Escenario
           </button>
+}
           <button class="btn btn-outline-secondary" (click)="goBack()">
             <span class="oi oi-arrow-left"></span> Volver
           </button>
@@ -204,6 +206,32 @@
           </div>
         </div>
       </div>
+
+      <h4>Adjuntos</h4>
+      <br/>
+      <ul>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <p>Documento</p>
+          </div>
+          <div class="col-md-9">
+            <p>descripcion</p>
+          </div>
+        </div>
+      </ul>
+      <ul>
+        @for (document of stage.documents; track document.id) {
+        <div class="row mb-3">
+          <div class="col-md-3">
+              {{ document.name }}
+          </div>
+          <div class="col-md-9">
+            <h5>{{ document.description }}</h5>
+          </div>
+        </div>
+        }
+      </ul>
+
     </div>
   </div>
 </div>

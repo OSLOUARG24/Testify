@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet, RouterLinkActive, RouterLink  } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StageService } from '../stage.service';
-import { Stage } from '../stage.model';
+import { Stage, Document } from '../stage.model';
+import { RoleAssigment } from '../../../features/role-assigment/role-assigment.model';
+import { User } from '../../../features/user/user.model';
 
 @Component({
   selector: 'app-stage-detail',
@@ -15,6 +17,8 @@ export class StageDetailComponent implements OnInit {
 
   stage!: Stage;
   stageId?: number;
+  roleAssigments: RoleAssigment[] = [];
+  user?: User;
 
   constructor(
     private route: ActivatedRoute,
@@ -23,6 +27,7 @@ export class StageDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getStorageValues();
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
@@ -66,4 +71,41 @@ export class StageDetailComponent implements OnInit {
         });
     }
   }
+
+  getStorageValues() {
+    const user = localStorage.getItem('user');
+    if (user){
+       this.user = JSON.parse(user);
+    }
+
+    const roles = sessionStorage.getItem('userRoles');
+    if (roles){
+      this.roleAssigments = JSON.parse(roles);
+    }
+  }
+
+  hasRole(roleCode: string): boolean {
+    return this.roleAssigments.some((assignment: RoleAssigment) => assignment.role?.code === roleCode);
+  }
+
+  canCopy() {
+     if (this.user?.admin || this.hasRole('GESTOR')){
+       return true;
+     }
+     return false;
+   }
+
+  isGestor() {
+     return ;
+  }
+
+  isInvitado() {
+     return this.hasRole('GUEST');
+  }
+
+  isTester(): boolean {
+     return this.hasRole('TESTER');
+  }
+
+
 }
