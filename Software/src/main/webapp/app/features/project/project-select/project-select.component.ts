@@ -49,7 +49,7 @@ export class ProjectSelectComponent implements OnInit {
     if (!this.isAdmin){
     this.projectService.getProjectsByEmail(email).subscribe(
       (data: Project[]) => {
-        this.projects = data;
+        this.projects =  data.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
         console.log('Proyectos asignados:', this.projects);
       },
       (error) => {
