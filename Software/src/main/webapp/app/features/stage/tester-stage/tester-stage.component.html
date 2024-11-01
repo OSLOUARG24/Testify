@@ -63,7 +63,7 @@
     @for (stage of stagesCompleted; track stage.id) {
     <tr>
       <td>{{ stage.iteration.project.name }}</td>
-      <td>{{ stage.iteration }}</td>
+      <td>{{ stage.iteration.name }}</td>
       <td>{{ stage.name }}</td>
       <td>
         <div class="d-flex align-items-center">
@@ -75,7 +75,7 @@
           <span>100%</span>
         </div>
       </td>
-      <td>{{ stage.version }}</td>
+      <td>{{ stage.number }}</td>
       <td>
         <a title="visualizar" class="btn btn-outline-info" [routerLink]="['/stage/detail', stage.id]">
           <span class="oi oi-zoom-in"></span>
