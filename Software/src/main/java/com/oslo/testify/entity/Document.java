@@ -1,5 +1,6 @@
 package com.oslo.testify.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.sql.Blob;
 
@@ -13,6 +14,7 @@ public class Document {
 
   @ManyToOne
   @JoinColumn(name = "stage_id", nullable = false)
+  @JsonBackReference(value = "stage-documents")
   private Stage stage;
 
   @Column(name = "name", nullable = false)
