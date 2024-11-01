@@ -191,9 +191,9 @@ initializeForm(): void {
   setSteps(steps: Step[]): void {
     steps.forEach(step => {
       this.steps.push(this.fb.group({
-        order: [step.orden],
+        orden: [step.orden],
         description: [step.description, Validators.required],
-        comment: [],
+        comment: [step.comment],
         status: [step.status]
       }));
     });
