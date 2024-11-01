@@ -6,6 +6,12 @@ import { ProjectSelectComponent } from './features/project/project-select/projec
 import { IterationComponent } from './features/iteration/iteration.component';
 import { UpdateIterationComponent } from './features/iteration/update-iteration/update-iteration.component';
 
+import { StageComponent } from './features/stage/stage.component';
+import { UpdateStageComponent } from './features/stage/update-stage/update-stage.component';
+import { StageDetailComponent } from './features/stage/stage-detail/stage-detail.component';
+import { TesterStageComponent } from './features/stage/tester-stage/tester-stage.component';
+import { TestStageComponent } from './features/stage/test-stage/test-stage.component';
+
 import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { AuthGoogleComponent } from './auth-google/auth-google.component';
 import { UserComponent } from './features/user/user.component';
@@ -20,6 +26,13 @@ import { UpdatePermissionComponent } from './features/permission/update-permissi
 import { RolePermissionComponent } from './features/role-permission/role-permission.component';
 import { UpdateRolePermissionComponent } from './features/role-permission/update-role-permission/update-role-permission.component';
 
+import { CategoryComponent } from './features/category/category.component';
+import { UpdateCategoryComponent } from './features/category/update-category/update-category.component';
+import { TypeComponent } from './features/type/type.component';
+import { UpdateTypeComponent } from './features/type/update-type/update-type.component';
+import { SubTypeComponent } from './features/sub-type/sub-type.component';
+import { UpdateSubTypeComponent } from './features/sub-type/update-sub-type/update-sub-type.component';
+
 export const routes: Routes = [
 { path: 'project', component: ProjectComponent },
 { path: 'project/create', component: UpdateProjectComponent },
@@ -30,6 +43,28 @@ export const routes: Routes = [
 { path: 'iteration/create', component: UpdateIterationComponent },
 { path: 'iteration/:id', component: IterationComponent },
 { path: 'iteration/edit/:id', component: UpdateIterationComponent },
+//
+{ path: 'stage', component: StageComponent },
+{ path: 'stage/create', component: UpdateStageComponent },
+{ path: 'stage/:id', component: StageComponent },
+{ path: 'stage/edit/:id', component: UpdateStageComponent },
+{ path: 'stage/test/edit/:id', component: TestStageComponent },
+{ path: 'stage/detail/:id', component: StageDetailComponent },
+//
+{ path: 'category', component: CategoryComponent },
+{ path: 'category/create', component: UpdateCategoryComponent },
+{ path: 'category/:id', component: CategoryComponent },
+{ path: 'category/edit/:id', component: UpdateCategoryComponent },
+//
+{ path: 'type', component: TypeComponent },
+{ path: 'type/create', component: UpdateTypeComponent },
+{ path: 'type/:id', component: TypeComponent },
+{ path: 'type/edit/:id', component: UpdateTypeComponent },
+//
+{ path: 'subType', component: SubTypeComponent },
+{ path: 'subType/create', component: UpdateSubTypeComponent },
+{ path: 'subType/:id', component: SubTypeComponent },
+{ path: 'subType/edit/:id', component: UpdateSubTypeComponent },
 //
 { path: 'role', component: RoleComponent },
 { path: 'role/create', component: UpdateRoleComponent },
@@ -58,5 +93,6 @@ export const routes: Routes = [
 //
 { path: 'dashboard', component: DashboardComponent },
 { path: 'projectSelect', component: ProjectSelectComponent },
+{ path: 'tester', component: TesterStageComponent },
 { path: '', component: AuthGoogleComponent, pathMatch: 'full' }
 ];
