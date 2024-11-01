@@ -53,11 +53,11 @@ public class Stage {
   private LocalDate dateRequired;
 
   @Column(name = "tested_from")
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
   private LocalDateTime testedFrom;
 
   @Column(name = "tested_to")
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
   private LocalDateTime testedTo;
 
   @OneToMany(mappedBy = "stage", cascade = CascadeType.ALL, orphanRemoval = true)

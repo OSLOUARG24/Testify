@@ -173,7 +173,7 @@ selectDocument():void {
     }
     const stageData: Stage = this.stageForm.value;
     this.stageService.updateStage(this.stageId!, this.stageForm.value).subscribe(() => {
-      this.router.navigate(['/stage/test']);
+      this.router.navigate(['/tester']);
     });
   }
 
