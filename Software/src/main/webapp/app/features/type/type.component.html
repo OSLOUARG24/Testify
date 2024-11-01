@@ -9,8 +9,28 @@
         <button type="button" class="btn btn-success" [routerLink]="['/type/create']">
           <span class="oi oi-plus"></span> Nuevo Tipo de Escenario
         </button>
-        <button class="btn btn-danger float-right" [routerLink]="['/project']">Volver</button>
-      </p>
+        <button class="btn btn-danger float-right ml-2" [routerLink]="['/project']">Volver</button>
+
+      <button class="btn btn-secondary float-right ml-2" (click)="toggleSearch()">
+          @if (showSearch) {
+          <span class="oi oi-search"></span>
+          Ocultar Búsqueda
+          }
+          @if (!showSearch) {
+          <span class="oi oi-search"></span>
+          Buscar
+          }
+        </button>
+        </p>
+        @if(showSearch){
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar tipo por nombre"
+          (input)="applyFilter($event)"
+        />
+      </div>}
     <table class="table table-hover table-sm">
       <thead>
       <tr class="table-info">
@@ -20,7 +40,7 @@
       </thead>
       <tbody>
       <!-- Listar categorías -->
-      @for(type of types; track type.id){
+      @for(type of paginatedTypes; track type.id){
       <tr>
         <td>{{ type.name }}</td>
         <td>
@@ -47,6 +67,12 @@
       @if (types.length === 0){
       <p>No hay Tipos de escenario disponibles.</p>
       }
+            <mat-paginator
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        (page)="onPageChange($event)">
+      </mat-paginator>
   </div>
   </div>
 </div>
