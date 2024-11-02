@@ -133,6 +133,20 @@
         <version>2.17.2</version>
       </dependency>
 
+      <!-- https://mvnrepository.com/artifact/com.itextpdf/itext-core -->
+      <dependency>
+        <groupId>com.itextpdf</groupId>
+        <artifactId>itext-core</artifactId>
+        <version>8.0.5</version>
+        <type>pom</type>
+      </dependency>
+
+      <dependency>
+        <groupId>org.jfree</groupId>
+        <artifactId>jfreechart</artifactId>
+        <version>1.5.3</version>
+      </dependency>
+
     </dependencies>
 
     <build>
