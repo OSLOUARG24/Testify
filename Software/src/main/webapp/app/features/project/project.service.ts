@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable,BehaviorSubject } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Project } from './project.model';
 
 @Injectable({
@@ -45,11 +45,27 @@ export class ProjectService {
 
   setSelectedProject(project: Project): void {
     this.selectedProjectSubject.next(project);
-    sessionStorage.setItem('project', JSON.stringify(project)); // También guardamos en SessionStorage
+    sessionStorage.setItem('project', JSON.stringify(project)); // Tambiï¿½n guardamos en SessionStorage
   }
 
   getSelectedProject(): Project | null {
     const project = sessionStorage.getItem('project');
     return project ? JSON.parse(project) : null;
+  }
+
+  exportPDF(projectId: number, includeStatus: boolean, includeStageDetail: boolean) {
+    const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Accept': 'application/pdf'
+        });
+    return this.http.post(this.apiUrl + '/project/export', null, {
+                                                               headers: headers,
+                                                               responseType: 'blob',
+                                                               params: {
+                                                                 projectId: projectId.toString(),
+                                                                 includeStatus: includeStatus.toString(),
+                                                                 includeStageDetail: includeStageDetail.toString()
+                                                               }
+                                                             });
   }
 }

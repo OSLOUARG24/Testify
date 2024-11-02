@@ -3,6 +3,8 @@ import { Routes } from '@angular/router';
 import { ProjectComponent } from './features/project/project.component';
 import { UpdateProjectComponent } from './features/project/update-project/update-project.component';
 import { ProjectSelectComponent } from './features/project/project-select/project-select.component';
+import { ExportProjectComponent } from './features/project/export-project/export-project.component';
+
 import { IterationComponent } from './features/iteration/iteration.component';
 import { UpdateIterationComponent } from './features/iteration/update-iteration/update-iteration.component';
 
@@ -38,6 +40,7 @@ export const routes: Routes = [
 { path: 'project/create', component: UpdateProjectComponent },
 { path: 'project/:id', component: ProjectComponent },
 { path: 'project/edit/:id', component: UpdateProjectComponent },
+{ path: 'project/export/:id', component: ExportProjectComponent },
 //
 { path: 'iteration', component: IterationComponent },
 { path: 'iteration/create', component: UpdateIterationComponent },
