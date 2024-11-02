@@ -84,4 +84,10 @@ public class StageController {
     stageService.deleteStage(id);
     return ResponseEntity.noContent().build();
   }
+
+  @GetMapping("/stages/project/{id}")
+  public ResponseEntity<List<Stage>> getStagesByProjectId(@PathVariable(value = "id", required = false) final Long projectId) {
+    List<Stage> stages = stageService.getStagesByProjectId(projectId);
+    return ResponseEntity.ok(stages);
+  }
 }

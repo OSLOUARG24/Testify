@@ -3,6 +3,8 @@ package com.oslo.testify.repository;
 import com.oslo.testify.entity.Stage;
 import com.oslo.testify.entity.Iteration;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,4 +17,7 @@ public interface StageRepository extends JpaRepository<Stage, Long> {
     List<Stage> findByTesterId(Long id);
 
     boolean existsByNameAndIteration(String name, Iteration iteration);
+
+    @Query("SELECT s FROM Stage s WHERE s.iteration.project.id = :projectId")
+    List<Stage> findByProjectId(@Param("projectId") Long projectId);
 }

@@ -200,4 +200,8 @@ public class StageService {
       stageRepository.deleteById(id);
     }
   }
+
+  public List<Stage> getStagesByProjectId(Long projectId) {
+    return stageRepository.findByProjectId(projectId);
+  }
 }
