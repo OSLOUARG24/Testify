@@ -41,7 +41,7 @@ ngOnInit(): void {
 
     this.projectService.exportPDF(this.projectId,
       this.projectForm.get('status')?.value ?? false,
-        this.projectForm.get('stageq')?.value ?? false
+        this.projectForm.get('stage')?.value ?? false
       ).subscribe(
           (response) => {
             const blob = new Blob([response], { type: 'application/pdf' });
