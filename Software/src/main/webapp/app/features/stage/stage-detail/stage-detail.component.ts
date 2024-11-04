@@ -5,6 +5,7 @@ import { StageService } from '../stage.service';
 import { Stage, Document } from '../stage.model';
 import { RoleAssigment } from '../../../features/role-assigment/role-assigment.model';
 import { User } from '../../../features/user/user.model';
+import { MIME_TYPES } from '../../../app.constants';
 
 @Component({
   selector: 'app-stage-detail',
@@ -60,17 +61,20 @@ export class StageDetailComponent implements OnInit {
     window.history.back();
   }
 
-  copyStage(): void {
-    if (this.stageId){
-      this.stageService.copyStage(this.stageId).subscribe(
-        (response) => {
-          console.log('Stage copiado exitosamente', response);
-        },
-        (error) => {
-          console.error('Error al copiar el stage', error);
-        });
-    }
-  }
+ copyStage(): void {
+     if (this.stageId) {
+       this.stageService.copyStage(this.stageId).subscribe(
+         (response) => {
+           console.log('Stage copiado exitosamente', response);
+           // Redirige al componente update-stage con el id del nuevo stage
+           this.router.navigate(['/stage/edit', response.id]);
+         },
+         (error) => {
+           console.error('Error al copiar el stage', error);
+         }
+       );
+     }
+   }
 
   getStorageValues() {
     const user = localStorage.getItem('user');
@@ -107,5 +111,44 @@ export class StageDetailComponent implements OnInit {
      return this.hasRole('TESTER');
   }
 
+  downloadFile(fileData: string | Blob, fileName: string) {
+      if (!fileData) {
+          alert("El archivo no está disponible para descargar.");
+          return;
+        }
+
+      let blob: Blob;
+
+      if (fileData instanceof Blob) {
+        blob = fileData;
+      } else {
+        // Obtener la extensión del archivo
+        const extension = fileName.split('.').pop()?.toLowerCase() || '';
+
+        // Buscar el tipo MIME en el mapeo; si no se encuentra, usa 'application/octet-stream'
+        const mimeType = MIME_TYPES[extension] || 'application/octet-stream';
+
+        // Si el archivo tiene prefijo `data:...;base64,`, eliminarlo
+        const base64Data = fileData.includes("base64,") ? fileData.split(",")[1] : fileData;
+
+        // Decodificar Base64
+        const byteCharacters = atob(base64Data);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+
+        // Crear Blob con el tipo MIME correcto
+        blob = new Blob([byteArray], { type: mimeType });
+      }
+      // Crear URL de descarga
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      window.URL.revokeObjectURL(url); // Limpiar URL temporal
+    }
 
 }

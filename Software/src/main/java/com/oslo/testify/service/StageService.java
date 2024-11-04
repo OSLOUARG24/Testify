@@ -5,12 +5,14 @@ import com.oslo.testify.repository.CheckListRepository;
 import com.oslo.testify.repository.DocumentRepository;
 import com.oslo.testify.repository.StageRepository;
 import com.oslo.testify.repository.StepRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StageService {
@@ -35,6 +37,10 @@ public class StageService {
     return stageRepository.findByPreviousStageIsNullAndIterationId(id);
   }
 
+  public List<Stage> getAllByIterationId(Long id) {
+    return stageRepository.findByIterationId(id);
+  }
+
   public List<Stage> getAllStagesByUserId(Long id) {
     return stageRepository.findByTesterId(id);
   }
@@ -50,56 +56,64 @@ public class StageService {
     return stageRepository.save(stage);
   }
 
-  public Stage copyStage(Long id) {
-    Optional<Stage> oldStage = stageRepository.findById(id);
-    if (oldStage.isPresent()){
-      Stage newStage = new Stage();
-      newStage.setName(oldStage.get().getName());
-      newStage.setNumber(oldStage.get().getNumber()+ 1);
-      newStage.setCategory(oldStage.get().getCategory());
-      newStage.setType(oldStage.get().getType());
-      newStage.setSubType(oldStage.get().getSubType());
-      newStage.setTester(oldStage.get().getTester());
-      newStage.setPriority(oldStage.get().getPriority());
-      newStage.setDateRequired(oldStage.get().getDateRequired());
-      newStage.setIteration(oldStage.get().getIteration());
-      newStage.setStatus(oldStage.get().getStatus());
-      newStage.setExpectedResult(oldStage.get().getExpectedResult());
-      newStage.setGotResult(oldStage.get().getGotResult());
-      newStage.setEstimatedTime(oldStage.get().getEstimatedTime());
+  @Transactional
+  public Stage copyStage(Long stageId) {
+    // Buscar el stage original
+    Stage originalStage = stageRepository.findById(stageId)
+      .orElseThrow(() -> new IllegalArgumentException("Stage no encontrado"));
 
-      Stage savedNewStage = stageRepository.save(newStage);
+    int stageCount = stageRepository.findAllByProjectId(originalStage.getIteration().getProject().getId()).size();
+    int newNumber = stageCount + 1;
 
-      List<CheckList> chs = new ArrayList<>();
-      for (CheckList checkList: oldStage.get().getCheckLists()) {
-        CheckList cl = new CheckList();
-        cl.setStage(checkList.getStage());
-        cl.setStatus(checkList.getStatus());
-        cl.setDescription(checkList.getDescription());
-        cl.setOrden(checkList.getOrden());
-        chs.add(cl);
-      }
-      newStage.setCheckLists(chs);
-      List<Step> sts = new ArrayList<>();
-      for (Step step: oldStage.get().getSteps()) {
-        Step st = new Step();
-        st.setStage(step.getStage());
-        st.setComment(step.getComment());
-        st.setDescription(step.getDescription());
-        st.setOrden(step.getOrden());
-        st.setStatus(step.getStatus());
-        sts.add(st);
-      }
-      newStage.setSteps(sts);
-      stageRepository.save(newStage);
-      Stage st = oldStage.get();
-      st.setPreviousStage(newStage);
-      stageRepository.save(st);
-      return newStage;
+    // Crear una copia del stage sin steps, checklists ni documentos
+    Stage copiedStage = new Stage();
+    copiedStage.setName("Copia de Escenario Nro" + originalStage.getNumber());
+    copiedStage.setNumber(newNumber);
+    copiedStage.setIteration(originalStage.getIteration());
+    copiedStage.setCategory(originalStage.getCategory());
+    copiedStage.setType(originalStage.getType());
+    copiedStage.setSubType(originalStage.getSubType());
+    copiedStage.setTester(originalStage.getTester());
+    copiedStage.setPriority(originalStage.getPriority());
+    copiedStage.setDateRequired(originalStage.getDateRequired());
+    copiedStage.setStatus(StageStatus.PENDIENTE); // Estado inicial
+    copiedStage.setEstimatedTime(originalStage.getEstimatedTime());
 
-    } else {
-      return null;
-    }
+    // Copiar los checklists sin el estado
+    copiedStage.setCheckLists(
+      originalStage.getCheckLists().stream()
+        .map(originalCheckList -> {
+          CheckList copiedCheckList = new CheckList();
+          copiedCheckList.setDescription(originalCheckList.getDescription());
+          copiedCheckList.setStage(copiedStage); // Asigna el nuevo stage como propietario
+          copiedCheckList.setStatus(false); // Estado inicial en false
+          return copiedCheckList;
+        })
+        .collect(Collectors.toList())
+    );
+
+    // Copiar los steps sin el estado
+    copiedStage.setSteps(
+      originalStage.getSteps().stream()
+        .map(originalStep -> {
+          Step copiedStep = new Step();
+          copiedStep.setDescription(originalStep.getDescription());
+          copiedStep.setStage(copiedStage); // Asigna el nuevo stage como propietario
+          copiedStep.setStatus(StageStatus.PENDIENTE); // Estado inicial
+          return copiedStep;
+        })
+        .collect(Collectors.toList())
+    );
+
+    // Guardar la copia en la base de datos
+    Stage savedCopiedStage = stageRepository.save(copiedStage);
+
+    // Asignar el nuevo stage como `previousStage` del original
+    originalStage.setPreviousStage(savedCopiedStage);
+    originalStage.setStatus(StageStatus.FINALIZADO);
+    stageRepository.save(originalStage);
+
+    return savedCopiedStage;
   }
 
   public Stage updateStage(Long id, Stage stageDetails) {
@@ -202,6 +216,7 @@ public class StageService {
   }
 
   public List<Stage> getStagesByProjectId(Long projectId) {
-    return stageRepository.findByProjectId(projectId);
+    return stageRepository.findAllByProjectId(projectId);
   }
+
 }

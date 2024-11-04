@@ -37,6 +37,11 @@ public class StageController {
     return stageService.getAllLastStages(id);
   }
 
+  @GetMapping("/stages/{id}")
+  public List<Stage> getAllByIterationId(@PathVariable(value = "id", required = false) final Long id) {
+    return stageService.getAllByIterationId(id);
+  }
+
   @GetMapping("/stages/user/{id}")
   public List<Stage> getAllStagesByUserId(@PathVariable(value = "id", required = false) final Long id) {
     return stageService.getAllStagesByUserId(id);
@@ -63,9 +68,10 @@ public class StageController {
   }
 
   @PostMapping("/stage/copy")
-  public ResponseEntity<Stage> copyStage(@RequestBody Map<String, Object> request) {
-    Long id = ((Number) request.get("id")).longValue();
-    return ResponseEntity.ok(stageService.copyStage(id));
+  public ResponseEntity<Stage> copyStage(@RequestBody Map<String, Long> request) {
+    Long stageId = request.get("id");
+    Stage copiedStage = stageService.copyStage(stageId);
+    return ResponseEntity.ok(copiedStage);
   }
 
   @PutMapping("/stage/{id}")
@@ -86,8 +92,7 @@ public class StageController {
   }
 
   @GetMapping("/stages/project/{id}")
-  public ResponseEntity<List<Stage>> getStagesByProjectId(@PathVariable(value = "id", required = false) final Long projectId) {
-    List<Stage> stages = stageService.getStagesByProjectId(projectId);
-    return ResponseEntity.ok(stages);
+  public List<Stage> getStagesByProjectId(@PathVariable(value = "id", required = false) final Long projectId) {
+    return stageService.getStagesByProjectId(projectId);
   }
 }

@@ -13,6 +13,7 @@ import { CategoryService } from '../../category/category.service';
 import { UserService } from '../../user/user.service';
 import { IterationService } from '../../iteration/iteration.service';
 import { CommonModule } from '@angular/common';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 @Component({
   selector: 'app-update-stage',
@@ -35,9 +36,12 @@ export class UpdateStageComponent implements OnInit {
   subTypes: SubType[] = [];
   categories: any[] = [];
   testers: any[] = [];
-  priorities = Object.keys(Priority);
-  statuses = Object.keys(StageStatus);
+  priorities = Object.values(Priority);
+  //statuses = Object.keys(StageStatus);
+  statuses = Object.values(StageStatus);
   projectId?: number;
+
+  allStages: Stage[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -63,6 +67,8 @@ export class UpdateStageComponent implements OnInit {
         this.loadStageData(this.stageId);
       } else {
         this.loadOptions();
+        this.setStageNumber();
+        this.stageForm.patchValue({ status: StageStatus.PENDIENTE });
       }
     });
   }
@@ -82,9 +88,9 @@ initializeForm(): void {
           checkLists: this.fb.array([]),
           status: [null, Validators.required],
           comment: [''],
-          expectedResult: [''],
+          expectedResult: [null, Validators.required],
           gotResult: [''],
-          estimatedTime: ['']
+          estimatedTime: [null, Validators.required]
         });
   }
 
@@ -133,7 +139,10 @@ initializeForm(): void {
      this.userService.getUsersByRole(this.projectId!).subscribe(testers => this.testers = testers);
      const Iid = sessionStorage.getItem('Iid');
      if (Iid != null){
-       this.iterationService.getIterationById(+Iid).subscribe(iteration => this.iterations!.push(iteration));
+       this.iterationService.getIterationById(+Iid).subscribe(iteration => {
+                                                                    this.stageForm.patchValue({ iteration: iteration });
+                                                                    this.iterations.push(iteration); // Añade la iteración a la lista de iteraciones si no está cargada
+                                                                  });
      } else {
        this.iterationService.getIterationsByProjectId(this.projectId!).subscribe(iterations => this.iterations = iterations);
      }
@@ -200,6 +209,7 @@ initializeForm(): void {
   }
 
 onSubmit(): void {
+
     if (this.stageForm.invalid) {
       return;
     }
@@ -236,4 +246,44 @@ onSubmit(): void {
     cancel(): void {
       this.router.navigate(['/stage']);
     }
+
+  setStageNumber(): void {
+      if (this.projectId) {
+        this.stageService.getStagesByProjectId(this.projectId).subscribe((data: Stage[]) => {
+         this.allStages = data;
+         this.stageForm.patchValue({ number: this.allStages.length + 1 });
+        });
+      }
+    }
+
+  getStatusDescription(status: StageStatus): string {
+      switch (status) {
+        case StageStatus.PENDIENTE:
+          return 'Pendiente';
+        case StageStatus.APROBADO:
+          return 'Aprobado';
+        case StageStatus.ERROR:
+          return 'Error';
+        case StageStatus.FINALIZADO:
+          return 'Finaliado';
+        default:
+          return '';
+      }
+    }
+
+  getPriorityDescription(priority: Priority): string {
+        switch (priority) {
+          case Priority.BAJO:
+            return 'Bajo';
+          case Priority.MEDIO:
+            return 'Medio';
+          case Priority.ALTO:
+            return 'Alto';
+          case Priority.URGENTE:
+            return 'Urgente';
+          default:
+            return '';
+        }
+      }
+
 }

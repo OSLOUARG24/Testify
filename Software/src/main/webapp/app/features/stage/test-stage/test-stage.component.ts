@@ -4,6 +4,7 @@ import { StageService } from '../stage.service';
 import { Stage, StageStatus, CheckList, Step, Document } from '../stage.model';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import { MIME_TYPES } from '../../../app.constants';
 
 @Component({
   selector: 'app-test-stage',
@@ -162,7 +163,8 @@ selectDocument():void {
   setStatus(index: number, status: string): void {
     const step = this.steps.at(index);
     if (step) {
-      step.get('status')?.setValue(status);
+      const currentStatus = step.get('status')?.value;
+          step.patchValue({ status: currentStatus === status ? 'PENDIENTE' : status });
     }
   }
 
@@ -225,6 +227,44 @@ selectDocument():void {
       event.dataTransfer.clearData();
     }
   }
+
+  downloadFile(fileData: string, fileName: string) {
+    if (!fileData) {
+        alert("El archivo no está disponible para descargar.");
+        return;
+      }
+    console.log("File Data:", fileData);
+    console.log("File Name:", fileName);
+    // Obtener la extensión del archivo
+    const extension = fileName.split('.').pop()?.toLowerCase() || '';
+
+    // Buscar el tipo MIME en el mapeo; si no se encuentra, usa 'application/octet-stream'
+    const mimeType = MIME_TYPES[extension] || 'application/octet-stream';
+
+    // Si el archivo tiene prefijo `data:...;base64,`, eliminarlo
+    const base64Data = fileData.includes("base64,") ? fileData.split(",")[1] : fileData;
+
+    // Decodificar Base64
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+
+    // Crear Blob con el tipo MIME correcto
+    const blob = new Blob([byteArray], { type: mimeType });
+
+    // Crear URL de descarga
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    window.URL.revokeObjectURL(url); // Limpiar URL temporal
+  }
+
+
 
   processFile(file: File): void {
     const reader = new FileReader();

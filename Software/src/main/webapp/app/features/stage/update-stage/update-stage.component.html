@@ -22,7 +22,7 @@
         <div class="col-md-2">
           <div class="form-group">
             <label for="number">Numero</label>
-            <input id="number" formControlName="number" type="text" class="form-control"
+            <input id="number" formControlName="number" type="number" class="form-control" readonly
                    [ngClass]="{'is-invalid': stageForm.get('number')?.invalid && stageForm.get('number')?.touched}"/>
             @if (stageForm.get('number')?.invalid && stageForm.get('number')?.touched) {
             <div class="error">
@@ -42,11 +42,11 @@
   </div>
   <div class="form-group">
   <label for="category">Categoria</label>
-  <select id="category" formControlName="category" class="form-select">
-    @for (category of categories; track category.id) {
-    <option [ngValue]="category">{{ category.name }}</option>
-    }
-  </select>
+    <select id="category" formControlName="category" class="form-select">
+      @for (category of categories; track category.id) {
+      <option [ngValue]="category">{{ category.name }}</option>
+      }
+    </select>
   </div>
       <div class="row mb-3">
         <div class="col-md-6">
@@ -84,18 +84,18 @@
   <label for="priority">Prioridad</label>
   <select id="priority" formControlName="priority" class="form-select">
     @for (priority of priorities ; track priority) {
-    <option [ngValue]="priority">{{ priority }}</option>
+    <option [ngValue]="priority">{{ getPriorityDescription(priority) }}</option>
     }
   </select>
   </div>
         </div>
         <div class="col-md-4">
   <div class="form-group">
-    <label for="dateRequired">Fecha Requerido</label>
-    <input id="dateRequired" formControlName="dateRequired" type="date" class="form-control" />
+    <label for="dateRequired">Fecha Requerido *</label>
+    <input id="dateRequired" formControlName="dateRequired" type="date" class="form-control"/>
     @if (stageForm.get('dateRequired')?.invalid && stageForm.get('dateRequired')?.touched) {
     <div class="text-danger">
-      La fecha Requerida es obligatoria.
+      La fecha Requerida es obligatoria y debe ser mayor o igual a la fecha actual.
     </div>
     }
   </div>
@@ -106,7 +106,7 @@
   <label for="status">Estado </label>
   <select id="status" formControlName="status" class="form-select">
     @for (status of statuses; track status) {
-    <option [ngValue]="status">{{ status }}</option>
+    <option [ngValue]="status">{{ getStatusDescription(status) }}</option>
     }
   </select>
 
@@ -116,8 +116,8 @@
   <div formArrayName="checkLists">
     <div *ngFor="let checkList of checkLists.controls; let i = index" [formGroupName]="i">
       <div class="form-check">
-        <div class="row mb-3">
-          <div class="col-md-2">
+        <div class="row mb-3 d-flex align-items-center">
+          <div class="col-md-2  d-flex justify-content-center">
           <input class="form-check mr-2" type="checkbox" formControlName="status">
           </div>
             <div class="col-md-9">
@@ -139,6 +139,7 @@
   </button>
     </div>
   </div>
+
   <div class="form-group">
     <div class="row mb-3">
       <div class="col-md-2">
@@ -155,8 +156,8 @@
   <div formArrayName="steps">
     <div *ngFor="let step of steps.controls; let i = index" [formGroupName]="i">
       <div class="form-check">
-        <div class="row mb-3">
-          <div class="col-md-2">
+        <div class="row mb-3 d-flex align-items-center">
+          <div class="col-md-2  d-flex justify-content-center">
            {{i + 1}}
           </div>
           <div class="col-md-5">
@@ -184,7 +185,7 @@
       <div class="row mb-3">
         <div class="col-md-12">
   <div class="form-group">
-    <label for="expectedResult">Resultado Esperado</label>
+    <label for="expectedResult">Resultado Esperado *</label>
     <textarea id="expectedResult" formControlName="expectedResult" type="text" class="form-control" rows="5"
            placeholder="Ingresa el Resultado Esperado"
            [ngClass]="{'is-invalid': stageForm.get('expectedResult')?.invalid && stageForm.get('expectedResult')?.touched}">
@@ -197,7 +198,7 @@
   </div>
         </div>
       </div>
-      <div class="row mb-3">
+      <!--<div class="row mb-3">
       <div class="col-md-12">
         <div class="form-group">
           <label for="gotResult">Resultado Obtenido</label>
@@ -212,12 +213,12 @@
           }
         </div>
       </div>
-      </div>
+      </div>-->
       <div class="row mb-3">
         <div class="col-md-12">
   <div class="form-group">
-    <label for="estimatedTime">Tiempo Estimado</label>
-    <input id="estimatedTime" formControlName="estimatedTime" type="text" class="form-control"
+    <label for="estimatedTime">Tiempo Estimado *</label>
+    <input id="estimatedTime" formControlName="estimatedTime" type="number" class="form-control"
            placeholder="Ingresa el Tiempo estimado en horas"
            [ngClass]="{'is-invalid': stageForm.get('estimatedTime')?.invalid && stageForm.get('estimatedTime')?.touched}"/>
     @if (stageForm.get('estimatedTime')?.invalid && stageForm.get('estimatedTime')?.touched) {
@@ -242,7 +243,6 @@
 
 
     </div>
-  </div>
   <div class="card-footer">
 
     <div class="form-group d-flex justify-content-end">
@@ -256,6 +256,8 @@
       </button>
     </div>
   </div>
+  </div>
+
 </form>
   @if (errorMessage){
   <div class="text-danger">

@@ -17,9 +17,14 @@ export class StageService {
     return this.http.get<Stage[]>(`${this.apiUrl}/stages/no-previous/${id}`);
   }
 
+  getStagesbyIterationId(id: number): Observable<Stage[]> {
+    return this.http.get<Stage[]>(`${this.apiUrl}/stages/${id}`);
+  }
+
   getStages(): Observable<Stage[]> {
       return this.http.get<Stage[]>(`${this.apiUrl}/stages`);
   }
+
 
   getHistoryStages(id: number): Observable<Stage[]> {
         return this.http.get<Stage[]>(`${this.apiUrl}/stages/hist/${id}`);
@@ -88,6 +93,10 @@ export class StageService {
   // Eliminar un proyecto por ID
   deleteStage(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/stage/${id}`);
+  }
+
+getStagesByProjectId(id: number) {
+    return this.http.get<Stage[]>(`${this.apiUrl}/stages/project/${id}`);
   }
 
 }

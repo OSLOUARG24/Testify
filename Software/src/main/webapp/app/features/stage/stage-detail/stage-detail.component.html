@@ -97,10 +97,10 @@
           <div class="row mb-3">
             <div class="col-md-2">
               @if (checkList.status){
-              <span class="oi oi-check"></span>
+              <span class="oi oi-check" style="color: green;"></span>
               }
               @if (!checkList.status) {
-              <span class="oi oi-x"></span>
+              <span class="oi oi-question-mark" style="color: blue;"></span>
               }
             </div>
             <div class="col-md-10">
@@ -142,19 +142,13 @@
           </div>
           <div class="col-md-2">
             @if (step.status === 'APROBADO'){
-            <button class="btn-status btn-success">
-              <span class="oi oi-check"></span>
-            </button>
+            <span class="oi oi-check" style="color: green;"></span>
             }
             @if (step.status  === 'ERROR') {
-            <button class="btn-status btn-error">
-              <span class="oi oi-x"></span>
-            </button>
+            <span class="oi oi-x" style="color: red;"></span>
             }
             @if (step.status  === 'PENDIENTE') {
-            <button class="btn-status btn-pending">
-              <span class="oi oi-question-mark"></span>
-            </button>
+            <span class="oi oi-question-mark" style="color: blue;"></span>
             }
           </div>
         </div>
@@ -222,9 +216,16 @@
       <ul>
         @for (document of stage.documents; track document.id) {
         <div class="row mb-3">
+          @if (document.name){
           <div class="col-md-3">
-              {{ document.name }}
+            <button
+              type="button"
+              class="btn btn-link"
+              (click)="downloadFile(document.document, document.name)">
+              {{ document.name || 'Descargar archivo' }}
+            </button>
           </div>
+          }
           <div class="col-md-9">
             <h5>{{ document.description }}</h5>
           </div>

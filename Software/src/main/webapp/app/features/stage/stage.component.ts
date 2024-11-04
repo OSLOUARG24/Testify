@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StageService } from './stage.service';
 import { Stage, StageStatus } from './stage.model';
+import { Project } from '../project/project.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router, RouterOutlet, RouterLinkActive, RouterLink  } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -16,6 +17,7 @@ import { DeleteStageComponent } from './delete-stage/delete-stage.component';
 export class StageComponent implements OnInit {
   iterationId?: number;
   stages: Stage[] = [];
+  project?: Project;
 
   constructor(private stageService: StageService,
     private route: ActivatedRoute,
@@ -27,12 +29,21 @@ export class StageComponent implements OnInit {
   if (iterationIdParam){ sessionStorage.setItem('Iid',iterationIdParam);}
   else { iterationIdParam =  sessionStorage.getItem('Iid')!;}
   this.iterationId = iterationIdParam ? +iterationIdParam : undefined;
-    this.stageService.getStagesWithoutPrevious(this.iterationId!).subscribe(stages => {
+    this.stageService.getStagesbyIterationId(this.iterationId!).subscribe(stages => {
       this.stages = stages;
     });
   }
-  Cancel(): void {
-    window.history.back();
+
+  goBack(): void {
+    const project = sessionStorage.getItem('project');
+    if (project){
+      this.project = JSON.parse(project);
+      this.router.navigate(['/iteration',this.project!.id]);
+      }
+    else
+    {
+      this.router.navigate(['/iteration']);
+      }
   }
 
   getProgress(stage: any): number {
@@ -82,7 +93,7 @@ openDeleteModal(stage: any): void {
               }
 
               fetchStages(): void {
-                this.stageService.getStagesWithoutPrevious(this.iterationId!).subscribe(stages => {
+                this.stageService.getStagesbyIterationId(this.iterationId!).subscribe(stages => {
                   this.stages = stages;
                 });
               }

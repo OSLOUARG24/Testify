@@ -86,8 +86,8 @@
   <div formArrayName="checkLists">
     <div *ngFor="let checkList of checkLists.controls; let i = index" [formGroupName]="i">
       <div class="form-check">
-        <div class="row mb-3">
-          <div class="col-md-2">
+        <div class="row mb-3 d-flex align-items-center">
+          <div class="col-md-2  d-flex justify-content-center">
           <input class="form-check mr-2" type="checkbox" formControlName="status">
           </div>
             <div class="col-md-9">
@@ -114,8 +114,16 @@
   <div formArrayName="steps">
     <div *ngFor="let step of steps.controls; let i = index" [formGroupName]="i">
       <div class="form-check">
-        <div class="row mb-3">
-          <div class="col-md-2">
+        <div class="row mb-3 d-flex align-items-center">
+          <div class="col-md-1  d-flex justify-content-center">
+            @if(step.get('status')?.value === 'APROBADO'){
+            <span class="oi oi-check" style="color: green;"></span>
+            }
+            @if(step.get('status')?.value === 'ERROR'){
+            <span class="oi oi-x" style="color: red;"></span>
+            }
+          </div>
+          <div class="col-md-1  d-flex justify-content-center">
            {{i + 1}}
           </div>
           <div class="col-md-4">
@@ -235,9 +243,21 @@
               <div class="col-md-1">
                 {{i + 1}}
               </div>
+              @if (document.get('name')?.value){
+              <div class="col-md-5">
+                <button
+                  type="button"
+                  class="btn btn-link"
+                  (click)="downloadFile(document.get('document')?.value, document.get('name')?.value)">
+                  {{ document.get('name')?.value || 'Descargar archivo' }}
+                </button>
+              </div>
+              }
+              @if (!document.get('name')?.value){
               <div class="col-md-5">
                 <input type="file"  class="form-control-file" (change)="onFileSelected($event, i)" id="document" />
               </div>
+              }
               <div class="col-md-5">
                 <input class="form-control" formControlName="description" type="text" id="description" />
               </div>
