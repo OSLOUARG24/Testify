@@ -110,7 +110,6 @@ public class StageService {
 
     // Asignar el nuevo stage como `previousStage` del original
     originalStage.setPreviousStage(savedCopiedStage);
-    originalStage.setStatus(StageStatus.FINALIZADO);
     stageRepository.save(originalStage);
 
     return savedCopiedStage;
