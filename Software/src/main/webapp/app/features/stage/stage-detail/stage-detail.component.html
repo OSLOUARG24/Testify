@@ -72,7 +72,7 @@
         <div class="col-md-8">
           <div class="form-group">
             <p>Prioridad</p>
-            <h5><strong>{{ stage.priority }}</strong></h5>
+            <h5><strong>{{ getPriorityDescription(stage.priority!) }}</strong></h5>
           </div>
         </div>
         <div class="col-md-4">
@@ -86,7 +86,7 @@
         <div class="col-md-12">
           <div class="form-group">
             <p>Estado</p>
-            <h5><strong>{{ stage.status }}</strong></h5>
+            <h5><strong>{{ getStatusDescription(stage.status!) }}</strong></h5>
           </div>
         </div>
       </div>

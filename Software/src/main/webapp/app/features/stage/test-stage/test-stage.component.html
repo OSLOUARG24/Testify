@@ -75,7 +75,7 @@
   <label for="status">Estado </label>
   <select id="status" formControlName="status" class="form-select">
     @for (status of statuses; track status) {
-    <option [ngValue]="status">{{ status }}</option>
+    <option [ngValue]="status">{{ getStatusDescription(status) }}</option>
     }
   </select>
 
@@ -165,7 +165,7 @@
       <div class="row mb-3">
         <div class="col-md-12">
           <div class="form-group">
-            <label for="gotResult">Resultado Obtenido</label>
+            <label for="gotResult">Resultado Obtenido *</label>
             <textarea id="gotResult" formControlName="gotResult" type="text" class="form-control" rows="5"
                       placeholder="Ingresa el Resultado Obtenido"
                       [ngClass]="{'is-invalid': stageForm.get('gotResult')?.invalid && stageForm.get('gotResult')?.touched}">

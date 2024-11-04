@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet, RouterLinkActive, RouterLink  } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StageService } from '../stage.service';
-import { Stage, Document } from '../stage.model';
+import { Stage, Document, StageStatus, Priority } from '../stage.model';
 import { RoleAssigment } from '../../../features/role-assigment/role-assigment.model';
 import { User } from '../../../features/user/user.model';
 import { MIME_TYPES } from '../../../app.constants';
@@ -150,5 +150,25 @@ export class StageDetailComponent implements OnInit {
       a.click();
       window.URL.revokeObjectURL(url); // Limpiar URL temporal
     }
+
+    getStatusDescription(status: StageStatus): string {
+            const descriptions = {
+              [StageStatus.PENDIENTE]: 'Pendiente',
+              [StageStatus.APROBADO]: 'Aprobado',
+              [StageStatus.ERROR]: 'Error',
+              [StageStatus.FINALIZADO]: 'Finalizado',
+            };
+          return descriptions[status] || status;
+        }
+
+    getPriorityDescription(priority: Priority): string {
+            const priorities = {
+              [Priority.BAJO]: 'Bajo',
+              [Priority.MEDIO]: 'Medio',
+              [Priority.ALTO]: 'Alto',
+              [Priority.URGENTE]: 'Urgente',
+            };
+          return priorities[priority] || priority;
+        }
 
 }

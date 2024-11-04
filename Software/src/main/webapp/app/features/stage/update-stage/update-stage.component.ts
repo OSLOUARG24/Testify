@@ -180,7 +180,7 @@ initializeForm(): void {
   addStep(): void {
     const currentOrder = this.steps.length + 1;
     this.steps.push(this.fb.group({
-      order: [currentOrder],
+      orden: [currentOrder],
       description: ['', Validators.required],
       comment: [''],
       status: [StageStatus.PENDIENTE]
@@ -265,7 +265,7 @@ onSubmit(): void {
         case StageStatus.ERROR:
           return 'Error';
         case StageStatus.FINALIZADO:
-          return 'Finaliado';
+          return 'Finalizado';
         default:
           return '';
       }

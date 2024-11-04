@@ -18,7 +18,7 @@ export class TestStageComponent implements OnInit {
     stage!: Stage;
     stageId?: number;
     stageForm!: FormGroup;
-    statuses = Object.keys(StageStatus);
+    statuses = Object.values(StageStatus);
 
     constructor(
       private route: ActivatedRoute,
@@ -56,7 +56,7 @@ export class TestStageComponent implements OnInit {
             documents: this.fb.array([]),
             status: [null, Validators.required],
             comment: [''],
-            expectedResult: [''],
+            expectedResult: ['', Validators.required],
             gotResult: [''],
             estimatedTime: ['']
           });
@@ -136,7 +136,7 @@ export class TestStageComponent implements OnInit {
 
   addDocument(): void {
     this.documents.push(this.fb.group({
-      name: ['', Validators.required],
+      name: [''],
       description: ['', Validators.required],
       document: ['', Validators.required]
     }));
@@ -145,16 +145,13 @@ export class TestStageComponent implements OnInit {
   setDocuments(documents: Document[]): void {
     documents.forEach(document => {
       this.documents.push(this.fb.group({
-        description: [document.description, Validators.required],
+        description: [document.description],
         document: [document.document, Validators.required],
         name: [document.name, Validators.required]
       }));
     });
   }
 
-selectDocument():void {
-  alert("select document");
-}
 
   removeDocument(index: number): void {
     this.documents.removeAt(index);
@@ -206,25 +203,11 @@ selectDocument():void {
       reader.onload = () => {
         const fileContent = reader.result as string;
         this.documents.at(index).patchValue({
+          name: file.name,
           document: fileContent.split(',')[1] // Se guarda solo el contenido base64
         });
       };
       reader.readAsDataURL(file);
-    }
-  }
-
-  onDragOver(event: DragEvent): void {
-    event.preventDefault();
-  }
-
-  onDrop(event: DragEvent): void {
-    event.preventDefault();
-    if (event.dataTransfer && event.dataTransfer.files.length > 0) {
-      const files = event.dataTransfer.files;
-      for (let i = 0; i < files.length; i++) {
-        this.processFile(files[i]);
-      }
-      event.dataTransfer.clearData();
     }
   }
 
@@ -233,8 +216,6 @@ selectDocument():void {
         alert("El archivo no está disponible para descargar.");
         return;
       }
-    console.log("File Data:", fileData);
-    console.log("File Name:", fileName);
     // Obtener la extensión del archivo
     const extension = fileName.split('.').pop()?.toLowerCase() || '';
 
@@ -279,5 +260,20 @@ selectDocument():void {
     };
     reader.readAsDataURL(file);
   }
+
+getStatusDescription(status: StageStatus): string {
+      switch (status) {
+        case StageStatus.PENDIENTE:
+          return 'Pendiente';
+        case StageStatus.APROBADO:
+          return 'Aprobado';
+        case StageStatus.ERROR:
+          return 'Error';
+        case StageStatus.FINALIZADO:
+          return 'Finalizado';
+        default:
+          return '';
+      }
+    }
 
 }
