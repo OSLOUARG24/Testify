@@ -1,0 +1,7 @@
+/*
+ * Public API Surface of ng2-charts
+ */
+export * from './lib/ng-charts.provider';
+export * from './lib/base-chart.directive';
+export * from './lib/theme.service';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9saWJzL25nMi1jaGFydHMvc3JjL2luZGV4LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBOztHQUVHO0FBRUgsY0FBYywwQkFBMEIsQ0FBQztBQUN6QyxjQUFjLDRCQUE0QixDQUFDO0FBQzNDLGNBQWMscUJBQXFCLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyIvKlxuICogUHVibGljIEFQSSBTdXJmYWNlIG9mIG5nMi1jaGFydHNcbiAqL1xuXG5leHBvcnQgKiBmcm9tICcuL2xpYi9uZy1jaGFydHMucHJvdmlkZXInO1xuZXhwb3J0ICogZnJvbSAnLi9saWIvYmFzZS1jaGFydC5kaXJlY3RpdmUnO1xuZXhwb3J0ICogZnJvbSAnLi9saWIvdGhlbWUuc2VydmljZSc7XG4iXX0=
