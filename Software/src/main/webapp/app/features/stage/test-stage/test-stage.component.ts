@@ -137,7 +137,7 @@ export class TestStageComponent implements OnInit {
   addDocument(): void {
     this.documents.push(this.fb.group({
       name: [''],
-      description: ['', Validators.required],
+      description: ['',],
       document: ['', Validators.required]
     }));
   }
@@ -147,7 +147,7 @@ export class TestStageComponent implements OnInit {
       this.documents.push(this.fb.group({
         description: [document.description],
         document: [document.document, Validators.required],
-        name: [document.name, Validators.required]
+        name: [document.name]
       }));
     });
   }
@@ -166,7 +166,6 @@ export class TestStageComponent implements OnInit {
   }
 
   onSubmit(): void {
-           console.log(JSON.stringify(this.stageForm.value));
     if (this.stageForm.invalid) {
       return;
     }
@@ -199,6 +198,20 @@ export class TestStageComponent implements OnInit {
   onFileSelected(event: Event, index: number) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
+	  const maxSize = 1 * 1024 * 1024 * 1024; // 1 GB en bytes
+      const allowedTypes = ['image/png', 'application/pdf'];
+
+	  if (!allowedTypes.includes(file.type)) {
+            alert("Solo se permiten archivos PNG y PDF.");
+            return;
+		}
+
+		// Verificar el tamaño del archivo
+		if (file.size > maxSize) {
+			alert("El tamaño máximo permitido es de 1 GB.");
+			return;
+		}
+
       const reader = new FileReader();
       reader.onload = () => {
         const fileContent = reader.result as string;
