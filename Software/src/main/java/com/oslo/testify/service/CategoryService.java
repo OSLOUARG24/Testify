@@ -21,7 +21,10 @@ public class CategoryService {
     }
 
     public Category saveCategory(Category category) {
-        return categoryRepository.save(category);
+      if (categoryRepository.existsByName(category.getName())) {
+        throw new RuntimeException("Ya existe una categoria con este nombre");
+      }
+      return categoryRepository.save(category);
     }
 
     public Category getCategoryById(Long id) {
@@ -37,15 +40,18 @@ public class CategoryService {
     Optional<Category> existingCategory = categoryRepository.findById(id);
 
     if (existingCategory.isPresent()) {
+
+      if (categoryRepository.existsByNameAndIdNot(categoryDetails.getName(),id)) {
+        throw new RuntimeException("Ya existe una categoria con este nombre");
+      }
+
       Category category = existingCategory.get();
 
-      // Actualizar los campos del hito
       category.setName(categoryDetails.getName());
 
-      // Guardar el hito actualizado
       return categoryRepository.save(category);
     } else {
-      throw new ResourceNotFoundException("Category not found with id: " + id);
+      throw new ResourceNotFoundException("Categoria no encontrada con id: " + id);
     }
   }
 

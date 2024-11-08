@@ -1,8 +1,19 @@
-<app-navbar></app-navbar>
-@if (isAuthenticated) {
+
+<div class="d-flex flex-column min-vh-100">
+  <!-- Navbar -->
+  <app-navbar></app-navbar>
+
+  <!-- Contenido principal -->
+  <div class="flex-grow-1">
+    <!-- Mostrar el contenido según el estado de autenticación -->
+    @if (isAuthenticated) {
     <router-outlet></router-outlet>
-}
-@if (!isAuthenticated) {
+    }
+    @if (!isAuthenticated) {
     <app-auth-google></app-auth-google>
-}
-<app-footer></app-footer>
+    }
+  </div>
+
+  <!-- Footer -->
+  <app-footer class="bg-dark text-white text-center py-3"></app-footer>
+</div>

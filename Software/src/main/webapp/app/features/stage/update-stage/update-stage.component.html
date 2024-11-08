@@ -1,0 +1,267 @@
+<div class="container">
+<form [formGroup]="stageForm" (ngSubmit)="onSubmit()">
+  <div class="card">
+    <div class="card-header">
+      <h3>{{ isEditMode ? 'Editar' : 'Crear' }} Escenario de Prueba</h3>
+    </div>
+    <div class="card-body">
+      <div class="row mb-3">
+        <div class="col-md-10">
+          <div class="form-group">
+          <label for="name">Nombre</label>
+          <input id="name" formControlName="name" type="text" class="form-control"
+           placeholder="Ingresa el nombre"
+           [ngClass]="{'is-invalid': stageForm.get('name')?.invalid && stageForm.get('name')?.touched}"/>
+          @if (stageForm.get('name')?.invalid && stageForm.get('name')?.touched) {
+          <div class="error">
+            El nombre es requerido.
+          </div>
+          }
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <label for="number">Numero</label>
+            <input id="number" formControlName="number" type="number" class="form-control" readonly
+                   [ngClass]="{'is-invalid': stageForm.get('number')?.invalid && stageForm.get('number')?.touched}"/>
+            @if (stageForm.get('number')?.invalid && stageForm.get('number')?.touched) {
+            <div class="error">
+              El numero es requerido.
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+  <div class="form-group">
+  <label for="iteration">Iteracion</label>
+  <select id="iteration" formControlName="iteration" class="form-select">
+    @for(iteration of iterations; track iteration.id){
+      <option [ngValue]="iteration">{{ iteration.name }}</option>
+    }
+  </select>
+  </div>
+  <div class="form-group">
+  <label for="category">Categoria</label>
+    <select id="category" formControlName="category" class="form-select">
+      @for (category of categories; track category.id) {
+      <option [ngValue]="category">{{ category.name }}</option>
+      }
+    </select>
+  </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+  <div class="form-group">
+  <label for="type">Tipo</label>
+  <select id="type" formControlName="type" class="form-select">
+    @for (type of types; track type.id) {
+    <option [ngValue]="type">{{ type.name }}</option>
+    }
+  </select>
+  </div>
+        </div>
+        <div class="col-md-6">
+  <div class="form-group">
+  <label for="subType">Subtipo</label>
+  <select id="subType" formControlName="subType" class="form-select">
+    @for (subType of subTypes; track subType.id) {
+    <option [ngValue]="subType">{{ subType.name }}</option>
+    }
+  </select>
+  </div>
+        </div>
+      </div>
+  <div class="form-group">
+  <label for="tester">Tester</label>
+  <select id="tester" formControlName="tester" class="form-select">
+    @for (tester of testers; track tester.id) {
+    <option [ngValue]="tester">{{ tester.name }}</option>
+    }
+  </select>
+  </div>
+      <div class="row mb-3">
+        <div class="col-md-8">
+  <div class="form-group">
+  <label for="priority">Prioridad</label>
+  <select id="priority" formControlName="priority" class="form-select">
+    @for (priority of priorities ; track priority) {
+    <option [ngValue]="priority">{{ getPriorityDescription(priority) }}</option>
+    }
+  </select>
+  </div>
+        </div>
+        <div class="col-md-4">
+  <div class="form-group">
+    <label for="dateRequired">Fecha Requerido *</label>
+    <input id="dateRequired" formControlName="dateRequired" type="date" class="form-control"/>
+    @if (stageForm.get('dateRequired')?.invalid && stageForm.get('dateRequired')?.touched) {
+    <div class="text-danger">
+      La fecha Requerida es obligatoria y debe ser mayor o igual a la fecha actual.
+    </div>
+    }
+  </div>
+        </div>
+      </div>
+
+  <div class="form-group">
+  <label for="status">Estado </label>
+  <select id="status" formControlName="status" class="form-select">
+    @for (status of statuses; track status) {
+    <option [ngValue]="status">{{ getStatusDescription(status) }}</option>
+    }
+  </select>
+
+  </div>
+  <div class="form-group">
+  <label for="checkLists">CheckList</label>
+  <div formArrayName="checkLists">
+    <div *ngFor="let checkList of checkLists.controls; let i = index" [formGroupName]="i">
+      <div class="form-check">
+        <div class="row mb-3 d-flex align-items-center">
+          <div class="col-md-2  d-flex justify-content-center">
+          <input class="form-check mr-2" type="checkbox" formControlName="status">
+          </div>
+            <div class="col-md-9">
+          <input class="form-control" type="text" formControlName="description">
+            </div>
+          <div class="col-md-1">
+            <button type="button" class="btn btn-outline-danger" (click)="removeCheckList(i)">
+              <span class="oi oi-minus"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="d-flex justify-content-end mb-2">
+  <button type="button" class="btn btn-outline-success" (click)="addCheckList()">
+    <span class="oi oi-plus"></span>
+    Agregar
+  </button>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="row mb-3">
+      <div class="col-md-2">
+        <label for="steps">Pasos</label>
+      </div>
+      <div class="col-md-5">
+        <label for="steps">Nombre</label>
+      </div>
+      <div class="col-md-5">
+        <label for="steps">Comentario</label>
+      </div>
+    </div>
+
+  <div formArrayName="steps">
+    <div *ngFor="let step of steps.controls; let i = index" [formGroupName]="i">
+      <div class="form-check">
+        <div class="row mb-3 d-flex align-items-center">
+          <div class="col-md-2  d-flex justify-content-center">
+           {{i + 1}}
+          </div>
+          <div class="col-md-5">
+            <input class="form-control" type="text" formControlName="description">
+          </div>
+          <div class="col-md-4">
+            <input class="form-control" type="text" formControlName="comment">
+          </div>
+          <div class="col-md-1">
+            <button type="button" class="btn btn-outline-danger" (click)="removeStep(i)">
+              <span class="oi oi-minus"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="d-flex justify-content-end mb-2">
+  <button type="button" class="btn btn-outline-success" (click)="addStep()">
+    <span class="oi oi-plus"></span>
+    Agregar
+  </button>
+      </div>
+  </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+  <div class="form-group">
+    <label for="expectedResult">Resultado Esperado *</label>
+    <textarea id="expectedResult" formControlName="expectedResult" type="text" class="form-control" rows="5"
+           placeholder="Ingresa el Resultado Esperado"
+           [ngClass]="{'is-invalid': stageForm.get('expectedResult')?.invalid && stageForm.get('expectedResult')?.touched}">
+    </textarea>
+    @if (stageForm.get('expectedResult')?.invalid && stageForm.get('expectedResult')?.touched) {
+    <div class="error">
+      El Resultado Esperado es requerido.
+    </div>
+    }
+  </div>
+        </div>
+      </div>
+      <!--<div class="row mb-3">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="gotResult">Resultado Obtenido</label>
+          <textarea id="gotResult" formControlName="gotResult" type="text" class="form-control" rows="5"
+                    placeholder="Ingresa el Resultado Obtenido"
+                    [ngClass]="{'is-invalid': stageForm.get('gotResult')?.invalid && stageForm.get('gotResult')?.touched}">
+              </textarea>
+          @if (stageForm.get('gotResult')?.invalid && stageForm.get('gotResult')?.touched) {
+          <div class="error">
+            El Resultado Obtenido es requerido.
+          </div>
+          }
+        </div>
+      </div>
+      </div>-->
+      <div class="row mb-3">
+        <div class="col-md-12">
+  <div class="form-group">
+    <label for="estimatedTime">Tiempo Estimado *</label>
+    <input id="estimatedTime" formControlName="estimatedTime" type="number" class="form-control"
+           placeholder="Ingresa el Tiempo estimado en horas"
+           [ngClass]="{'is-invalid': stageForm.get('estimatedTime')?.invalid && stageForm.get('estimatedTime')?.touched}"/>
+    @if (stageForm.get('estimatedTime')?.invalid && stageForm.get('estimatedTime')?.touched) {
+    <div class="error">
+      El Tiempo estimado es requerido.
+    </div>
+    }
+  </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="comment">Comentarios</label>
+            <textarea id="comment" formControlName="comment" type="text" class="form-control" rows="5"
+                      placeholder="Ingresa un comentario">
+              </textarea>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+  <div class="card-footer">
+
+    <div class="form-group d-flex justify-content-end">
+      <button type="submit" class="btn btn-outline-success" [disabled]="stageForm.invalid">
+        <span class="oi oi-check"></span>
+        {{ isEditMode ? 'Actualizar' : 'Crear' }} Escenario
+      </button>
+      <button type="button" class="btn btn-outline-danger" (click)="cancel()">
+        <span class="oi oi-x"></span>
+        Cancelar
+      </button>
+    </div>
+  </div>
+  </div>
+
+</form>
+  @if (errorMessage){
+  <div class="text-danger">
+    {{ errorMessage }}
+  </div>
+  }
+</div>

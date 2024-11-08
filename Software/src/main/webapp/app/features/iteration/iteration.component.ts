@@ -17,10 +17,10 @@ import { DeleteIterationComponent } from './delete-iteration/delete-iteration.co
   styleUrls: ['./iteration.component.css']
 })
 export class IterationComponent implements OnInit {
-  iterations: Iteration[] = [];  // Array de iteraciones filtradas por el proyecto
-  isAdmin: boolean = false;  // Para controlar la visibilidad de los botones
+  iterations: Iteration[] = [];
+  isAdmin: boolean = false;
   project?: Project;
-  projectId?: number;  // Cambiado a number | undefined
+  projectId?: number;
 
   constructor(
     private iterationService: IterationService,
@@ -85,8 +85,12 @@ export class IterationComponent implements OnInit {
 	      }
 
 	      fetchIterations(): void {
-	        this.iterationService.getIterations().subscribe(iterations => {
-	          this.iterations = iterations;
-	        });
+        if (this.project){
+          this.getIterationsByProjectId(this.project!.id);
+        } else {
+          this.iterationService.getIterations().subscribe(iterations => {
+          	          this.iterations = iterations;
+          	        });
+          }
 	      }
 }

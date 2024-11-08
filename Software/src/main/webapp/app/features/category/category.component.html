@@ -1,0 +1,80 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h3>Categorías</h3>
+    </div>
+    <div class="card-body">
+      <p class="d-flex justify-content-end">
+        @if(user.admin) {
+          <button type="button" class="btn btn-success float-right ml-2" [routerLink]="['/category/create']">
+            <span class="oi oi-plus"></span> Nueva Categoría
+          </button>
+        }
+        <button class="btn btn-danger float-right ml-2" [routerLink]="['/project']">Volver</button>
+
+        <button class="btn btn-secondary float-right ml-2" (click)="toggleSearch()">
+          @if (showSearch) {
+          <span class="oi oi-search"></span>
+          Ocultar Búsqueda
+          }
+          @if (!showSearch) {
+          <span class="oi oi-search"></span>
+          Buscar
+          }
+        </button>
+      </p>
+      @if(showSearch){
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar categoría por nombre"
+          (input)="applyFilter($event)"
+        />
+      </div>}
+    <table class="table table-hover table-sm">
+      <table class="table table-hover table-sm">
+        <thead>
+          <tr class="table-info">
+            <th>Nombre</th>
+            <th>Opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(category of paginatedCategories; track category.id) {
+            <tr>
+              <td>{{ category.name }}</td>
+              <td>
+                <ng-container>
+                  @if(user.admin) {
+                    <a title="Modificar" [routerLink]="['/category/edit', category.id]">
+                      <button type="button" class="btn btn-outline-warning">
+                        <span class="oi oi-pencil"></span>
+                      </button>
+                    </a>
+                    <a title="Eliminar" mat-button color="warn" (click)="openDeleteModal(category)">
+                      <button type="button" class="btn btn-outline-danger">
+                        <span class="oi oi-trash"></span>
+                      </button>
+                    </a>
+                  }
+                </ng-container>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      @if (categories.length === 0) {
+        <p>No hay categorías disponibles.</p>
+      }
+
+      <mat-paginator
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        (page)="onPageChange($event)">
+      </mat-paginator>
+    </table>
+  </div>
+  </div>
+</div>

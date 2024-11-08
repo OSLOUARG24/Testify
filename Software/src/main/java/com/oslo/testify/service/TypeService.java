@@ -21,6 +21,9 @@ public class TypeService {
     }
 
     public Type saveType(Type type) {
+    	if (typeRepository.existsByName(type.getName())) {
+          throw new RuntimeException("Ya existe un tipo de Escenario con este nombre");
+        }
         return typeRepository.save(type);
     }
 
@@ -37,15 +40,15 @@ public class TypeService {
     Optional<Type> existingType = typeRepository.findById(id);
 
     if (existingType.isPresent()) {
+
+      if (typeRepository.existsByName(typeDetails.getName())) {
+        throw new RuntimeException("Ya existe un tipo de Escenario con este nombre");
+      }
       Type type = existingType.get();
-
-      // Actualizar los campos del hito
       type.setName(typeDetails.getName());
-
-      // Guardar el hito actualizado
       return typeRepository.save(type);
     } else {
-      throw new ResourceNotFoundException("Type not found with id: " + id);
+      throw new ResourceNotFoundException("Tipo no encontrado con id: " + id);
     }
   }
 

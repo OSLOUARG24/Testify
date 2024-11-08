@@ -61,18 +61,6 @@ public class RolePermissionController {
   @PutMapping("/rolePermission/{id}")
   public ResponseEntity<RolePermission> updateRolePermission(@PathVariable(value = "id", required = false) final Long id,
                                                              @RequestBody RolePermission rolePermissionDetails) {
-
-    // Buscamos el RolePermission existente
-    RolePermission existingRolePermission = rolePermissionService.findById(id)
-      .orElseThrow(() -> new ResourceNotFoundException("RolePermission no encontrado con id: " + id));
-
-    // Actualizamos los valores de los campos
-    existingRolePermission.setRole(rolePermissionDetails.getRole());
-    existingRolePermission.setPermission(rolePermissionDetails.getPermission());
-
-    // Guardamos la actualización
-    RolePermission updatedRolePermission = rolePermissionService.saveRolePermission(existingRolePermission);
-
-    return ResponseEntity.ok(updatedRolePermission);
+    return ResponseEntity.ok(rolePermissionService.updateRolePermission(id, rolePermissionDetails));
   }
 }

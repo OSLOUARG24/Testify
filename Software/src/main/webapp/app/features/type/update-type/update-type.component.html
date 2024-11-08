@@ -1,0 +1,37 @@
+<div class="container">
+  <form [formGroup]="typeForm" (ngSubmit)="onSubmit()">
+      <div class="card">
+        <div class="card-header">
+          <h3>{{ isEditMode ? 'Actualizar' : 'Crear' }} Tipo de Escenario</h3>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="name">Nombre *</label>
+            <input id="name" class="form-control" formControlName="name" type="text" placeholder="Ingresa el nombre" />
+            @if(typeForm.get('name')?.invalid && typeForm.get('name')?.touched){
+            <div class="error">
+              El nombre es obligatorio.
+            </div>
+            }
+          </div>
+        </div>
+    <div class="card-footer">
+      <div class="form-group d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary" [disabled]="typeForm.invalid">
+          <span class="oi oi-check"></span>
+          {{ isEditMode ? 'Actualizar' : 'Crear' }} Tipo de Escenario
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="cancel()">
+        <span class="oi oi-x"></span>
+        Cancelar
+        </button>
+      </div>
+    </div>
+      </div>
+  </form>
+  @if (errorMessage){
+  <div class="text-danger">
+    {{ errorMessage }}
+  </div>
+  }
+</div>

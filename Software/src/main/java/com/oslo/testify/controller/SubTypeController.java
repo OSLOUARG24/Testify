@@ -27,10 +27,7 @@ public class SubTypeController {
       return subTypes;
     }
 
-    @PostMapping(value = "/subType", consumes = "application/json", produces = "application/json")
-    public SubType createSubType(@RequestBody SubType subType) {
-        return subTypeService.saveSubType(subType);
-    }
+
 
     @GetMapping("/subType/{id}")
     public SubType getSubTypeById(@PathVariable(value = "id", required = false) final  Long id) {
@@ -42,14 +39,28 @@ public class SubTypeController {
       return subTypeService.getSubTypesByTypeId(id);
     }
 
-    @DeleteMapping("/subType/{id}")
-    public void deleteRole(@PathVariable(value = "id", required = false) final  Long id) {
-      subTypeService.deleteSubType(id);
+    @PostMapping(value = "/subType", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<?> createSubType(@RequestBody SubType subType) {
+      try {
+        subTypeService.saveSubType(subType);
+        return ResponseEntity.ok(subType);
+      } catch (RuntimeException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+      }
     }
 
     @PutMapping("/subType/{id}")
-    public ResponseEntity<SubType> updateSubType(@PathVariable(value = "id", required = false) final Long id, @RequestBody SubType subTypeDetails) {
+    public ResponseEntity<?> updateSubType(@PathVariable(value = "id", required = false) final Long id, @RequestBody SubType subTypeDetails) {
+      try {
         SubType updatedSubType = subTypeService.updateSubType(id, subTypeDetails);
         return ResponseEntity.ok(updatedSubType);
+      } catch (RuntimeException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+      }
+    }
+
+    @DeleteMapping("/subType/{id}")
+    public void deleteSubType(@PathVariable(value = "id", required = false) final  Long id) {
+      subTypeService.deleteSubType(id);
     }
 }

@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, throwError } from 'rxjs';
 import { Iteration } from './iteration.model';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IterationService {
 
-  private apiUrl = 'http://localhost:8080/api';  // URL de tu API
+  private apiUrl = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) {}
 
@@ -24,14 +25,21 @@ export class IterationService {
     return this.http.get<Iteration>(`${this.apiUrl}/iteration/${iterationId}`);
   }
 
-    // Crear una nueva iteración
-    createIteration(iteration: Iteration): Observable<Iteration> {
-      return this.http.post<Iteration>(this.apiUrl + '/iteration', iteration);
-    }
+    createIteration(iteration: Iteration): Observable<any> {
+        return this.http.post(this.apiUrl + '/iteration', iteration).pipe(
+          catchError(error => {
+            return throwError(() => new Error(error.error || 'Error creating iteration'));
+          })
+        );
+      }
 
     // Actualizar una iteración existente
-    updateIteration(id: number, iteration: Iteration): Observable<void> {
-      return this.http.put<void>(`${this.apiUrl}/iteration/${id}`, iteration);
+    updateIteration(id: number, iteration: Iteration): Observable<any> {
+      return this.http.put(`${this.apiUrl}/iteration/${id}`, iteration).pipe(
+         catchError(error => {
+           return throwError(() => new Error(error.error || 'Error updating iteration'));
+         })
+       );
     }
 
   deleteIteration(iterationId: number): Observable<string> {

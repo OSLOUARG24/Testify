@@ -20,7 +20,7 @@ export class UpdateIterationComponent implements OnInit {
   isEditMode: boolean = false;
   projectFromSession: Project | null = null;  // Para almacenar el proyecto del sessionStorage
   projects: Project[] = [];  // Lista de proyectos en caso de que el proyecto no esté en sessionStorage
-
+  errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -112,28 +112,28 @@ export class UpdateIterationComponent implements OnInit {
 
   // Crear una nueva iteración
   createIteration(iteration: Iteration): void {
-    this.iterationService.createIteration(iteration).subscribe(
-      () => {
-        console.log('Iteración creada exitosamente');
-        this.router.navigate(['/iteration']);
-      },
-      (error) => {
-        console.error('Error al crear la iteración', error);
-      }
-    );
+    this.iterationService.createIteration(iteration).subscribe({
+        next: (response) => {
+          console.log('Iteración creada exitosamente');
+          this.router.navigate(['/iteration']);
+        },
+        error: (error) => {
+          this.errorMessage = error.message;
+        }
+      });
   }
 
   // Actualizar una iteración existente
   updateIteration(id: number, iteration: Iteration): void {
-    this.iterationService.updateIteration(id, iteration).subscribe(
-      () => {
+    this.iterationService.updateIteration(id, iteration).subscribe({
+      next: (response) => {
         console.log('Iteración actualizada exitosamente');
         this.router.navigate(['/iteration']);
       },
-      (error) => {
-        console.error('Error al actualizar la iteración', error);
+      error: (error) => {
+        this.errorMessage = error.message;
       }
-    );
+    });
   }
 
   endDateAfterStartDate(startDateKey: string, endDateKey: string) {

@@ -22,7 +22,10 @@ public class SubTypeService {
     }
 
     public SubType saveSubType(SubType subType) {
-        return subTypeRepository.save(subType);
+    	if (subTypeRepository.existsByName(subType.getName())) {
+        throw new RuntimeException("Ya existe un subtipo con este nombre");
+      }
+      return subTypeRepository.save(subType);
     }
 
     public SubType getSubTypeById(Long id) {
@@ -38,15 +41,16 @@ public class SubTypeService {
     Optional<SubType> existingSubType = subTypeRepository.findById(id);
 
     if (existingSubType.isPresent()) {
+
+      if (subTypeRepository.existsByNameAndIdNot(subTypeDetails.getName(),id)) {
+        throw new RuntimeException("Ya existe un subtipo con este nombre");
+      }
+
       SubType subType = existingSubType.get();
-
-      // Actualizar los campos del hito
       subType.setName(subTypeDetails.getName());
-
-      // Guardar el hito actualizado
       return subTypeRepository.save(subType);
     } else {
-      throw new ResourceNotFoundException("SubType not found with id: " + id);
+      throw new ResourceNotFoundException("Subtipo no encontrado con id: " + id);
     }
   }
 

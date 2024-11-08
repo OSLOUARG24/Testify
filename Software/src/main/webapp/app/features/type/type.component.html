@@ -1,0 +1,78 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h3>Tipos de Escenario</h3>
+    </div>
+    <div class="card-body">
+      <p class="d-flex justify-content-end">
+        <!-- Si el usuario es administrador, se muestra el botón para agregar una nueva categoría -->
+        <button type="button" class="btn btn-success" [routerLink]="['/type/create']">
+          <span class="oi oi-plus"></span> Nuevo Tipo de Escenario
+        </button>
+        <button class="btn btn-danger float-right ml-2" [routerLink]="['/project']">Volver</button>
+
+      <button class="btn btn-secondary float-right ml-2" (click)="toggleSearch()">
+          @if (showSearch) {
+          <span class="oi oi-search"></span>
+          Ocultar Búsqueda
+          }
+          @if (!showSearch) {
+          <span class="oi oi-search"></span>
+          Buscar
+          }
+        </button>
+        </p>
+        @if(showSearch){
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar tipo por nombre"
+          (input)="applyFilter($event)"
+        />
+      </div>}
+    <table class="table table-hover table-sm">
+      <thead>
+      <tr class="table-info">
+        <th>Nombre</th>
+        <th>Opciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Listar categorías -->
+      @for(type of paginatedTypes; track type.id){
+      <tr>
+        <td>{{ type.name }}</td>
+        <td>
+          <!-- Botones de editar y eliminar visibles solo si el usuario es admin o el proyecto coincide con el de SessionStorage -->
+          <ng-container>
+            <a title="Subtipos" class="btn btn-outline-info" [routerLink]="['/subType', type.id]">
+              <span class="oi oi-zoom-in"></span>
+            </a>
+            <a title="Modificar" [routerLink]="['/type/edit', type.id]">
+              <button type="button" class="btn btn-outline-warning">
+                <span class="oi oi-pencil"></span>
+              </button>
+            </a>
+            <a title="Eliminar" mat-button color="warn" (click)="openDeleteModal(type)">
+            <button type="button" class="btn btn-outline-danger">
+              <span class="oi oi-trash"></span>
+            </button></a>
+          </ng-container>
+        </td>
+      </tr>
+      }
+      </tbody>
+    </table>
+      @if (types.length === 0){
+      <p>No hay Tipos de escenario disponibles.</p>
+      }
+            <mat-paginator
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        (page)="onPageChange($event)">
+      </mat-paginator>
+  </div>
+  </div>
+</div>

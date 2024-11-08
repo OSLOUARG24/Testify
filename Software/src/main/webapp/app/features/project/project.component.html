@@ -23,11 +23,11 @@
     <tbody>
     @for ( project of projects; track project.id) {
     <tr>
-      <td>{{ project.name || 'Sin nombre' }}</td>
-      <td>{{ project.rateApproval || 'N/A' }}</td>
+      <td>{{ project.name || '' }}</td>
+      <td>{{ project.rateApproval || '' }}</td>
       <td>{{ getStatusDescription(project.status!) }}</td>
       <td>
-        <a title="Export" class="btn btn-outline-info" [routerLink]="['/iteration', project.id]">
+        <a title="Export" class="btn btn-outline-info" [routerLink]="['/project/export', project.id]">
           <span class="oi oi-file"></span>
         </a>
         <a title="Iteraciones" class="btn btn-outline-info" [routerLink]="['/iteration', project.id]">
@@ -51,5 +51,14 @@
     <p>No hay proyectos disponibles.</p>
   }
   </div>
+    <div style="display: block; width: 50%; margin: auto;">
+      <h2>Distribución de escenarios por Estado</h2>
+      <canvas baseChart
+              [data]="pieChartData"
+              [labels]="pieChartLabels"
+              [options]="pieChartOptions"
+              [type]="pieChartType">
+      </canvas>
+    </div>
   </div>
 </div>

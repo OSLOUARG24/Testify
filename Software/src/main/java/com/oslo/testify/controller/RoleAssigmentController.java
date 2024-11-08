@@ -42,7 +42,7 @@ public class RoleAssigmentController {
     }
 
     @PostMapping("/roleAssigment")
-    public RoleAssigment createRole(@RequestBody RoleAssigment roleAssigment) {
+    public RoleAssigment createRoleAssigment(@RequestBody RoleAssigment roleAssigment) {
         return roleAssigmentService.saveRoleAssigment(roleAssigment);
     }
 
@@ -63,7 +63,7 @@ public class RoleAssigmentController {
     }
 
     @DeleteMapping("/roleAssigment/{id}")
-    public void deleteRole(@PathVariable(value = "id", required = false) final  Long id) {
+    public void deleteRoleAssigment(@PathVariable(value = "id", required = false) final  Long id) {
       roleAssigmentService.deleteRoleAssigment(id);
     }
 

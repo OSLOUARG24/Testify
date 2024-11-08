@@ -23,11 +23,21 @@ public class UserService {
       this.roleAssignmentRepository = roleAssignmentRepository;
     }
 
-  public List<User> getAllUsers() {
+    public List<User> getTestersByProjectId(Long id) {
+      return userRepository.findUsersByRoleTesterAndProjectId(id);
+    }
+
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     public User saveUser(User user) {
+    	if (userRepository.existsByName(user.getName())) {
+         throw new RuntimeException("Ya existe un usuario con este nombre");
+        }
+        if (userRepository.existsByEmail(user.getEmail())) {
+         throw new RuntimeException("Ya existe un usuario con este email");
+        }
         return userRepository.save(user);
     }
 

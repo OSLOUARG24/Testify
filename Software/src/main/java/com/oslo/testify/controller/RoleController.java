@@ -30,8 +30,13 @@ public class RoleController {
     }
 
     @PostMapping("/role")
-    public Role createRole(@RequestBody Role role) {
-        return roleService.saveRole(role);
+    public ResponseEntity<?> createRole(@RequestBody Role role) {
+      try {
+        roleService.saveRole(role);
+        return ResponseEntity.ok(role);
+      } catch (RuntimeException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+      }
     }
 
     @GetMapping("/role/{id}")

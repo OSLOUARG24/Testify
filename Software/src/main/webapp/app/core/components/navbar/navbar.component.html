@@ -11,13 +11,24 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     @if(isAuthenticated) {
       <ul class="navbar-nav mr-auto">
-        <!-- Verifica si el usuario es administrador -->
         <ng-container>
           <a class="nav-link" (click)="redirect()">
             <span class="oi oi-home"></span>
             Inicio
           </a>
           @if(isAdmin()){
+		      <li class="nav-item">
+            <a class="nav-link" routerLink="/category">
+              <span class="oi oi-list"></span>
+              Categorias
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/type">
+              <span class="oi oi-list"></span>
+              Tipos
+            </a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="/user">
             <span class="oi oi-person"></span>
@@ -56,7 +67,10 @@
 </nav>
 @if(isAuthenticated){
 <div class="alert alert-info alert-dismissible fade show" role="alert">
-  Ud. est&aacute; conectado como <strong>{{this.name}}</strong>.
+  Ud. est&aacute; conectado como <strong>{{this.name}}</strong>
+  @if (this.project){
+  en <strong>{{this.project!.name}}</strong>
+  }.
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>

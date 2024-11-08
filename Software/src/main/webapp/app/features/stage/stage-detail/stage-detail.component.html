@@ -1,0 +1,238 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h3>Detalles del Escenario de Prueba</h3>
+    </div>
+    <div class="card-body">
+      <div class="row mb-3">
+        <div class="d-flex justify-content-end">
+@if(canCopy()){
+          <button type="button" class="btn btn-outline-primary mr-2" (click)="copyStage()">
+            <span class="oi oi-clipboard"></span> Copiar Escenario
+          </button>
+}
+          <button class="btn btn-outline-secondary" (click)="goBack()">
+            <span class="oi oi-arrow-left"></span> Volver
+          </button>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-10">
+          <div class="form-group">
+            <p>Nombre</p>
+          	<h5><strong>{{ stage.name }}</strong></h5>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <p>Número</p>
+          	<h5><strong>{{ stage.number }}</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <p>Iteración</p>
+            <h5><strong>{{ stage.iteration?.name }}</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <p>Categoría</p>
+            <h5><strong>{{ stage.category?.name }}</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <div class="form-group">
+            <p>Tipo</p>
+            <h5><strong>{{ stage.type?.name }}</strong></h5>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <p>Subtipo</p>
+            <h5><strong>{{ stage.subType?.name }}</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <p>Tester</p>
+            <h5><strong>{{ stage.tester?.name }}</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-8">
+          <div class="form-group">
+            <p>Prioridad</p>
+            <h5><strong>{{ getPriorityDescription(stage.priority!) }}</strong></h5>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <p>Fecha Requerido</p>
+            <h5><strong>{{ stage.dateRequired | date:'dd/MM/yyyy' }}</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <p>Estado</p>
+            <h5><strong>{{ getStatusDescription(stage.status!) }}</strong></h5>
+          </div>
+        </div>
+      </div>
+      <h4>Checklists</h4>
+      <br/>
+      <ul>
+        @for (checkList of stage.checkLists; track checkList.id) {
+          <div class="row mb-3">
+            <div class="col-md-2">
+              @if (checkList.status){
+              <span class="oi oi-check" style="color: green;"></span>
+              }
+              @if (!checkList.status) {
+              <span class="oi oi-question-mark" style="color: blue;"></span>
+              }
+            </div>
+            <div class="col-md-10">
+              <h5>{{ checkList.description }}</h5>
+            </div>
+          </div>
+        }
+      </ul>
+
+      <h4>Pasos</h4>
+      <br/>
+      <ul>
+        <div class="row mb-3">
+          <div class="col-md-1">
+            <p>Orden</p>
+          </div>
+          <div class="col-md-4">
+            <p>descripcion</p>
+          </div>
+          <div class="col-md-4">
+            <p>Comentario</p>
+          </div>
+          <div class="col-md-2">
+            <p>Estado</p>
+          </div>
+        </div>
+      </ul>
+      <ul>
+        @for (step of stage.steps; track step.id) {
+        <div class="row mb-3">
+          <div class="col-md-1">
+            <h5>{{ step.orden }}</h5>
+          </div>
+          <div class="col-md-4">
+            <h5>{{ step.description }}</h5>
+          </div>
+          <div class="col-md-4">
+            <h5>{{ step.comment }}</h5>
+          </div>
+          <div class="col-md-2">
+            @if (step.status === 'APROBADO'){
+            <span class="oi oi-check" style="color: green;"></span>
+            }
+            @if (step.status  === 'ERROR') {
+            <span class="oi oi-x" style="color: red;"></span>
+            }
+            @if (step.status  === 'PENDIENTE') {
+            <span class="oi oi-question-mark" style="color: blue;"></span>
+            }
+          </div>
+        </div>
+        }
+      </ul>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <p>Resultado Esperado</p>
+            <h5><strong>{{ stage.expectedResult }}</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <p>Resultado Obtenido</p>
+            <h5><strong>{{ stage.gotResult }}</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <p>Tiempo Estimado</p>
+            <h5><strong>{{ stage.estimatedTime }} Horas</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <div class="form-group">
+            <p>Comienzo Pruebas</p>
+            <h5><strong>{{ stage.testedFrom | date:'dd/MM/yyyy'  }}</strong></h5>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <p>Fin Pruebas</p>
+            <h5><strong>{{ stage.testedTo | date:'dd/MM/yyyy'  }}</strong></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <p>Comentario</p>
+            <h5><strong>{{ stage.comment }}</strong></h5>
+          </div>
+        </div>
+      </div>
+
+      <h4>Adjuntos</h4>
+      <br/>
+      <ul>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <p>Documento</p>
+          </div>
+          <div class="col-md-9">
+            <p>descripcion</p>
+          </div>
+        </div>
+      </ul>
+      <ul>
+        @for (document of stage.documents; track document.id) {
+        <div class="row mb-3">
+          @if (document.name){
+          <div class="col-md-3">
+            <button
+              type="button"
+              class="btn btn-link"
+              (click)="downloadFile(document.document, document.name)">
+              {{ document.name || 'Descargar archivo' }}
+            </button>
+          </div>
+          }
+          <div class="col-md-9">
+            <h5>{{ document.description }}</h5>
+          </div>
+        </div>
+        }
+      </ul>
+
+    </div>
+  </div>
+</div>

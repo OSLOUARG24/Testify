@@ -63,7 +63,6 @@ public class Type {
     return "Type{" +
       "id=" + id +
       ", name='" + name + '\'' +
-      ", subTypes=" + subTypes +
       '}';
   }
 }

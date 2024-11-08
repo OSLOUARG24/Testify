@@ -66,7 +66,6 @@ public class SubType {
     return "SubType{" +
       "id=" + id +
       ", name='" + name + '\'' +
-      ", type=" + type +
       '}';
   }
 }
