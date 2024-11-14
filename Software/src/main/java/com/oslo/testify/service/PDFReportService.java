@@ -52,7 +52,7 @@ public class PDFReportService {
     table.addCell(String.valueOf(project.getStatus()));
     document.add(table);
 
-    // Incluir detalles de stages si se especifica
+    // Incluir detalles de stages si se especifica..
     if (includeStageDetail) {
       List<Stage> stages = stageService.getStagesByProjectId(projectId);
       document.add(new Paragraph("\nStage Details"));
