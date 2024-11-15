@@ -80,7 +80,8 @@ export class UpdateStageComponent implements OnInit {
 
 initializeForm(): void {
     this.stageForm = this.fb.group({
-          name: ['', Validators.required, Validators.maxLength(250)],
+          id: [''],
+          name: ['', [Validators.required, Validators.maxLength(250)]],
           number: [null],
           iteration: [null, Validators.required],
           category: [null, Validators.required],
@@ -102,7 +103,6 @@ initializeForm(): void {
   loadStageData(id: number): void {
       this.stageService.getStageById(id).subscribe(
         (stage: Stage) => {
-
           const iteration = this.iterations.find(t => t.id === stage.iteration?.id);
           const type = this.types.find(t => t.id === stage.type?.id);
           const subType = this.subTypes.find(st => st.id === stage.subType?.id);
@@ -121,6 +121,7 @@ initializeForm(): void {
             priority: stage.priority,
             steps: stage.steps,
             checkLists: stage.checkLists,
+            documents: stage.documents,
             status: stage.status,
             comment: stage.comment,
             dateRequired: stage.dateRequired,
@@ -172,7 +173,7 @@ initializeForm(): void {
 
   addCheckList(): void {
     this.checkLists.push(this.fb.group({
-      description: ['', Validators.required],
+      description: ['', [Validators.required, Validators.maxLength(250)]],
       status: [false]
     }));
   }
@@ -180,7 +181,7 @@ initializeForm(): void {
   setCheckLists(checkLists: CheckList[]): void {
     checkLists.forEach(checkList => {
       this.checkLists.push(this.fb.group({
-        description: [checkList.description, Validators.required, Validators.maxLength(250)],
+        description: [checkList.description, [Validators.required, Validators.maxLength(250)]],
         status: [checkList.status]
       }));
     });
@@ -194,7 +195,7 @@ initializeForm(): void {
     const currentOrder = this.steps.length + 1;
     this.steps.push(this.fb.group({
       orden: [currentOrder],
-      description: ['', Validators.required, Validators.maxLength(250)],
+      description: ['', [Validators.required, Validators.maxLength(250)]],
       comment: ['', Validators.maxLength(250)],
       status: [StageStatus.PENDIENTE]
     }));
