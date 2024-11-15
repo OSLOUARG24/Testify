@@ -26,7 +26,7 @@
                    [ngClass]="{'is-invalid': stageForm.get('number')?.invalid && stageForm.get('number')?.touched}"/>
             @if (stageForm.get('number')?.invalid && stageForm.get('number')?.touched) {
             <div class="error">
-              El numero es requerido.
+              El número es requerido.
             </div>
             }
           </div>
@@ -63,7 +63,7 @@
   <div class="form-group">
   <label for="subType">Subtipo</label>
   <select id="subType" formControlName="subType" class="form-select">
-    @for (subType of subTypes; track subType.id) {
+    @for (subType of filteredSubTypes; track subType.id) {
     <option [ngValue]="subType">{{ subType.name }}</option>
     }
   </select>
