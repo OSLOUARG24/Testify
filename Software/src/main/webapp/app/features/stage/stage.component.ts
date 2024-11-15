@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StageService } from './stage.service';
 import { Stage, StageStatus } from './stage.model';
+import { User } from '../user/user.model';
 import { Project } from '../project/project.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router, RouterOutlet, RouterLinkActive, RouterLink  } from '@angular/router';
@@ -18,6 +19,7 @@ export class StageComponent implements OnInit {
   iterationId?: number;
   stages: Stage[] = [];
   project?: Project;
+  user?: User;
 
   constructor(private stageService: StageService,
     private route: ActivatedRoute,
@@ -97,6 +99,15 @@ openDeleteModal(stage: any): void {
                   this.stages = stages;
                 });
               }
+
+
+     isAdmin() {
+           const user = localStorage.getItem('user');
+             if (user){
+                this.user = JSON.parse(user);
+             }
+           return this.user?.admin;
+         }
 
 }
 

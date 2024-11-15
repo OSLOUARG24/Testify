@@ -6,6 +6,7 @@ import { AuthGoogleService } from '../../auth-google/auth-google.service'; // Se
 import { CommonModule } from '@angular/common';
 import { ProjectService } from '../project/project.service';
 import { Project } from '../project/project.model';
+import { User } from '../user/user.model';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteIterationComponent } from './delete-iteration/delete-iteration.component';
 
@@ -18,9 +19,9 @@ import { DeleteIterationComponent } from './delete-iteration/delete-iteration.co
 })
 export class IterationComponent implements OnInit {
   iterations: Iteration[] = [];
-  isAdmin: boolean = false;
   project?: Project;
   projectId?: number;
+  user?: User;
 
   constructor(
     private iterationService: IterationService,
@@ -32,8 +33,6 @@ export class IterationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Verificar si el usuario tiene el rol ADMIN
-    this.isAdmin = true;
 
     // Obtener el ID del proyecto desde la URL y convertirlo a número
     const projectIdParam = this.route.snapshot.paramMap.get('id');
@@ -93,4 +92,12 @@ export class IterationComponent implements OnInit {
           	        });
           }
 	      }
+
+     isAdmin() {
+           const user = localStorage.getItem('user');
+             if (user){
+                this.user = JSON.parse(user);
+             }
+           return this.user?.admin;
+         }
 }

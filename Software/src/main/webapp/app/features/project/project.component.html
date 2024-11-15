@@ -5,9 +5,11 @@
     </div>
     <div class="card-body">
     <p class="d-flex justify-content-end">
+      @if(isAdmin() ){
       <button type="button" class="btn btn-success" [routerLink]="['/project/create']">
         <span class="oi oi-plus"></span> Nuevo Proyecto
       </button>
+      }
     <button class="btn btn-danger float-right " (click)="Cancel()">Volver</button>
     </p>
   <!-- Tabla para mostrar los proyectos -->
@@ -51,6 +53,34 @@
     <p>No hay proyectos disponibles.</p>
   }
   </div>
+    <!--
+@if(stages.length > 0)
+    {
+    <div class="card-body">
+    <h5 class="mt-4">Estados por Escenario</h5>
+    <table class="table table-bordered table-sm">
+      <thead>
+      <tr class="table-info">
+        <th>Escenario</th>
+        <th>Estado</th>
+        <th>Resultado Esperado</th>
+        <th>Resultado Obtenido</th>
+      </tr>
+      </thead>
+      <tbody>
+      @for (stage of stages; track stage.id){
+      <tr>
+        <td>{{ stage.name }}</td>
+        <td>{{ stage.status }}</td>
+        <td>{{ stage.expectedResult }}</td>
+        <td>{{ stage.gotResult }}</td>
+      </tr>
+      }
+      </tbody>
+    </table>
+    </div>
+    }
+
     <div style="display: block; width: 50%; margin: auto;">
       <h2>Distribución de escenarios por Estado</h2>
       <canvas baseChart
@@ -61,4 +91,5 @@
       </canvas>
     </div>
   </div>
+  -->
 </div>

@@ -3,6 +3,9 @@ import { ChartOptions, ChartType, ChartData } from 'chart.js';
 import { ActivatedRoute } from '@angular/router';
 import { Project, ProjectStatus } from './project.model';
 import { ProjectService } from './project.service';
+import { StageService } from '../stage/stage.service';
+import { Stage } from '../stage/stage.model';
+import { User } from '../user/user.model';
 import { BaseChartDirective } from 'ng2-charts';
 import { Router, RouterOutlet,RouterLinkActive,RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -20,6 +23,9 @@ export class ProjectComponent {
    projects?: Project[];
    projectId?: number ;
    projectStatus = ProjectStatus;
+   stages: Stage[] = []; // Lista de escenarios cargados para un proyecto
+   user?: User;
+
    public pieChartOptions: ChartOptions = {
            responsive: true,
          };
@@ -32,7 +38,8 @@ export class ProjectComponent {
 
    constructor(protected route: ActivatedRoute
               ,protected projectService: ProjectService
-              ,public dialog: MatDialog) {}
+              ,public dialog: MatDialog
+              ,protected stageService: StageService) {}
 
    ngOnInit(): void {
        const projectSS = sessionStorage.getItem('project');
@@ -42,6 +49,7 @@ export class ProjectComponent {
           if (this.project) {
                this.projects = this.projects || []; // Inicializa el array si está undefined
                this.projects.push(this.project); // Agrega el proyecto del sessionStorage
+               this.loadStages(this.project.id!);
           }
        }
        else {
@@ -95,42 +103,36 @@ export class ProjectComponent {
                 });
               }
 
-  generateChartData(): void {
-      const statusCounts = {
-        Pendiente: 0,
-        Aprobado: 0,
-        EnError: 0
-      };
-
-      console.log(JSON.stringify(this.projects));
-      // Recorre los iterations y testCases del proyecto
-      /*this.projects?.forEach((project: Project) => {
-            project.iterations?.forEach((iteration: Iteration) => {
-              iteration.stages?.forEach((stage: Stage) => {
-                  alert(stage.status);
-                  if (stage.status === StageStatus.PENDIENTE) {
-                    statusCounts.Pendiente++;
-                  } else if (stage.status === StageStatus.APROBADO) {
-                    statusCounts.Aprobado++;
-                  } else if (stage.status === StageStatus.ERROR) {
-                    statusCounts.EnError++;
-                  }
-              });
-            });
-          });*/
-        statusCounts.Aprobado++;
-        statusCounts.Aprobado++;
-        statusCounts.Pendiente++;
-      // Asigna los datos para el gráfico de torta
-      this.pieChartData = {
-            labels: this.pieChartLabels,
-            datasets: [
-              {
-                data: [statusCounts.Pendiente, statusCounts.Aprobado, statusCounts.EnError],
-                label: 'Estados de Pasos a Seguir'
-              }
-            ]
-          };
+   loadStages(projectId: number): void {
+      this.stageService.getStagesByProjectId(projectId).subscribe(
+        (data: Stage[]) => {
+          this.stages = data;
+          this.generateChartData();
+        },
+        error => console.error('Error al obtener escenarios', error)
+      );
     }
 
+  generateChartData(): void {
+      const statusCounts = { Pendiente: 0, Aprobado: 0, EnError: 0 };
+
+      this.stages.forEach(stage => {
+        if (stage.status === 'PENDIENTE') statusCounts.Pendiente++;
+        else if (stage.status === 'APROBADO') statusCounts.Aprobado++;
+        else if (stage.status === 'ERROR') statusCounts.EnError++;
+      });
+
+      this.pieChartData = {
+        labels: this.pieChartLabels,
+        datasets: [{ data: [statusCounts.Pendiente, statusCounts.Aprobado, statusCounts.EnError], label: 'Estados de Escenarios' }]
+      };
+    }
+
+   isAdmin() {
+       const user = localStorage.getItem('user');
+         if (user){
+            this.user = JSON.parse(user);
+         }
+       return this.user?.admin;
+     }
 }
