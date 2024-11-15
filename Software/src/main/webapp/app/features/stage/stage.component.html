@@ -5,7 +5,7 @@
     </div>
     <div class="card-body">
     <p class="d-flex justify-content-end">
-      @if (isAdmin()) {
+      @if (isAdmin() || isGestor()) {
       <button type="button" class="btn btn-success" [routerLink]="['/stage/create']">
         <span class="oi oi-plus"></span>
           Nuevo Escenario de prueba
@@ -44,7 +44,7 @@
         <a title="visualizar" class="btn btn-outline-info" [routerLink]="['/stage/detail', stage.id]">
           <span class="oi oi-zoom-in"></span>
         </a>
-        @if (isAdmin()) {
+        @if (isAdmin()|| isGestor()) {
           <a title="Modificar" [routerLink]="['/stage/edit', stage.id]">
             <button type="button" class="btn btn-outline-warning">
               <span class="oi oi-pencil"></span>

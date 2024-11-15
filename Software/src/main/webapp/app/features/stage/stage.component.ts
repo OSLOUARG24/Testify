@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router, RouterOutlet, RouterLinkActive, RouterLink  } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DeleteStageComponent } from './delete-stage/delete-stage.component';
+import { RoleAssigment } from '../role-assigment/role-assigment.model';
 
 @Component({
   selector: 'app-stage',
@@ -20,6 +21,7 @@ export class StageComponent implements OnInit {
   stages: Stage[] = [];
   project?: Project;
   user?: User;
+  roleAssigments: RoleAssigment[] = [];
 
   constructor(private stageService: StageService,
     private route: ActivatedRoute,
@@ -27,13 +29,14 @@ export class StageComponent implements OnInit {
     public dialog: MatDialog) {}
 
   ngOnInit(): void {
-  let iterationIdParam = this.route.snapshot.paramMap.get('id');
-  if (iterationIdParam){ sessionStorage.setItem('Iid',iterationIdParam);}
-  else { iterationIdParam =  sessionStorage.getItem('Iid')!;}
-  this.iterationId = iterationIdParam ? +iterationIdParam : undefined;
-    this.stageService.getStagesbyIterationId(this.iterationId!).subscribe(stages => {
-      this.stages = stages;
-    });
+    this.getStorageValues();
+    let iterationIdParam = this.route.snapshot.paramMap.get('id');
+    if (iterationIdParam){ sessionStorage.setItem('Iid',iterationIdParam);}
+    else { iterationIdParam =  sessionStorage.getItem('Iid')!;}
+    this.iterationId = iterationIdParam ? +iterationIdParam : undefined;
+      this.stageService.getStagesbyIterationId(this.iterationId!).subscribe(stages => {
+        this.stages = stages;
+      });
   }
 
   goBack(): void {
@@ -100,14 +103,35 @@ openDeleteModal(stage: any): void {
                 });
               }
 
+getStorageValues() {
+    const user = localStorage.getItem('user');
+    if (user){
+       this.user = JSON.parse(user);
+    }
 
-     isAdmin() {
-           const user = localStorage.getItem('user');
-             if (user){
-                this.user = JSON.parse(user);
-             }
-           return this.user?.admin;
-         }
+    const roles = sessionStorage.getItem('userRoles');
+    if (roles){
+      this.roleAssigments = JSON.parse(roles);
+    }
 
+    const project = sessionStorage.getItem('project');
+      if (project){
+        this.project = JSON.parse(project);
+      }
+    else {
+      this.project = undefined;
+      }
+  }
+
+  hasRole(roleCode: string): boolean {
+    return this.roleAssigments.some((assignment: RoleAssigment) => assignment.role?.code === roleCode);
+  }
+
+  isAdmin() {
+     return this.user?.admin;
+  }
+  isGestor() {
+       return this.hasRole('GESTOR');
+    }
 }
 
