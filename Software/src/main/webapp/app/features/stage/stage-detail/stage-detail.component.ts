@@ -171,4 +171,27 @@ export class StageDetailComponent implements OnInit {
           return priorities[priority] || priority;
         }
 
+  exportStage(): void {
+
+      this.stageService.exportPDF(this.stageId!
+        ).subscribe(
+            (response) => {
+              const blob = new Blob([response], { type: 'application/pdf' });
+              const url = window.URL.createObjectURL(blob);
+
+              // Crear un enlace temporal para la descarga
+              const link = document.createElement('a');
+              link.href = url;
+              link.download = `stage_report_${this.stageId}.pdf`;
+              link.click();
+
+              // Liberar el objeto URL después de la descarga
+              window.URL.revokeObjectURL(url);
+            },
+            (error) => {
+              console.error('Error downloading PDF', error);
+            }
+          );
+    }
+
 }
