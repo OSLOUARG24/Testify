@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable, tap, throwError } from 'rxjs';
-import { Iteration } from './iteration.model';
+import { Iteration, IterationStatus } from './iteration.model';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({

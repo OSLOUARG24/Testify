@@ -8,3 +8,13 @@ export interface Iteration {
   startDate?: Date  | null;
   endDate?: Date  | null;
 }
+
+export interface IterationStatus {
+  id?: string | null;
+  projectId?: number;
+  projectName?: string | null;
+  iterationName?: string | null;
+  pendingQuantity?: number;
+  errorQuantity?: number;
+  approvedQuantity?: number;
+}
