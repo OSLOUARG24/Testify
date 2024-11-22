@@ -6,9 +6,10 @@
     <tr>
       <th>Proyecto</th>
       <th>Iteración</th>
-      <th>Escenario</th>
-      <th>Estado</th>
       <th>Número</th>
+      <th>Escenario</th>
+      <th>Completo</th>
+      <th>Estado</th>
       <th>Opciones</th>
     </tr>
     </thead>
@@ -17,11 +18,10 @@
     <tr>
       <td>{{ stage.iteration.project.name }}</td>
       <td>{{ stage.iteration.name }}</td>
+      <td>{{ stage.number }}</td>
       <td>{{ stage.name }}</td>
       <td>
         <div class="d-flex align-items-center">
-          <span>{{ getStatusDescription(stage.status!) }}</span>
-
           <div class="progress mx-2" style="height: 8px; width: 70px;">
             <div class="progress-bar" [ngClass]="getProgressBarClass(getProgress(stage))"
                  [style.width]="getProgress(stage) + '%'" role="progressbar">
@@ -30,7 +30,7 @@
           <span>{{ getProgress(stage) }}%</span>
         </div>
       </td>
-      <td>{{ stage.number }}</td>
+      <td>{{ getStatusDescription(stage.status!) }}</td>
       <td>
         <a title="visualizar" class="btn btn-outline-info" [routerLink]="['/stage/detail', stage.id]">
           <span class="oi oi-zoom-in"></span>
@@ -43,6 +43,9 @@
       </td>
     </tr>
     }
+    @if (stagesToDo.length === 0){
+    <p>No hay Escenarios para probar.</p>
+    }
     </tbody>
   </table>
 
@@ -53,9 +56,10 @@
     <tr>
       <th>Proyecto</th>
       <th>Iteración</th>
+      <th>Número</th>
       <th>Escenario</th>
+      <th>Completo</th>
       <th>Estado</th>
-      <th>Versión</th>
       <th>Opciones</th>
     </tr>
     </thead>
@@ -64,10 +68,10 @@
     <tr>
       <td>{{ stage.iteration.project.name }}</td>
       <td>{{ stage.iteration.name }}</td>
+      <td>{{ stage.number }}</td>
       <td>{{ stage.name }}</td>
       <td>
         <div class="d-flex align-items-center">
-          <span>{{ getStatusDescription(stage.status!) }}</span>
           <div class="progress mx-2" style="height: 8px; width: 70px;">
             <div class="progress-bar bg-success" style="width: 100%" role="progressbar">
             </div>
@@ -75,13 +79,19 @@
           <span>100%</span>
         </div>
       </td>
-      <td>{{ stage.number }}</td>
+      <!--<td>{{ getStatusDescription(stage.status!) }}</td>-->
+      <td [ngClass]="getStatusClass(stage.status)">
+        <strong>{{ getStatusDescription(stage.status) }}</strong>
+      </td>
       <td>
         <a title="visualizar" class="btn btn-outline-info" [routerLink]="['/stage/detail', stage.id]">
           <span class="oi oi-zoom-in"></span>
         </a>
       </td>
     </tr>
+    }
+    @if (stagesCompleted.length === 0){
+    <p>No hay pruebas finalizadas.</p>
     }
     </tbody>
   </table>
