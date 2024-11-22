@@ -96,7 +96,7 @@ initializeForm(): void {
           comment: [''],
           expectedResult: [null, Validators.required],
           gotResult: [''],
-          estimatedTime: [null, Validators.required, Validators.min(0)]
+          estimatedTime: [null, [Validators.required, Validators.min(0)]]
         });
   }
 
@@ -108,7 +108,6 @@ initializeForm(): void {
           const subType = this.subTypes.find(st => st.id === stage.subType?.id);
           const category = this.categories.find(c => c.id === stage.category?.id);
           const tester = this.testers.find(c => c.id === stage.tester?.id);
-
           this.stageForm.patchValue({
             id: stage.id,
             name: stage.name,
@@ -181,7 +180,8 @@ initializeForm(): void {
   setCheckLists(checkLists: CheckList[]): void {
     checkLists.forEach(checkList => {
       this.checkLists.push(this.fb.group({
-        description: [checkList.description, [Validators.required, Validators.maxLength(250)]],
+        //description: [checkList.description, [Validators.required, Validators.maxLength(250)]],
+        description: [checkList.description],
         status: [checkList.status]
       }));
     });
