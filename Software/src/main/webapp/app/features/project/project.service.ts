@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { Project } from './project.model';
+import { Project, ProjectApprovalStatus } from './project.model';
+import { IterationStatus } from '../iteration/iteration.model';
 
 @Injectable({
   providedIn: 'root'
@@ -68,4 +69,13 @@ export class ProjectService {
                                                                }
                                                              });
   }
+
+  getIterationStatusByProjectId(id: number): Observable<IterationStatus[]> {
+      return this.http.get<IterationStatus[]>(`${this.apiUrl}/iteration-status/${id}`);
+  }
+
+  getApprovalStatus(id: number): Observable<{ approvalPercentage: number }> {
+      return this.http.get<{ approvalPercentage: number }>(`${this.apiUrl}/project-approval-status/${id}`);
+  }
+
 }

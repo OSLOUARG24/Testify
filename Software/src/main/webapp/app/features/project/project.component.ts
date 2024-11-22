@@ -3,6 +3,7 @@ import { ChartOptions, ChartType, ChartData } from 'chart.js';
 import { ActivatedRoute } from '@angular/router';
 import { Project, ProjectStatus } from './project.model';
 import { ProjectService } from './project.service';
+import { IterationStatus } from '../iteration/iteration.model';
 import { StageService } from '../stage/stage.service';
 import { Stage } from '../stage/stage.model';
 import { User } from '../user/user.model';
@@ -10,11 +11,13 @@ import { BaseChartDirective } from 'ng2-charts';
 import { Router, RouterOutlet,RouterLinkActive,RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteProjectComponent } from './delete-project/delete-project.component';
+import { CommonModule } from '@angular/common';
+import { RoleAssigment } from '../role-assigment/role-assigment.model';
 
 @Component({
   selector: 'app-project',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, BaseChartDirective],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, BaseChartDirective],
   templateUrl: './project.component.html',
   styleUrl: './project.component.css'
 })
@@ -25,6 +28,9 @@ export class ProjectComponent {
    projectStatus = ProjectStatus;
    stages: Stage[] = []; // Lista de escenarios cargados para un proyecto
    user?: User;
+     roleAssigments: RoleAssigment[] = [];
+   iterationStatus?: IterationStatus[];
+   approvalStatuses: { [projectId: number]: number } = {};
 
    public pieChartOptions: ChartOptions = {
            responsive: true,
@@ -42,21 +48,20 @@ export class ProjectComponent {
               ,protected stageService: StageService) {}
 
    ngOnInit(): void {
-       const projectSS = sessionStorage.getItem('project');
-       if (projectSS) {
-         this.project = JSON.parse(projectSS);
-         //this.projects = this.projects || []; // Inicializa el array si está undefined
-          if (this.project) {
-               this.projects = this.projects || []; // Inicializa el array si está undefined
-               this.projects.push(this.project); // Agrega el proyecto del sessionStorage
-               this.loadStages(this.project.id!);
-          }
-       }
-       else {
+      this.getStorageValues();
+      if (this.project) {
+           this.projects = this.projects || []; // Inicializa el array si está undefined
+           this.projects.push(this.project); // Agrega el proyecto del sessionStorage
+           this.loadStages(this.project.id!);
+           this.loadIterationStatus();
+           this.loadApprovalStatuses();
+      }
+      else {
          this.projects = [];
          this.getAllProjects();
-       }
-       this.generateChartData();
+         this.loadIterationStatus();
+      }
+      this.generateChartData();
    }
 
       getStatusDescription(status: ProjectStatus): string {
@@ -73,6 +78,7 @@ export class ProjectComponent {
        this.projectService.getProjects().subscribe(
          (data: Project[]) => {
            this.projects = data;
+           this.loadApprovalStatuses();
          },
          error => {
            console.error('Error al obtener proyectos', error);
@@ -128,11 +134,81 @@ export class ProjectComponent {
       };
     }
 
-   isAdmin() {
-       const user = localStorage.getItem('user');
-         if (user){
-            this.user = JSON.parse(user);
-         }
-       return this.user?.admin;
+   loadIterationStatus(): void {
+
+     let pr = 0;
+     if (this.project){
+       pr = this.project.id;
      }
+     else {
+       pr = 0;
+     }
+     this.projectService.getIterationStatusByProjectId(pr).subscribe(
+       (data: IterationStatus[]) => {
+         this.iterationStatus = data;
+       },
+       error => console.error('Error al obtener reporte de iteraciones', error)
+     );
+   }
+
+   getStorageValues() {
+    const user = localStorage.getItem('user');
+    if (user){
+       this.user = JSON.parse(user);
+    }
+
+    const roles = sessionStorage.getItem('userRoles');
+    if (roles){
+      this.roleAssigments = JSON.parse(roles);
+    }
+
+    const project = sessionStorage.getItem('project');
+      if (project){
+        this.project = JSON.parse(project);
+      }
+  }
+
+    hasRole(roleCode: string): boolean {
+    return this.roleAssigments.some((assignment: RoleAssigment) => assignment.role?.code === roleCode);
+  }
+
+  isAdmin() {
+     return this.user?.admin;
+  }
+  isGestor() {
+       return this.hasRole('GESTOR');
+    }
+
+  loadApprovalStatuses(): void {
+      if (this.projects) {
+          this.projects.forEach(project => {
+
+              this.approvalStatuses[project.id] = 0;
+              this.projectService.getApprovalStatus(project.id).subscribe(
+                  (status) => {
+                      this.approvalStatuses[project.id] = status.approvalPercentage || 0; // Almacena el porcentaje
+                  },
+                  error => {
+                       alert(error);
+                      console.error(`Error al obtener el porcentaje de aprobación para el proyecto ${project.id}`, error);
+                      this.approvalStatuses[project.id] = 0; // Valor predeterminado en caso de error
+                  }
+              );
+          });
+      }
+  }
+
+getProjectProgress(projectId: number): number {
+    return this.approvalStatuses[projectId] || 0;
+}
+
+getProgressBarClass(progress: number): string {
+    if (progress >= 75) {
+        return 'bg-success'; // Verde si el progreso es >= 75%
+    } else if (progress >= 50) {
+        return 'bg-warning'; // Amarillo si el progreso es >= 50%
+    } else {
+        return 'bg-danger'; // Rojo si el progreso es < 50%
+    }
+}
 }
