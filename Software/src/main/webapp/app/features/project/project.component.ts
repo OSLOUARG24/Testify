@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Project, ProjectStatus } from './project.model';
 import { ProjectService } from './project.service';
 import { IterationStatus } from '../iteration/iteration.model';
+import { CategoryStatus } from '../category/category.model';
 import { StageService } from '../stage/stage.service';
 import { Stage } from '../stage/stage.model';
 import { User } from '../user/user.model';
@@ -28,8 +29,11 @@ export class ProjectComponent {
    projectStatus = ProjectStatus;
    stages: Stage[] = []; // Lista de escenarios cargados para un proyecto
    user?: User;
-     roleAssigments: RoleAssigment[] = [];
+   roleAssigments: RoleAssigment[] = [];
    iterationStatus?: IterationStatus[];
+   categoryStatus?: CategoryStatus[];
+   matrix: any[] = [];
+   columns: string[] = [];
    approvalStatuses: { [projectId: number]: number } = {};
 
    public pieChartOptions: ChartOptions = {
@@ -149,6 +153,21 @@ export class ProjectComponent {
        },
        error => console.error('Error al obtener reporte de iteraciones', error)
      );
+
+     this.projectService.getCategoryStatusByProjectId(pr).subscribe(
+          (data: CategoryStatus[]) => {
+            this.categoryStatus = data;
+          },
+          error => console.error('Error al obtener reporte de categorias', error)
+        );
+
+     this.projectService.getMatrix(pr).subscribe((data) => {
+           this.matrix = data;
+
+           if (data.length > 0) {
+             this.columns = Object.keys(data[0]);
+           }
+         });
    }
 
    getStorageValues() {
@@ -202,7 +221,7 @@ getProjectProgress(projectId: number): number {
     return this.approvalStatuses[projectId] || 0;
 }
 
-getProgressBarClass(progress: number): string {
+  getProgressBarClass(progress: number): string {
     if (progress >= 75) {
         return 'bg-success'; // Verde si el progreso es >= 75%
     } else if (progress >= 50) {
@@ -210,5 +229,5 @@ getProgressBarClass(progress: number): string {
     } else {
         return 'bg-danger'; // Rojo si el progreso es < 50%
     }
-}
+  }
 }

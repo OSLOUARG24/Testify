@@ -23,4 +23,5 @@ public interface StageRepository extends JpaRepository<Stage, Long> {
     @Query("SELECT s FROM Stage s WHERE s.iteration.project.id = :projectId")
     List<Stage> findAllByProjectId(@Param("projectId") Long projectId);
 
+    List<Stage> findByIteration_Project_Id(Long projectId);
 }

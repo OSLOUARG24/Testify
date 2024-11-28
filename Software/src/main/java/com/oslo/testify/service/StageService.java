@@ -9,9 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -216,6 +214,44 @@ public class StageService {
 
   public List<Stage> getStagesByProjectId(Long projectId) {
     return stageRepository.findAllByProjectId(projectId);
+  }
+
+  public List<Map<String, Object>> getMatrixByProjectId(Long projectId) {
+    // Filtrar las etapas (stages) por projectId
+    List<Stage> stages = stageRepository.findByIteration_Project_Id(projectId);
+
+    // Agrupar por Type y contar los Subtypes
+    Map<String, Map<String, Long>> matrix = stages.stream()
+      .collect(Collectors.groupingBy(
+        stage -> stage.getType().getName(), // Agrupar por el nombre del Type
+        Collectors.groupingBy(
+          stage -> stage.getSubType().getName(), // Agrupar por el nombre del Subtype
+          Collectors.counting() // Contar ocurrencias
+        )
+      ));
+
+    // Obtener todos los Subtypes para las columnas
+    Set<String> allSubtypes = stages.stream()
+      .map(stage -> stage.getSubType().getName())
+      .collect(Collectors.toSet());
+
+    // Crear la lista para representar la matriz
+    List<Map<String, Object>> result = new ArrayList<>();
+
+    // Construir filas con Type y sus Subtypes
+    for (Map.Entry<String, Map<String, Long>> entry : matrix.entrySet()) {
+      Map<String, Object> row = new HashMap<>();
+      row.put("Tipo de Escenario", entry.getKey()); // Nombre del Type
+
+      // Rellenar los valores para cada Subtype
+      for (String subtype : allSubtypes) {
+        row.put(subtype, entry.getValue().getOrDefault(subtype, 0L));
+      }
+
+      result.add(row);
+    }
+
+    return result;
   }
 
 }

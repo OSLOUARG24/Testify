@@ -115,4 +115,9 @@ public class StageController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
   }
+
+  @GetMapping("/stage/matrix/{id}")
+  public List<Map<String, Object>> getMatrixByProjectId(@PathVariable(value = "id", required = false) final Long projectId) {
+    return stageService.getMatrixByProjectId(projectId);
+  }
 }

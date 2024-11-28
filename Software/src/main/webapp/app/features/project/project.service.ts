@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Project, ProjectApprovalStatus } from './project.model';
 import { IterationStatus } from '../iteration/iteration.model';
+import { CategoryStatus } from '../category/category.model';
 
 @Injectable({
   providedIn: 'root'
@@ -74,8 +75,16 @@ export class ProjectService {
       return this.http.get<IterationStatus[]>(`${this.apiUrl}/iteration-status/${id}`);
   }
 
+  getCategoryStatusByProjectId(id: number): Observable<CategoryStatus[]> {
+      return this.http.get<CategoryStatus[]>(`${this.apiUrl}/category-status/${id}`);
+  }
+
   getApprovalStatus(id: number): Observable<{ approvalPercentage: number }> {
       return this.http.get<{ approvalPercentage: number }>(`${this.apiUrl}/project-approval-status/${id}`);
+  }
+
+  getMatrix(projectId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/stage/matrix/${projectId}`);
   }
 
 }
