@@ -16,10 +16,10 @@
           </div>
           <div class="form-group">
             <label for="rateApproval">Tasa de Aprobación</label>
-            <input id="rateApproval" class="form-control" formControlName="rateApproval" type="text" placeholder="Ingresa una tasa de Aprobacion" />
+            <input id="rateApproval" class="form-control" formControlName="rateApproval" type="text" placeholder="Ingresa una tasa de Aprobación" />
             @if (projectForm.get('rateApproval')?.invalid && projectForm.get('rateApproval')?.touched) {
             <div class="error">
-              La descripción debe ser numerica.
+              La descripción debe ser numérica.
             </div>
             }
           </div>

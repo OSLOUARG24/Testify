@@ -30,7 +30,7 @@ public class RolePermissionService {
 
     public RolePermission updateRolePermission(Long id, RolePermission updatedRolePermission) {
       RolePermission existingRolePermission = rolePermissionRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Asignacion Rol-Permiso no encontrado"));
+        .orElseThrow(() -> new RuntimeException("Asignación Rol-Permiso no encontrado"));
 
       existingRolePermission.setRole(existingRolePermission.getRole());
       existingRolePermission.setPermission(existingRolePermission.getPermission());

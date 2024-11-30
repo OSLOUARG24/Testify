@@ -158,7 +158,7 @@ export class ProjectComponent {
           (data: CategoryStatus[]) => {
             this.categoryStatus = data;
           },
-          error => console.error('Error al obtener reporte de categorias', error)
+          error => console.error('Error al obtener reporte de categorías', error)
         );
 
      this.projectService.getMatrix(pr).subscribe((data) => {

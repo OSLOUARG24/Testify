@@ -42,7 +42,7 @@
         </div>
       </div>
   <div class="form-group">
-  <label for="iteration">Iteracion</label>
+  <label for="iteration">Iteración</label>
   <select id="iteration" formControlName="iteration" class="form-select">
     @for(iteration of iterations; track iteration.id){
       <option [ngValue]="iteration">{{ iteration.name }}</option>
@@ -50,7 +50,7 @@
   </select>
   </div>
   <div class="form-group">
-  <label for="category">Categoria</label>
+  <label for="category">Categoría</label>
     <select id="category" formControlName="category" class="form-select">
       @for (category of categories; track category.id) {
       <option [ngValue]="category">{{ category.name }}</option>

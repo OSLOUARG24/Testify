@@ -83,8 +83,8 @@ public class StageService {
         .map(originalCheckList -> {
           CheckList copiedCheckList = new CheckList();
           copiedCheckList.setDescription(originalCheckList.getDescription());
-          copiedCheckList.setStage(copiedStage); // Asigna el nuevo stage como propietario
-          copiedCheckList.setStatus(false); // Estado inicial en false
+          copiedCheckList.setStage(copiedStage);
+          copiedCheckList.setStatus(false);
           return copiedCheckList;
         })
         .collect(Collectors.toList())

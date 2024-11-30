@@ -82,7 +82,7 @@
   </div>
 <br/>
       <div class="form-group">
-  <label for="checkLists">CheckList</label>
+  <label>CheckList</label>
   <div formArrayName="checkLists">
     <div *ngFor="let checkList of checkLists.controls; let i = index" [formGroupName]="i">
       <div class="form-check">
@@ -102,13 +102,13 @@
   <div class="form-group">
     <div class="row mb-3">
       <div class="col-md-2">
-        <label for="steps">Pasos</label>
+        <label>Pasos</label>
       </div>
       <div class="col-md-5">
-        <label for="steps">Nombre</label>
+        <label>Nombre</label>
       </div>
       <div class="col-md-5">
-        <label for="steps">Comentario</label>
+        <label>Comentario</label>
       </div>
     </div>
   <div formArrayName="steps">
@@ -230,10 +230,10 @@
           <div class="col-md-1">
           </div>
           <div class="col-md-5">
-            <label for="documents">Adjunto</label>
+            <label>Adjunto</label>
           </div>
           <div class="col-md-5">
-            <label for="documents">Descripcion</label>
+            <label>Descripción</label>
           </div>
         </div>
       <div formArrayName="documents">
@@ -277,24 +277,6 @@
         </button>
       </div>
       </div>
-      <!-- Agregar archivos arrastrandose
-      <div class="form-group">
-        <div class="row mb-8">
-        <div class="form-group">
-          <label for="fileUpload">Adjuntar Documentos</label>
-          <input type="file" id="fileUpload" (change)="onFileSelected($event)" multiple class="form-control">
-          <div class="drop-zone" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
-            Arrastra aquí tus archivos o haz clic para seleccionar
-          </div>
-        </div>
-        </div>
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="fileUpload">Adjuntar Documentos</label>
-            <h5><strong>{{ stage.estimatedTime }} Horas</strong></h5>
-          </div>
-        </div>
-      </div>-->
     </div>
     <div class="card-footer">
 

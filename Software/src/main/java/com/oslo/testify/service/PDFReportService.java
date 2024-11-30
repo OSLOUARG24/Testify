@@ -1,6 +1,5 @@
 package com.oslo.testify.service;
 
-import com.itextpdf.kernel.colors.Color;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.events.Event;
 import com.itextpdf.kernel.events.IEventHandler;
@@ -12,7 +11,6 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.layout.properties.HorizontalAlignment;
@@ -22,8 +20,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.ChartUtils;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.general.PieDataset;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
@@ -96,7 +92,6 @@ public class PDFReportService {
 
       // Calcular el espacio restante en la página para centrar la tabla
       pageHeight = pdfDoc.getDefaultPageSize().getHeight();
-      tableHeight = 100; // Aproximar el tamaño de la tabla en píxeles
       topMargin = (pageHeight - tableHeight) / 2;
 
       // Agregar espacio superior
@@ -405,74 +400,173 @@ public class PDFReportService {
     PdfDocument pdfDoc = new PdfDocument(writer);
     Document document = new Document(pdfDoc);
 
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+    // Fuentes
+    PdfFont normalFont = PdfFontFactory.createFont("Times-Roman");
+
     Optional<Stage> stageOpt = stageService.getStageById(stageId);
 
     if (stageOpt.isPresent()) {
       Stage stage = stageOpt.get();
 
-      // Encabezado del informe
-      document.add(new Paragraph("Escenario: " + stage.getName()).setBold().setFontSize(14));
-      document.add(new Paragraph("Nro Escenario: " + stage.getNumber().toString()).setBold().setFontSize(14));
+        document.add(new com.itextpdf.layout.element.AreaBreak());
+        // Título del escenario
+        Paragraph stageTitle = new Paragraph("Escenario de Prueba: " + stage.getName())
+          .setFont(normalFont)
+          .setBold()
+          .setFontSize(18)
+          .setTextAlignment(TextAlignment.LEFT);
+        document.add(stageTitle);
 
-      document.add(new Paragraph("Iteracion: " + stage.getIteration().getName()));
-      document.add(new Paragraph("Categoria: " + stage.getCategory().getName()));
-      document.add(new Paragraph("Tipo: " + stage.getType().getName()));
-      document.add(new Paragraph("Subtipo: " + stage.getSubType().getName()));
-      document.add(new Paragraph("Tester: " + stage.getTester().getName()));
 
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-      String formattedDateRequired = stage.getDateRequired().format(formatter);
-      String formattedDateStart = stage.getTestedFrom().format(formatter);
-      String formattedDateEnd = stage.getTestedTo().format(formatter);
+        // Tabla para los datos del escenario
+        Table stageTable = new Table(2); // Dos columnas: etiqueta y valor
 
-      document.add(new Paragraph("Prioridad: " + stage.getPriority()));
-      document.add(new Paragraph("Fecha Requerida: " + formattedDateRequired));
-      document.add(new Paragraph("Fecha de Inicio de Pruebas: " + formattedDateStart));
-      document.add(new Paragraph("Fecha de Finalización de Pruebas: " + formattedDateEnd));
-      document.add(new Paragraph("Estado: " + stage.getStatus()));
+        stageTable.addCell(new Cell().add(new Paragraph("Número:"))
+          .setTextAlignment(TextAlignment.LEFT)
+          .setBackgroundColor(new DeviceRgb(173, 216, 230)));
 
-      // Resultados Esperados vs Obtenidos
-      document.add(new Paragraph("\nResultados del Escenario").setBold().setFontSize(12));
-      Table resultTable = new Table(2);
-      resultTable.addCell("Resultado Esperado");
-      resultTable.addCell(stage.getExpectedResult());
-      resultTable.addCell("Resultado Obtenido");
-      resultTable.addCell(stage.getGotResult());
-      document.add(resultTable);
+        stageTable.addCell(new Cell().add(new Paragraph(String.valueOf(stage.getNumber())))
+          .setTextAlignment(TextAlignment.LEFT));
 
-      // Tabla de Pasos
-      document.add(new Paragraph("\nDetalles de Pasos").setBold().setFontSize(12));
-      Table stepsTable = new Table(4);
-      stepsTable.addCell("Orden");
-      stepsTable.addCell("Descripción");
-      stepsTable.addCell("Comentario");
-      stepsTable.addCell("Estado");
+        stageTable.addCell(new Cell().add(new Paragraph("Categoría:"))
+          .setTextAlignment(TextAlignment.LEFT)
+          .setBackgroundColor(new DeviceRgb(173, 216, 230)));
 
-      for (Step step : stage.getSteps()) {
-        // Verificar si el orden no es nulo antes de llamarlo
-        stepsTable.addCell(step.getOrden() != null ? step.getOrden().toString() : "");
-        stepsTable.addCell(step.getDescription() != null ? step.getDescription() : "N/A");
-        stepsTable.addCell(step.getComment() != null ? step.getComment() : "N/A");
-        stepsTable.addCell(step.getStatus() != null ? step.getStatus().toString() : "N/A");
+        stageTable.addCell(new Cell().add(new Paragraph(stage.getCategory().getName())))
+          .setTextAlignment(TextAlignment.LEFT);
+
+        stageTable.addCell(new Cell().add(new Paragraph("Tipo:"))
+          .setTextAlignment(TextAlignment.LEFT)
+          .setBackgroundColor(new DeviceRgb(173, 216, 230)));
+
+        stageTable.addCell(new Cell().add(new Paragraph(stage.getType().getName())))
+          .setTextAlignment(TextAlignment.LEFT);
+
+        stageTable.addCell(new Cell().add(new Paragraph("Tester:"))
+          .setTextAlignment(TextAlignment.LEFT)
+          .setBackgroundColor(new DeviceRgb(173, 216, 230)));
+
+        stageTable.addCell(new Cell().add(new Paragraph(stage.getTester().getName())))
+          .setTextAlignment(TextAlignment.LEFT);
+
+
+        stageTable.addCell(new Cell().add(new Paragraph("Prioridad:"))
+          .setTextAlignment(TextAlignment.LEFT)
+          .setBackgroundColor(new DeviceRgb(173, 216, 230)));
+
+        stageTable.addCell(stage.getPriority().getDescription());
+
+        stageTable.addCell(new Cell().add(new Paragraph("Tester:"))
+          .setTextAlignment(TextAlignment.LEFT)
+          .setBackgroundColor(new DeviceRgb(173, 216, 230)));
+
+        stageTable.addCell(new Cell().add(new Paragraph(stage.getTester().getName())))
+          .setTextAlignment(TextAlignment.LEFT);
+
+        stageTable.addCell(new Cell().add(new Paragraph("Fecha Requerida:"))
+          .setTextAlignment(TextAlignment.LEFT)
+          .setBackgroundColor(new DeviceRgb(173, 216, 230)));
+
+        stageTable.addCell(new Cell().add(new Paragraph(stage.getDateRequired().format(formatter))))
+          .setTextAlignment(TextAlignment.LEFT);
+
+        stageTable.addCell(new Cell().add(new Paragraph("Estado:"))
+          .setTextAlignment(TextAlignment.LEFT)
+          .setBackgroundColor(new DeviceRgb(173, 216, 230)));
+
+        stageTable.addCell(new Cell().add(new Paragraph(stage.getStatus().getDescription())))
+          .setTextAlignment(TextAlignment.LEFT);
+
+        document.add(stageTable);
+
+        Paragraph checklistTitle = new Paragraph("\nChecklists:").setBold();
+        document.add(checklistTitle);
+
+        Table checklistTable = new Table(2); // Cuatro columnas: Orden, Descripción, Estado, Comentario
+
+        checklistTable.addCell(new Cell().add(new Paragraph("Estado"))
+          .setTextAlignment(TextAlignment.LEFT)
+          .setBackgroundColor(new DeviceRgb(173, 216, 230)));
+
+        checklistTable.addCell(new Cell().add(new Paragraph("Descripción"))
+          .setTextAlignment(TextAlignment.LEFT)
+          .setBackgroundColor(new DeviceRgb(173, 216, 230)));
+
+
+        for (CheckList ch : stage.getCheckLists()) {
+          String estado = ch.getStatus() != null
+            ? (ch.getStatus() ? "Si" : "No")
+            : "";
+          checklistTable.addCell(estado).setTextAlignment(TextAlignment.CENTER); // Columna Estado
+          checklistTable.addCell(ch.getDescription() != null ? ch.getDescription() : "");
+        }
+        document.add(checklistTable);
+
+        // Detalle de los pasos del escenario
+        Paragraph stepsTitle = new Paragraph("\nPasos del Escenario:").setBold();
+        document.add(stepsTitle);
+
+        Table stepsTable = new Table(4); // Cuatro columnas: Orden, Descripción, Estado, Comentario
+
+        stepsTable.addCell(new Cell().add(new Paragraph("Orden"))
+          .setTextAlignment(TextAlignment.LEFT)
+          .setBackgroundColor(new DeviceRgb(173, 216, 230)));
+
+        stepsTable.addCell(new Cell().add(new Paragraph("Descripción"))
+          .setTextAlignment(TextAlignment.LEFT)
+          .setBackgroundColor(new DeviceRgb(173, 216, 230)));
+
+        stepsTable.addCell(new Cell().add(new Paragraph("Estado"))
+          .setTextAlignment(TextAlignment.LEFT)
+          .setBackgroundColor(new DeviceRgb(173, 216, 230)));
+
+        stepsTable.addCell(new Cell().add(new Paragraph("Comentario"))
+          .setTextAlignment(TextAlignment.LEFT)
+          .setBackgroundColor(new DeviceRgb(173, 216, 230)));
+
+        for (Step step : stage.getSteps()) {
+          stepsTable.addCell(step.getOrden() != null ? step.getOrden().toString() : "");
+          stepsTable.addCell(step.getDescription() != null ? step.getDescription() : "");
+          stepsTable.addCell(step.getStatus() != null ? step.getStatus().getDescription() : "");
+          stepsTable.addCell(step.getComment() != null ? step.getComment() : "");
+        }
+        document.add(stepsTable);
+
+        document.add(new Paragraph("\n")); // Espaciado después de cada escenario
+
+        if (stage.getTestedFrom() != null){
+          document.add(new Paragraph().add("Fecha de Inicio de Pruebas: ").setBold()
+            .add(new Text(stage.getTestedFrom().format(formatterTime)))
+            .setTextAlignment(TextAlignment.LEFT));
+        }
+        else {
+          document.add(new Paragraph("Fecha de Inicio de Pruebas: ").setBold());
+        }
+
+        if (stage.getTestedTo() != null) {
+          document.add(new Paragraph()
+            .add("Fecha de Finalización de Pruebas: ").setBold()
+            .add( new Text (stage.getTestedTo().format(formatterTime)))
+            .setTextAlignment(TextAlignment.LEFT));
+        }
+        else {
+          document.add(new Paragraph("Fecha de Finalización de Pruebas: ").setBold());
+        }
+
+        // Resultados Esperados vs Obtenidos
+        document.add(new Paragraph("\nResultados Esperado").setBold());
+        document.add(new Paragraph(stage.getExpectedResult()));
+
+        document.add(new Paragraph("\nResultados Obtenido").setBold());
+        document.add(new Paragraph(stage.getGotResult()));
+
+        document.add(new Paragraph("\n")); // Espaciado después de cada escenario
+
       }
-      document.add(stepsTable);
-
-      // Tabla de Checklist
-      document.add(new Paragraph("\nDetalles del Checklist").setBold().setFontSize(12));
-      Table checklistTable = new Table(3);
-      checklistTable.addCell("Orden");
-      checklistTable.addCell("Descripción");
-      checklistTable.addCell("Estado");
-
-      for (CheckList check : stage.getCheckLists()) {
-        checklistTable.addCell(check.getOrden() != null ? check.getOrden().toString() : "");
-
-        checklistTable.addCell(check.getDescription());
-        checklistTable.addCell(check.getStatus() ? "Completado" : "Pendiente");
-      }
-      document.add(checklistTable);
-
-    }
 
     document.close();
     return outputStream.toByteArray();
