@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild  } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet,RouterLinkActive,RouterLink  } from '@angular/router';
 import { Type } from './type.model';
 import { TypeService } from './type.service';
@@ -59,7 +59,7 @@ applyFilter(event: Event): void {
     type.name?.toLowerCase().includes(filterValue) // Usa el operador de encadenamiento opcional (?.)
   );
   this.totalItems = this.filteredTypes.length;
-  this.pageIndex = 0; // Reinicia a la primera p�gina
+  this.pageIndex = 0; // Reinicia a la primera pagina
   this.updatePaginatedTypes();
 }
 

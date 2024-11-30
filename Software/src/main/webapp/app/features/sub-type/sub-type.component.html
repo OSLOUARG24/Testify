@@ -9,8 +9,27 @@
         <button type="button" class="btn btn-success" [routerLink]="['/subType/create']">
           <span class="oi oi-plus"></span> Nuevo Subtipo de Escenario
         </button>
-        <button class="btn btn-danger float-right" [routerLink]="['/type']">Volver</button>
-      </p>
+        <button class="btn btn-danger float-right ml-2" [routerLink]="['/type']">Volver</button>
+      <button class="btn btn-secondary float-right ml-2" (click)="toggleSearch()">
+          @if (showSearch) {
+          <span class="oi oi-search"></span>
+          Ocultar Búsqueda
+          }
+          @if (!showSearch) {
+          <span class="oi oi-search"></span>
+          Buscar
+          }
+        </button>
+        </p>
+        @if(showSearch){
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar subtipo por nombre"
+          (input)="applyFilter($event)"
+        />
+      </div>}
     <table class="table table-hover table-sm">
       <thead>
       <tr class="table-info">
@@ -21,7 +40,7 @@
       </thead>
       <tbody>
       <!-- Listar categorías -->
-      @for(subType of subTypes; track subType.id){
+      @for(subType of paginatedSubTypes; track subType.id){
       <tr>
         <td>{{ subType.name }}</td>
         <td>{{ subType.type?.name }}</td>
@@ -46,6 +65,12 @@
       @if (subTypes.length === 0){
       <p>No hay Subtipos de escenario disponibles.</p>
       }
+<mat-paginator
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        (page)="onPageChange($event)">
+      </mat-paginator>
   </div>
   </div>
 </div>
