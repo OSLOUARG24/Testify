@@ -29,6 +29,9 @@ export class NavbarComponent implements OnInit {
   project?: Project;
   selectedProjectId: number = 0;
   user?: User;
+  type?: string;
+  role?: string;
+  Nameuser?: string;
 
   constructor(
     protected navbarService: NavbarService,
@@ -56,7 +59,44 @@ export class NavbarComponent implements OnInit {
       this.navbarService.projectChanged$.subscribe(() => {
          this.getStorageValues();
       });
+
+      this.navbarService.typeChanged$.subscribe(() => {
+             this.getTypeValues();
+      });
+      this.navbarService.userChanged$.subscribe(() => {
+             this.getUserValues();
+      });
+      this.navbarService.roleChanged$.subscribe(() => {
+                 this.getRoleValues();
+          });
     }
+
+   getRoleValues() {
+    const role = localStorage.getItem('NameRole');
+        if (role){
+           this.role = role;
+        }
+      else
+      {this.role = '';}
+  }
+
+  getTypeValues() {
+    const type = localStorage.getItem('NameType');
+        if (type){
+           this.type = type;
+        }
+      else
+      {this.type = '';}
+  }
+
+  getUserValues() {
+    const Nameuser = localStorage.getItem('NameUser');
+        if (Nameuser){
+           this.Nameuser = Nameuser;
+        }
+      else
+      {this.Nameuser = '';}
+  }
 
   getStorageValues() {
     const user = localStorage.getItem('user');

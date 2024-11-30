@@ -5,6 +5,7 @@ import { User } from './user.model';
 import { Router, RouterOutlet,RouterLinkActive,RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteUserComponent } from './delete-user/delete-user.component';
+import { NavbarService } from '../../core/components/navbar/navbar.service';
 
 @Component({
   selector: 'app-user',
@@ -18,9 +19,16 @@ export class UserComponent {
 
   constructor(protected userService: UserService
              ,protected router: Router
-             ,public dialog: MatDialog) { }
+             ,public dialog: MatDialog
+             ,protected navbarService: NavbarService) { }
 
      ngOnInit(): void {
+        localStorage.removeItem('NameType');
+        localStorage.removeItem('NameUser');
+        localStorage.removeItem('NameRole');
+        this.navbarService.notifyTypeChanged();
+        this.navbarService.notifyUserChanged();
+        this.navbarService.notifyRoleChanged();
         this.userService.getUsers().subscribe(
           (data: User[]) => {
             this.users = data;
@@ -53,5 +61,12 @@ export class UserComponent {
             this.users = users;
           });
         }
+
+
+   goRoleAssigment(user: User): void {
+     localStorage.setItem('NameUser',user.name!);
+     this.navbarService.notifyUserChanged();
+     this.router.navigate(['/roleAssigment',user.id]);
+     }
 
 }

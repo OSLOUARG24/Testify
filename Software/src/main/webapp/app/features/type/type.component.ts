@@ -8,6 +8,7 @@ import { DeleteTypeComponent } from './delete-type/delete-type.component';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator'; // Aseg�rate de importar MatPaginatorModule correctamente
 import { ITEMS_PER_PAGE } from '../../app.constants';
 import { getCustomPaginatorIntl } from '../../custom-paginator-intl';
+import { NavbarService } from '../../core/components/navbar/navbar.service'; // Importa el servicio
 
 @Component({
   selector: 'app-type',
@@ -29,9 +30,17 @@ export class TypeComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private typeService: TypeService,
-              public dialog: MatDialog) {}
+              public dialog: MatDialog,
+              private router: Router,
+              private navbarService: NavbarService) {}
 
   ngOnInit(): void {
+    localStorage.removeItem('NameType');
+    localStorage.removeItem('NameUser');
+    localStorage.removeItem('NameRole');
+    this.navbarService.notifyTypeChanged();
+    this.navbarService.notifyUserChanged();
+    this.navbarService.notifyRoleChanged();
     this.loadFromStorage();
     this.loadTypes();
   }
@@ -100,4 +109,10 @@ onPageChange(event: PageEvent): void {
  toggleSearch(): void {
     this.showSearch = !this.showSearch;
    }
+
+   goSubType(type: Type): void {
+     localStorage.setItem('NameType',type.name!);
+     this.navbarService.notifyTypeChanged();
+     this.router.navigate(['/subType',type.id]);
+     }
 }
