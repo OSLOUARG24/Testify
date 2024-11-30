@@ -218,8 +218,13 @@ public class StageService {
 
   public List<Map<String, Object>> getMatrixByProjectId(Long projectId) {
     // Filtrar las etapas (stages) por projectId
-    List<Stage> stages = stageRepository.findByIteration_Project_Id(projectId);
-
+    List<Stage> stages = new ArrayList<>();
+    if (projectId != 0) {
+      stages = stageRepository.findByIteration_Project_Id(projectId);
+    }
+    else{
+      stages = stageRepository.findAll();
+    }
     // Agrupar por Type y contar los Subtypes
     Map<String, Map<String, Long>> matrix = stages.stream()
       .collect(Collectors.groupingBy(

@@ -114,6 +114,7 @@
             </div>
             <div class="card-body">
               <div style="max-height: 200px; overflow-y: auto;">
+                @if(categoryStatus!.length > 0){
                 <table class="table table-bordered table-sm text-center">
                   <thead>
                   <tr class="table-info">
@@ -132,7 +133,10 @@
                     <td>{{ cat.approvedQuantity }}%</td>
                   </tr>
                   </tbody>
-                </table>
+                </table>}
+                @if(categoryStatus!.length === 0){
+                <p>No se realizaron pruebas.</p>
+                }
               </div>
             </div>
           </div>
@@ -165,6 +169,7 @@
               <strong>Total pruebas realizadas</strong>
             </div>
             <div class="card-body">
+              @if(columns.length > 0){
               <table class="table table-bordered table-sm">
                 <thead>
                 <tr class="table-info">
@@ -176,7 +181,10 @@
                   <td *ngFor="let column of columns">{{ row[column] }}</td>
                 </tr>
                 </tbody>
-              </table>
+              </table>}
+              @if(columns.length === 0){
+              <p>No se realizaron pruebas.</p>
+              }
             </div>
           </div>
         </div>

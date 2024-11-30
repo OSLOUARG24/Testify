@@ -64,6 +64,7 @@ export class ProjectComponent {
          this.projects = [];
          this.getAllProjects();
          this.loadIterationStatus();
+         this.loadAllStages();
       }
       this.generateChartData();
    }
@@ -122,6 +123,16 @@ export class ProjectComponent {
         error => console.error('Error al obtener escenarios', error)
       );
     }
+
+    loadAllStages(): void {
+        this.stageService.getStages().subscribe(
+          (data: Stage[]) => {
+            this.stages = data;
+            this.generateChartData();
+          },
+          error => console.error('Error al obtener escenarios', error)
+        );
+      }
 
   generateChartData(): void {
       const statusCounts = { Pendiente: 0, Aprobado: 0, EnError: 0 };
