@@ -120,8 +120,16 @@
   </select>
 
   </div>
+      <br/>
   <div class="form-group">
-  <label for="checkLists">CheckList</label>
+    <div class="row mb-3">
+      <div class="col-md-2">
+        <label>CheckList</label>
+      </div>
+      <div class="col-md-10">
+        <label>Descripción *</label>
+      </div>
+    </div>
   <div formArrayName="checkLists">
     <div *ngFor="let checkList of checkLists.controls; let i = index" [formGroupName]="i">
       <div class="form-check">
@@ -155,7 +163,7 @@
         <label for="steps">Pasos</label>
       </div>
       <div class="col-md-5">
-        <label for="steps">Nombre</label>
+        <label for="steps">Nombre *</label>
       </div>
       <div class="col-md-5">
         <label for="steps">Comentario</label>
@@ -201,28 +209,12 @@
     </textarea>
     @if (stageForm.get('expectedResult')?.invalid && stageForm.get('expectedResult')?.touched) {
     <div class="error">
-      El Resultado Esperado es requerido.
+      El Resultado Esperado es requerido o debe ser menor a 250 carácteres
     </div>
     }
   </div>
         </div>
       </div>
-      <!--<div class="row mb-3">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label for="gotResult">Resultado Obtenido</label>
-          <textarea id="gotResult" formControlName="gotResult" type="text" class="form-control" rows="5"
-                    placeholder="Ingresa el Resultado Obtenido"
-                    [ngClass]="{'is-invalid': stageForm.get('gotResult')?.invalid && stageForm.get('gotResult')?.touched}">
-              </textarea>
-          @if (stageForm.get('gotResult')?.invalid && stageForm.get('gotResult')?.touched) {
-          <div class="error">
-            El Resultado Obtenido es requerido.
-          </div>
-          }
-        </div>
-      </div>
-      </div>-->
       <div class="row mb-3">
         <div class="col-md-12">
   <div class="form-group">
@@ -273,4 +265,12 @@
     {{ errorMessage }}
   </div>
   }
+  <!--div *ngIf="stageForm.invalid" class="alert alert-warning">
+    <h5>Formulario inválido</h5>
+    <ul>
+      <li *ngFor="let control of getFormControls(stageForm)">
+        {{ control.key }}: {{ control.control.status }} (Errors: {{ control.control.errors | json }})
+      </li>
+    </ul>
+  </div-->
 </div>

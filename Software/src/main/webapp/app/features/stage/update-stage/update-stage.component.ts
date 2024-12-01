@@ -93,9 +93,9 @@ initializeForm(): void {
           steps: this.fb.array([]),
           checkLists: this.fb.array([]),
           status: [null, Validators.required],
-          comment: [''],
-          expectedResult: [null, Validators.required],
-          gotResult: [''],
+          comment: ['', [Validators.maxLength(250)]],
+          expectedResult: ['', [Validators.required, Validators.maxLength(250)]],
+          gotResult: [null],
           estimatedTime: [null, [Validators.required, Validators.min(0)]]
         });
   }
@@ -299,5 +299,10 @@ onSubmit(): void {
             return '';
         }
       }
-
+getFormControls(formGroup: FormGroup): { key: string; control: AbstractControl }[] {
+  return Object.keys(formGroup.controls).map(key => ({
+    key,
+    control: formGroup.get(key)!
+  }));
+}
 }

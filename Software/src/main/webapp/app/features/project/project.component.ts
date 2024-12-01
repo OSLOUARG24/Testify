@@ -241,4 +241,18 @@ getProjectProgress(projectId: number): number {
         return 'bg-danger'; // Rojo si el progreso es < 50%
     }
   }
+
+isTextOverflow(text: string): boolean {
+  const tempSpan = document.createElement('span');
+  tempSpan.style.visibility = 'hidden';
+  tempSpan.style.whiteSpace = 'nowrap';
+  tempSpan.style.position = 'absolute';
+  tempSpan.innerText = text;
+  document.body.appendChild(tempSpan);
+
+  const isOverflow = tempSpan.offsetWidth > 200; // Compara con el max-width
+  document.body.removeChild(tempSpan);
+
+  return isOverflow;
+}
 }

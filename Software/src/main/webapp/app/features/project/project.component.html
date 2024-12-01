@@ -146,6 +146,43 @@
 
     <div class="container">
       <div class="row">
+        <!-- Estados por Iteración -->
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header text-center">
+              <strong>Total pruebas realizadas</strong>
+            </div>
+            <div class="card-body">
+              @if(columns.length > 0){
+              <table class="table table-bordered table-sm">
+                <thead>
+                <tr class="table-info">
+                  <th *ngFor="let column of columns"
+                      [ngClass]="{'truncate-text': isTextOverflow(column)}"
+                      [title]="isTextOverflow(column) ? column : ''"
+                  > {{ column }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let row of matrix">
+                  <td *ngFor="let column of columns"
+                      [ngClass]="{'truncate-text': isTextOverflow(row[column])}"
+                      [title]="isTextOverflow(row[column]) ? row[column] : ''">
+                    {{ row[column] }}</td>
+                </tr>
+                </tbody>
+              </table>}
+              @if(columns.length === 0){
+              <p>No se realizaron pruebas.</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
 
         <div class="col-md-6">
           <div class="card">
@@ -162,35 +199,7 @@
               </div>
           </div>
       </div>
-        <!-- Estados por Iteración -->
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-header text-center">
-              <strong>Total pruebas realizadas</strong>
-            </div>
-            <div class="card-body">
-              @if(columns.length > 0){
-              <table class="table table-bordered table-sm">
-                <thead>
-                <tr class="table-info">
-                  <th *ngFor="let column of columns">{{ column }}</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let row of matrix">
-                  <td *ngFor="let column of columns">{{ row[column] }}</td>
-                </tr>
-                </tbody>
-              </table>}
-              @if(columns.length === 0){
-              <p>No se realizaron pruebas.</p>
-              }
-            </div>
-          </div>
-        </div>
     </div>
-
-
 
 </div>
 </div>

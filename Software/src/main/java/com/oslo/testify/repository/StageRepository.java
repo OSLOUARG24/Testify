@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface StageRepository extends JpaRepository<Stage, Long> {
@@ -24,4 +25,6 @@ public interface StageRepository extends JpaRepository<Stage, Long> {
     List<Stage> findAllByProjectId(@Param("projectId") Long projectId);
 
     List<Stage> findByIteration_Project_Id(Long projectId);
+
+    Optional<Stage> findByPreviousStage(Stage stage);
 }
