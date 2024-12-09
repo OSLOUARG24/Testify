@@ -78,8 +78,7 @@ export class StageComponent implements OnInit {
       const descriptions = {
         [StageStatus.PENDIENTE]: 'Pendiente',
         [StageStatus.APROBADO]: 'Aprobado',
-        [StageStatus.ERROR]: 'Error',
-        [StageStatus.FINALIZADO]: 'Finalizado'
+        [StageStatus.ERROR]: 'Error'
       };
     return descriptions[status] || status;
   }

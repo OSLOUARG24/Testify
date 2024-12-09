@@ -278,8 +278,6 @@ onSubmit(): void {
           return 'Aprobado';
         case StageStatus.ERROR:
           return 'Error';
-        case StageStatus.FINALIZADO:
-          return 'Finalizado';
         default:
           return '';
       }
