@@ -128,6 +128,7 @@ initializeForm(): void {
             gotResult: stage.gotResult,
             estimatedTime: stage.estimatedTime
           });
+          this.filterSubTypes(type!);
           this.setCheckLists(stage.checkLists);
           this.setSteps(stage.steps);
         },

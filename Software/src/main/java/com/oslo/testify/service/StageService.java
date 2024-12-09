@@ -65,7 +65,7 @@ public class StageService {
 
     // Crear una copia del stage sin steps, checklists ni documentos
     Stage copiedStage = new Stage();
-    copiedStage.setName(originalStage.getName() + "(Copia de Escenario Nro " + originalStage.getNumber().toString() + ")" );
+    copiedStage.setName(originalStage.getName() + " (Copia de Escenario Nro " + originalStage.getNumber().toString() + ")" );
     copiedStage.setNumber(newNumber);
     copiedStage.setIteration(originalStage.getIteration());
     copiedStage.setCategory(originalStage.getCategory());
