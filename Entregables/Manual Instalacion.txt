@@ -40,3 +40,5 @@ Testify se desplegará por defecto en el puerto 4200 indicado en el archivo Dock
 
 11) Verifique los contenedores en ejecución con el comando:
 docker ps
+
+12) Acceda a su SGBD MySQL y ejecute el archivo testify_db.sql
