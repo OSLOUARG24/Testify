@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { StageService } from './stage.service';
 import { Stage, StageStatus } from './stage.model';
+import { User } from '../user/user.model';
 import { Project } from '../project/project.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router, RouterOutlet, RouterLinkActive, RouterLink  } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DeleteStageComponent } from './delete-stage/delete-stage.component';
+import { RoleAssigment } from '../role-assigment/role-assigment.model';
 
 @Component({
   selector: 'app-stage',
@@ -18,6 +20,8 @@ export class StageComponent implements OnInit {
   iterationId?: number;
   stages: Stage[] = [];
   project?: Project;
+  user?: User;
+  roleAssigments: RoleAssigment[] = [];
 
   constructor(private stageService: StageService,
     private route: ActivatedRoute,
@@ -25,13 +29,14 @@ export class StageComponent implements OnInit {
     public dialog: MatDialog) {}
 
   ngOnInit(): void {
-  let iterationIdParam = this.route.snapshot.paramMap.get('id');
-  if (iterationIdParam){ sessionStorage.setItem('Iid',iterationIdParam);}
-  else { iterationIdParam =  sessionStorage.getItem('Iid')!;}
-  this.iterationId = iterationIdParam ? +iterationIdParam : undefined;
-    this.stageService.getStagesbyIterationId(this.iterationId!).subscribe(stages => {
-      this.stages = stages;
-    });
+    this.getStorageValues();
+    let iterationIdParam = this.route.snapshot.paramMap.get('id');
+    if (iterationIdParam){ sessionStorage.setItem('Iid',iterationIdParam);}
+    else { iterationIdParam =  sessionStorage.getItem('Iid')!;}
+    this.iterationId = iterationIdParam ? +iterationIdParam : undefined;
+      this.stageService.getStagesbyIterationId(this.iterationId!).subscribe(stages => {
+        this.stages = stages;
+      });
   }
 
   goBack(): void {
@@ -73,8 +78,7 @@ export class StageComponent implements OnInit {
       const descriptions = {
         [StageStatus.PENDIENTE]: 'Pendiente',
         [StageStatus.APROBADO]: 'Aprobado',
-        [StageStatus.ERROR]: 'Error',
-        [StageStatus.FINALIZADO]: 'Finalizado'
+        [StageStatus.ERROR]: 'Error'
       };
     return descriptions[status] || status;
   }
@@ -98,5 +102,35 @@ openDeleteModal(stage: any): void {
                 });
               }
 
+getStorageValues() {
+    const user = localStorage.getItem('user');
+    if (user){
+       this.user = JSON.parse(user);
+    }
+
+    const roles = sessionStorage.getItem('userRoles');
+    if (roles){
+      this.roleAssigments = JSON.parse(roles);
+    }
+
+    const project = sessionStorage.getItem('project');
+      if (project){
+        this.project = JSON.parse(project);
+      }
+    else {
+      this.project = undefined;
+      }
+  }
+
+  hasRole(roleCode: string): boolean {
+    return this.roleAssigments.some((assignment: RoleAssigment) => assignment.role?.code === roleCode);
+  }
+
+  isAdmin() {
+     return this.user?.admin;
+  }
+  isGestor() {
+       return this.hasRole('GESTOR');
+    }
 }
 

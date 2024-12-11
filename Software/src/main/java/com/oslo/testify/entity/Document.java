@@ -24,7 +24,7 @@ public class Document {
   private String description;
 
   @Lob
-  @Column(name = "document", nullable = false)
+  @Column(name = "document", nullable = false, columnDefinition = "LONGBLOB")
   private byte[] document;
 
   public Document() {

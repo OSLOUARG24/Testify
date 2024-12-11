@@ -1,13 +1,17 @@
 package com.oslo.testify.controller;
 
 import com.oslo.testify.entity.Stage;
+import com.oslo.testify.service.PDFReportService;
 import com.oslo.testify.service.StageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +26,9 @@ public class StageController {
 
   @Autowired
   private StageService stageService;
+
+  @Autowired
+  private PDFReportService pdfReportService;
 
   @GetMapping("/stages")
   public List<Stage> getAllStages() {
@@ -94,5 +101,23 @@ public class StageController {
   @GetMapping("/stages/project/{id}")
   public List<Stage> getStagesByProjectId(@PathVariable(value = "id", required = false) final Long projectId) {
     return stageService.getStagesByProjectId(projectId);
+  }
+
+  @PostMapping("/stage/export")
+  public ResponseEntity<byte[]> generateStageReport(
+    @RequestParam("stageId") Long stageId) {
+    try {
+      byte[] pdfContent = pdfReportService.generateStageReport(stageId);
+      HttpHeaders headers = new HttpHeaders();
+      headers.add("Content-Disposition", "inline; filename=stage_report.pdf");
+      return ResponseEntity.ok().headers(headers).body(pdfContent);
+    } catch (IOException e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+  }
+
+  @GetMapping("/stage/matrix/{id}")
+  public List<Map<String, Object>> getMatrixByProjectId(@PathVariable(value = "id", required = false) final Long projectId) {
+    return stageService.getMatrixByProjectId(projectId);
   }
 }

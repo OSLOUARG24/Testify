@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ProjectService } from '../project.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Project } from '../project.model';
 
 @Component({
   selector: 'app-export-project',
@@ -14,6 +15,7 @@ export class ExportProjectComponent {
 
   projectForm!: FormGroup;
   projectId!: number;
+  projectName!: string;
 
   constructor(
     private fb: FormBuilder,
@@ -28,6 +30,14 @@ ngOnInit(): void {
         const id = params.get('id');
         if (id) {
           this.projectId = +id;
+          this.projectService.getProjectById(this.projectId).subscribe(
+            (project: Project) => {
+              this.projectName = project.name!; // Almacenar el nombre del proyecto
+            },
+            (error) => {
+              console.error('Error al obtener el proyecto:', error);
+            }
+          );
         }
       });
 
@@ -50,8 +60,13 @@ ngOnInit(): void {
             // Crear un enlace temporal para la descarga
             const link = document.createElement('a');
             link.href = url;
-            link.download = `project_report_${this.projectId}.pdf`;
+
+            const sanitizedProjectName = this.projectName.replace(/[<>:"/\\|?*]+/g, ''); // Eliminar caracteres no válidos
+            link.download = `${sanitizedProjectName}.pdf`;
             link.click();
+
+            /*link.download = `project_report_${this.projectId}.pdf`;
+            link.click();*/
 
             // Liberar el objeto URL después de la descarga
             window.URL.revokeObjectURL(url);

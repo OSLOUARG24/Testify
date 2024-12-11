@@ -34,6 +34,7 @@ export class UpdateStageComponent implements OnInit {
   // Opciones para los dropdowns
   types: Type[] = [];
   subTypes: SubType[] = [];
+  filteredSubTypes: SubType[] = [];
   categories: any[] = [];
   testers: any[] = [];
   priorities = Object.values(Priority);
@@ -71,11 +72,16 @@ export class UpdateStageComponent implements OnInit {
         this.stageForm.patchValue({ status: StageStatus.PENDIENTE });
       }
     });
+
+   this.stageForm.get('type')?.valueChanges.subscribe(selectedType => {
+        this.filterSubTypes(selectedType);
+      });
   }
 
 initializeForm(): void {
     this.stageForm = this.fb.group({
-          name: ['', Validators.required],
+          id: [''],
+          name: ['', [Validators.required, Validators.maxLength(250)]],
           number: [null],
           iteration: [null, Validators.required],
           category: [null, Validators.required],
@@ -87,23 +93,21 @@ initializeForm(): void {
           steps: this.fb.array([]),
           checkLists: this.fb.array([]),
           status: [null, Validators.required],
-          comment: [''],
-          expectedResult: [null, Validators.required],
-          gotResult: [''],
-          estimatedTime: [null, Validators.required]
+          comment: ['', [Validators.maxLength(250)]],
+          expectedResult: ['', [Validators.required, Validators.maxLength(250)]],
+          gotResult: [null],
+          estimatedTime: [null, [Validators.required, Validators.min(0)]]
         });
   }
 
   loadStageData(id: number): void {
       this.stageService.getStageById(id).subscribe(
         (stage: Stage) => {
-
           const iteration = this.iterations.find(t => t.id === stage.iteration?.id);
           const type = this.types.find(t => t.id === stage.type?.id);
           const subType = this.subTypes.find(st => st.id === stage.subType?.id);
           const category = this.categories.find(c => c.id === stage.category?.id);
           const tester = this.testers.find(c => c.id === stage.tester?.id);
-
           this.stageForm.patchValue({
             id: stage.id,
             name: stage.name,
@@ -116,6 +120,7 @@ initializeForm(): void {
             priority: stage.priority,
             steps: stage.steps,
             checkLists: stage.checkLists,
+            documents: stage.documents,
             status: stage.status,
             comment: stage.comment,
             dateRequired: stage.dateRequired,
@@ -123,6 +128,7 @@ initializeForm(): void {
             gotResult: stage.gotResult,
             estimatedTime: stage.estimatedTime
           });
+          this.filterSubTypes(type!);
           this.setCheckLists(stage.checkLists);
           this.setSteps(stage.steps);
         },
@@ -153,13 +159,21 @@ initializeForm(): void {
 
   }
 
+ filterSubTypes(selectedType: Type): void {
+    this.filteredSubTypes = this.subTypes.filter(subType => subType.type!.id === selectedType.id);
+    // Reiniciar el valor de subType si no está en los subtipos filtrados
+    if (!this.filteredSubTypes.find(subType => subType.id === this.stageForm.get('subType')?.value?.id)) {
+      this.stageForm.get('subType')?.setValue(null);
+    }
+  }
+
   get checkLists(): FormArray {
     return this.stageForm.get('checkLists') as FormArray;
   }
 
   addCheckList(): void {
     this.checkLists.push(this.fb.group({
-      description: ['', Validators.required],
+      description: ['', [Validators.required, Validators.maxLength(250)]],
       status: [false]
     }));
   }
@@ -167,7 +181,8 @@ initializeForm(): void {
   setCheckLists(checkLists: CheckList[]): void {
     checkLists.forEach(checkList => {
       this.checkLists.push(this.fb.group({
-        description: [checkList.description, Validators.required],
+        //description: [checkList.description, [Validators.required, Validators.maxLength(250)]],
+        description: [checkList.description],
         status: [checkList.status]
       }));
     });
@@ -181,8 +196,8 @@ initializeForm(): void {
     const currentOrder = this.steps.length + 1;
     this.steps.push(this.fb.group({
       orden: [currentOrder],
-      description: ['', Validators.required],
-      comment: [''],
+      description: ['', [Validators.required, Validators.maxLength(250)]],
+      comment: ['', Validators.maxLength(250)],
       status: [StageStatus.PENDIENTE]
     }));
   }
@@ -264,8 +279,6 @@ onSubmit(): void {
           return 'Aprobado';
         case StageStatus.ERROR:
           return 'Error';
-        case StageStatus.FINALIZADO:
-          return 'Finalizado';
         default:
           return '';
       }
@@ -285,5 +298,10 @@ onSubmit(): void {
             return '';
         }
       }
-
+getFormControls(formGroup: FormGroup): { key: string; control: AbstractControl }[] {
+  return Object.keys(formGroup.controls).map(key => ({
+    key,
+    control: formGroup.get(key)!
+  }));
+}
 }

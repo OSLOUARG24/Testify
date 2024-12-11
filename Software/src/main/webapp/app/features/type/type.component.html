@@ -46,8 +46,10 @@
         <td>
           <!-- Botones de editar y eliminar visibles solo si el usuario es admin o el proyecto coincide con el de SessionStorage -->
           <ng-container>
-            <a title="Subtipos" class="btn btn-outline-info" [routerLink]="['/subType', type.id]">
-              <span class="oi oi-zoom-in"></span>
+            <a title="Subtipos"(click)="goSubType(type)">
+              <button type="button" class="btn btn-outline-info" >
+                <span class="oi oi-zoom-in"></span>
+              </button>
             </a>
             <a title="Modificar" [routerLink]="['/type/edit', type.id]">
               <button type="button" class="btn btn-outline-warning">

@@ -23,8 +23,10 @@
     <tr>
       <td>{{ role.name }}</td>
       <td>
-        <a title="Ver Permisos Asignados" class="btn btn-outline-info" [routerLink]="['/rolePermission', role.id]">
-          <span class="oi oi-zoom-in"></span>
+        <a title="Permisos Asignados" (click)="goPermissions(role)">
+          <button type="button" class="btn btn-outline-info" >
+            <span class="oi oi-zoom-in"></span>
+          </button>
         </a>
         <a title="Modificar" [routerLink]="['/role/edit', role.id]">
         <button type="button" class="btn btn-outline-warning">

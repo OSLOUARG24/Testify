@@ -6,14 +6,18 @@
     <div class="card-body">
       <div class="row mb-3">
         <div class="d-flex justify-content-end">
-@if(canCopy()){
+          @if(canCopy()){
           <button type="button" class="btn btn-outline-primary mr-2" (click)="copyStage()">
             <span class="oi oi-clipboard"></span> Copiar Escenario
           </button>
-}
-          <button class="btn btn-outline-secondary" (click)="goBack()">
+          }
+          <button class="btn btn-outline-primary mr-2" (click)="exportStage()">
+            <span class="oi oi-file"></span> Exportar
+          </button>
+          <button class="btn btn-outline-secondary mr-2" (click)="goBack()">
             <span class="oi oi-arrow-left"></span> Volver
           </button>
+
         </div>
       </div>
       <div class="row mb-3">
@@ -118,7 +122,7 @@
             <p>Orden</p>
           </div>
           <div class="col-md-4">
-            <p>descripcion</p>
+            <p>descripción</p>
           </div>
           <div class="col-md-4">
             <p>Comentario</p>
@@ -209,7 +213,7 @@
             <p>Documento</p>
           </div>
           <div class="col-md-9">
-            <p>descripcion</p>
+            <p>descripción</p>
           </div>
         </div>
       </ul>

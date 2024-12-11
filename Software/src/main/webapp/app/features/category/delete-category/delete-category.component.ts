@@ -19,11 +19,11 @@ export class DeleteCategoryComponent {
   onConfirm(): void {
     this.categoryService.deleteCategory(this.data.category.id).subscribe({
       next: () => {
-        console.log(`Categoria ${this.data.category.name} eliminada`);
+        console.log(`Categoría ${this.data.category.name} eliminada`);
         this.dialogRef.close(true);
       },
       error: (err) => {
-        console.error('Error al eliminar la categoria', err);
+        console.error('Error al eliminar la categoría', err);
         this.dialogRef.close(false);
       }
     });

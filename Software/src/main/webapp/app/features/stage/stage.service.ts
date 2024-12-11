@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { Stage, Document } from './stage.model';
 import { tap, catchError } from 'rxjs/operators';
@@ -97,6 +97,20 @@ export class StageService {
 
 getStagesByProjectId(id: number) {
     return this.http.get<Stage[]>(`${this.apiUrl}/stages/project/${id}`);
+  }
+
+exportPDF(stageId: number) {
+    const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Accept': 'application/pdf'
+        });
+    return this.http.post(this.apiUrl + '/stage/export', null, {
+                                                               headers: headers,
+                                                               responseType: 'blob',
+                                                               params: {
+                                                                 stageId: stageId.toString()
+                                                               }
+                                                             });
   }
 
 }

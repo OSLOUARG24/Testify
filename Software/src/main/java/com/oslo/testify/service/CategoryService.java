@@ -22,7 +22,7 @@ public class CategoryService {
 
     public Category saveCategory(Category category) {
       if (categoryRepository.existsByName(category.getName())) {
-        throw new RuntimeException("Ya existe una categoria con este nombre");
+        throw new RuntimeException("Ya existe una categoría con este nombre");
       }
       return categoryRepository.save(category);
     }
@@ -42,7 +42,7 @@ public class CategoryService {
     if (existingCategory.isPresent()) {
 
       if (categoryRepository.existsByNameAndIdNot(categoryDetails.getName(),id)) {
-        throw new RuntimeException("Ya existe una categoria con este nombre");
+        throw new RuntimeException("Ya existe una categoría con este nombre");
       }
 
       Category category = existingCategory.get();
@@ -51,7 +51,7 @@ public class CategoryService {
 
       return categoryRepository.save(category);
     } else {
-      throw new ResourceNotFoundException("Categoria no encontrada con id: " + id);
+      throw new ResourceNotFoundException("Categoría no encontrada con id: " + id);
     }
   }
 

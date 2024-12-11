@@ -1,0 +1,50 @@
+services:
+  database:
+    image: mysql:8.0
+    container_name: mysql-container
+    restart: unless-stopped
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: testify
+      MYSQL_USER: testify
+      MYSQL_PASSWORD: testify
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    expose:
+      - 3306
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+  backend:
+    build:
+      context: .
+      dockerfile: DockerFileBack
+    container_name: spring-boot-container
+    restart: no
+    depends_on:
+      - database
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/testify
+      SPRING_DATASOURCE_USERNAME: testify
+      SPRING_DATASOURCE_PASSWORD: testify
+    ports:
+      - "8080:8080"
+  frontend:
+    build:
+      context: .
+      dockerfile: DockerFileFront
+    container_name: angular-container
+    restart: no
+    ports:
+      - "4200:80"
+volumes:
+  db_data:

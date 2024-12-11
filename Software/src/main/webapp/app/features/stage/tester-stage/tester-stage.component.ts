@@ -34,8 +34,8 @@ export class TesterStageComponent implements OnInit {
     this.stageService.getStagesForUser(this.user?.id!).subscribe((stages: Stage[]) => {
       console.log(JSON.stringify(stages));
       // Separar los stages según el estado
-      this.stagesToDo = stages.filter(stage => stage.status !== StageStatus.APROBADO);
-      this.stagesCompleted = stages.filter(stage => stage.status === StageStatus.APROBADO);
+      this.stagesToDo = stages.filter(stage => stage.status === StageStatus.PENDIENTE);
+      this.stagesCompleted = stages.filter(stage => stage.status !== StageStatus.PENDIENTE);
     });
   }
 
@@ -43,23 +43,23 @@ export class TesterStageComponent implements OnInit {
           const descriptions = {
             [StageStatus.PENDIENTE]: 'Pendiente',
             [StageStatus.APROBADO]: 'Aprobado',
-            [StageStatus.ERROR]: 'Error',
-            [StageStatus.FINALIZADO]: 'Finalizado',
+            [StageStatus.ERROR]: 'Error'
           };
         return descriptions[status] || status;
       }
 
   getProgress(stage: any): number {
     const totalSteps = stage.steps.length;
-    const completedSteps = stage.steps.filter((step: any) => step.status === StageStatus.APROBADO).length;
+    const completedSteps = stage.steps.filter((step: any) => step.status !== StageStatus.PENDIENTE).length;
 
-    const totalChecklists = stage.checkLists.length;
-    const completedChecklists = stage.checkLists.filter((checklist: any) => checklist.status == true).length;
+     const validChecklists = stage.checkLists.filter((checklist: any) => checklist.status !== null && checklist.status !== undefined);
+     const totalChecklists = validChecklists.length;
+     const completedChecklists = validChecklists.filter((checklist: any) => checklist.status === true).length;
 
-    const totalItems = totalSteps + totalChecklists;
-    const completedItems = completedSteps + completedChecklists;
+     const totalItems = totalSteps + totalChecklists;
+     const completedItems = completedSteps + completedChecklists;
 
-    return totalItems === 0 ? 0 : Math.round((completedItems / totalItems) * 100);
+     return totalItems === 0 ? 0 : Math.round((completedItems / totalItems) * 100);
   }
 
   // Método para asignar colores a la barra de progreso
@@ -72,5 +72,18 @@ export class TesterStageComponent implements OnInit {
       return 'bg-danger';
     }
   }
+
+getStatusClass(status: StageStatus): string {
+  switch (status) {
+    case StageStatus.PENDIENTE:
+      return 'text-blue';
+    case StageStatus.ERROR:
+      return 'text-red';
+    case StageStatus.APROBADO:
+      return 'text-green';
+    default:
+      return '';
+  }
+}
 }
 

@@ -5,7 +5,7 @@
     </div>
     <div class="card-body">
       <p class="d-flex justify-content-end">
-        @if (isAdmin) {
+        @if (isAdmin()) {
         <button type="button" class="btn btn-success" [routerLink]="['/iteration/create']">
           <span class="oi oi-plus"></span> Nueva Iteración
         </button>
@@ -35,7 +35,7 @@
           </a>
 
           <!-- Botones de editar y eliminar, visibles solo si el usuario es admin -->
-          @if (isAdmin) {
+          @if (isAdmin()) {
           <a title="Modificar" [routerLink]="['/iteration/edit', iteration.id]">
             <button type="button" class="btn btn-outline-warning">
               <span class="oi oi-pencil"></span>

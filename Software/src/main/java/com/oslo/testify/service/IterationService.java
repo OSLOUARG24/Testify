@@ -22,7 +22,7 @@ public class IterationService {
 
     public Iteration saveIteration(Iteration iteration) {
       if (iterationRepository.existsByNameAndProject(iteration.getName(),iteration.getProject())) {
-        throw new RuntimeException("Ya existe una iteracion con este nombre");
+        throw new RuntimeException("Ya existe una iteración con este nombre");
       }
       boolean isOverlapping = iterationRepository.existsOverlappingIterations(
         iteration.getProject().getId(),
@@ -30,7 +30,7 @@ public class IterationService {
         iteration.getEndDate()
       );
       if (isOverlapping) {
-        throw new RuntimeException("Las fechas de esta iteracion se superponen con las fechas de otra iteracion");
+        throw new RuntimeException("Las fechas de esta iteración se superponen con las fechas de otra iteración");
       }
       return iterationRepository.save(iteration);
     }
@@ -54,7 +54,7 @@ public class IterationService {
     if (existingIteration.isPresent()) {
 
       if (iterationRepository.existsByNameAndProjectAndIdNot(iterationDetails.getName(),iterationDetails.getProject(),id)) {
-        throw new RuntimeException("Ya existe una iteracion con este nombre");
+        throw new RuntimeException("Ya existe una iteración con este nombre");
       }
       boolean isOverlapping = iterationRepository.existsOverlappingIterationsExcludingId(
         iterationDetails.getProject().getId(),
@@ -63,7 +63,7 @@ public class IterationService {
         id
       );
       if (isOverlapping) {
-        throw new RuntimeException("Las fechas de esta iteracion se superponen con las fechas de otra iteracion");
+        throw new RuntimeException("Las fechas de esta iteración se superponen con las fechas de otra iteración");
       }
 
       Iteration iteration = existingIteration.get();
@@ -76,7 +76,7 @@ public class IterationService {
 
       return iterationRepository.save(iteration);
     } else {
-      throw new ResourceNotFoundException("Iteracion no encontrada con id: " + id);
+      throw new ResourceNotFoundException("Iteración no encontrada con id: " + id);
     }
   }
 

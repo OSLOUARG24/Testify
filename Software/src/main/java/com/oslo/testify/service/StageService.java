@@ -9,9 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,7 +65,7 @@ public class StageService {
 
     // Crear una copia del stage sin steps, checklists ni documentos
     Stage copiedStage = new Stage();
-    copiedStage.setName("Copia de Escenario Nro" + originalStage.getNumber());
+    copiedStage.setName(originalStage.getName() + " (Copia de Escenario Nro " + originalStage.getNumber().toString() + ")" );
     copiedStage.setNumber(newNumber);
     copiedStage.setIteration(originalStage.getIteration());
     copiedStage.setCategory(originalStage.getCategory());
@@ -85,8 +83,8 @@ public class StageService {
         .map(originalCheckList -> {
           CheckList copiedCheckList = new CheckList();
           copiedCheckList.setDescription(originalCheckList.getDescription());
-          copiedCheckList.setStage(copiedStage); // Asigna el nuevo stage como propietario
-          copiedCheckList.setStatus(false); // Estado inicial en false
+          copiedCheckList.setStage(copiedStage);
+          copiedCheckList.setStatus(false);
           return copiedCheckList;
         })
         .collect(Collectors.toList())
@@ -194,7 +192,7 @@ public class StageService {
 
       // Verificar si el estado del Stage no es PENDIENTE
       if (currentStage.getStatus() != StageStatus.PENDIENTE) {
-        throw new RuntimeException("El escenario contiene pruebas realizadas o no está pendiente. Actualice el estado a Finalizado.");
+        throw new RuntimeException("El escenario contiene pruebas realizadas o no está pendiente. Actualice el estado según corresponda.");
       }
 
       // Verificar si existen steps con estado distinto de APROBADO
@@ -210,12 +208,63 @@ public class StageService {
       if (hasActiveCheckLists) {
         throw new RuntimeException("El escenario contiene checklists activas.");
       }
+
+      // Valido que si el stage es una copia, sacarle el previous id al original, para que permita eliminarlo
+      Optional<Stage> stagePrevious = stageRepository.findByPreviousStage(stage.get());
+      if (stagePrevious.isPresent()){
+        Stage st = stagePrevious.get();
+        st.setPreviousStage(null);
+        stageRepository.save(st);
+      }
+
       stageRepository.deleteById(id);
     }
   }
 
   public List<Stage> getStagesByProjectId(Long projectId) {
     return stageRepository.findAllByProjectId(projectId);
+  }
+
+  public List<Map<String, Object>> getMatrixByProjectId(Long projectId) {
+    // Filtrar las etapas (stages) por projectId
+    List<Stage> stages = projectId != 0
+      ? stageRepository.findByIteration_Project_Id(projectId)
+      : stageRepository.findAll();
+
+    // Agrupar por Type y contar los Subtypes
+    Map<String, Map<String, Long>> matrix = stages.stream()
+      .collect(Collectors.groupingBy(
+        stage -> stage.getType().getName(), // Agrupar por el nombre del Type
+        Collectors.groupingBy(
+          stage -> stage.getSubType().getName(), // Agrupar por el nombre del Subtype
+          Collectors.counting() // Contar ocurrencias
+        )
+      ));
+
+    // Obtener todos los Subtypes para las columnas
+    Set<String> allSubtypes = stages.stream()
+      .map(stage -> stage.getSubType().getName())
+      .distinct()
+      .sorted() // Asegurar un orden consistente
+      .collect(Collectors.toSet());
+
+    // Crear la lista para representar la matriz
+    List<Map<String, Object>> result = new ArrayList<>();
+
+    // Construir filas con Type y sus Subtypes
+    for (Map.Entry<String, Map<String, Long>> entry : matrix.entrySet()) {
+      Map<String, Object> row = new LinkedHashMap<>();
+      row.put("Tipo de Escenario", entry.getKey()); // Nombre del Type
+
+      // Rellenar los valores para cada Subtype
+      for (String subtype : allSubtypes) {
+        row.put(subtype, entry.getValue().getOrDefault(subtype, 0L));
+      }
+
+      result.add(row);
+    }
+
+    return result;
   }
 
 }

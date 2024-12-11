@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild  } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet,RouterLinkActive,RouterLink  } from '@angular/router';
 import { Type } from './type.model';
 import { TypeService } from './type.service';
@@ -8,6 +8,7 @@ import { DeleteTypeComponent } from './delete-type/delete-type.component';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator'; // Aseg�rate de importar MatPaginatorModule correctamente
 import { ITEMS_PER_PAGE } from '../../app.constants';
 import { getCustomPaginatorIntl } from '../../custom-paginator-intl';
+import { NavbarService } from '../../core/components/navbar/navbar.service'; // Importa el servicio
 
 @Component({
   selector: 'app-type',
@@ -29,9 +30,17 @@ export class TypeComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private typeService: TypeService,
-              public dialog: MatDialog) {}
+              public dialog: MatDialog,
+              private router: Router,
+              private navbarService: NavbarService) {}
 
   ngOnInit(): void {
+    localStorage.removeItem('NameType');
+    localStorage.removeItem('NameUser');
+    localStorage.removeItem('NameRole');
+    this.navbarService.notifyTypeChanged();
+    this.navbarService.notifyUserChanged();
+    this.navbarService.notifyRoleChanged();
     this.loadFromStorage();
     this.loadTypes();
   }
@@ -59,7 +68,7 @@ applyFilter(event: Event): void {
     type.name?.toLowerCase().includes(filterValue) // Usa el operador de encadenamiento opcional (?.)
   );
   this.totalItems = this.filteredTypes.length;
-  this.pageIndex = 0; // Reinicia a la primera p�gina
+  this.pageIndex = 0; // Reinicia a la primera pagina
   this.updatePaginatedTypes();
 }
 
@@ -100,4 +109,10 @@ onPageChange(event: PageEvent): void {
  toggleSearch(): void {
     this.showSearch = !this.showSearch;
    }
+
+   goSubType(type: Type): void {
+     localStorage.setItem('NameType',type.name!);
+     this.navbarService.notifyTypeChanged();
+     this.router.navigate(['/subType',type.id]);
+     }
 }

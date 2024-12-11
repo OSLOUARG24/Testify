@@ -282,8 +282,6 @@ getStatusDescription(status: StageStatus): string {
           return 'Aprobado';
         case StageStatus.ERROR:
           return 'Error';
-        case StageStatus.FINALIZADO:
-          return 'Finalizado';
         default:
           return '';
       }

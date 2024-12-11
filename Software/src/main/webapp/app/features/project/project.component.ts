@@ -3,15 +3,22 @@ import { ChartOptions, ChartType, ChartData } from 'chart.js';
 import { ActivatedRoute } from '@angular/router';
 import { Project, ProjectStatus } from './project.model';
 import { ProjectService } from './project.service';
+import { IterationStatus } from '../iteration/iteration.model';
+import { CategoryStatus } from '../category/category.model';
+import { StageService } from '../stage/stage.service';
+import { Stage } from '../stage/stage.model';
+import { User } from '../user/user.model';
 import { BaseChartDirective } from 'ng2-charts';
 import { Router, RouterOutlet,RouterLinkActive,RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteProjectComponent } from './delete-project/delete-project.component';
+import { CommonModule } from '@angular/common';
+import { RoleAssigment } from '../role-assigment/role-assigment.model';
 
 @Component({
   selector: 'app-project',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, BaseChartDirective],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, BaseChartDirective],
   templateUrl: './project.component.html',
   styleUrl: './project.component.css'
 })
@@ -20,6 +27,15 @@ export class ProjectComponent {
    projects?: Project[];
    projectId?: number ;
    projectStatus = ProjectStatus;
+   stages: Stage[] = []; // Lista de escenarios cargados para un proyecto
+   user?: User;
+   roleAssigments: RoleAssigment[] = [];
+   iterationStatus?: IterationStatus[];
+   categoryStatus?: CategoryStatus[];
+   matrix: any[] = [];
+   columns: string[] = [];
+   approvalStatuses: { [projectId: number]: number } = {};
+
    public pieChartOptions: ChartOptions = {
            responsive: true,
          };
@@ -32,23 +48,25 @@ export class ProjectComponent {
 
    constructor(protected route: ActivatedRoute
               ,protected projectService: ProjectService
-              ,public dialog: MatDialog) {}
+              ,public dialog: MatDialog
+              ,protected stageService: StageService) {}
 
    ngOnInit(): void {
-       const projectSS = sessionStorage.getItem('project');
-       if (projectSS) {
-         this.project = JSON.parse(projectSS);
-         //this.projects = this.projects || []; // Inicializa el array si está undefined
-          if (this.project) {
-               this.projects = this.projects || []; // Inicializa el array si está undefined
-               this.projects.push(this.project); // Agrega el proyecto del sessionStorage
-          }
-       }
-       else {
+      this.getStorageValues();
+      if (this.project) {
+           this.projects = this.projects || []; // Inicializa el array si está undefined
+           this.projects.push(this.project); // Agrega el proyecto del sessionStorage
+           this.loadStages(this.project.id!);
+           this.loadIterationStatus();
+           this.loadApprovalStatuses();
+      }
+      else {
          this.projects = [];
          this.getAllProjects();
-       }
-       this.generateChartData();
+         this.loadIterationStatus();
+         this.loadAllStages();
+      }
+      this.generateChartData();
    }
 
       getStatusDescription(status: ProjectStatus): string {
@@ -65,6 +83,7 @@ export class ProjectComponent {
        this.projectService.getProjects().subscribe(
          (data: Project[]) => {
            this.projects = data;
+           this.loadApprovalStatuses();
          },
          error => {
            console.error('Error al obtener proyectos', error);
@@ -95,42 +114,145 @@ export class ProjectComponent {
                 });
               }
 
-  generateChartData(): void {
-      const statusCounts = {
-        Pendiente: 0,
-        Aprobado: 0,
-        EnError: 0
-      };
-
-      console.log(JSON.stringify(this.projects));
-      // Recorre los iterations y testCases del proyecto
-      /*this.projects?.forEach((project: Project) => {
-            project.iterations?.forEach((iteration: Iteration) => {
-              iteration.stages?.forEach((stage: Stage) => {
-                  alert(stage.status);
-                  if (stage.status === StageStatus.PENDIENTE) {
-                    statusCounts.Pendiente++;
-                  } else if (stage.status === StageStatus.APROBADO) {
-                    statusCounts.Aprobado++;
-                  } else if (stage.status === StageStatus.ERROR) {
-                    statusCounts.EnError++;
-                  }
-              });
-            });
-          });*/
-        statusCounts.Aprobado++;
-        statusCounts.Aprobado++;
-        statusCounts.Pendiente++;
-      // Asigna los datos para el gráfico de torta
-      this.pieChartData = {
-            labels: this.pieChartLabels,
-            datasets: [
-              {
-                data: [statusCounts.Pendiente, statusCounts.Aprobado, statusCounts.EnError],
-                label: 'Estados de Pasos a Seguir'
-              }
-            ]
-          };
+   loadStages(projectId: number): void {
+      this.stageService.getStagesByProjectId(projectId).subscribe(
+        (data: Stage[]) => {
+          this.stages = data;
+          this.generateChartData();
+        },
+        error => console.error('Error al obtener escenarios', error)
+      );
     }
 
+    loadAllStages(): void {
+        this.stageService.getStages().subscribe(
+          (data: Stage[]) => {
+            this.stages = data;
+            this.generateChartData();
+          },
+          error => console.error('Error al obtener escenarios', error)
+        );
+      }
+
+  generateChartData(): void {
+      const statusCounts = { Pendiente: 0, Aprobado: 0, EnError: 0 };
+
+      this.stages.forEach(stage => {
+        if (stage.status === 'PENDIENTE') statusCounts.Pendiente++;
+        else if (stage.status === 'APROBADO') statusCounts.Aprobado++;
+        else if (stage.status === 'ERROR') statusCounts.EnError++;
+      });
+
+      this.pieChartData = {
+        labels: this.pieChartLabels,
+        datasets: [{ data: [statusCounts.Pendiente, statusCounts.Aprobado, statusCounts.EnError], label: 'Estados de Escenarios' }]
+      };
+    }
+
+   loadIterationStatus(): void {
+
+     let pr = 0;
+     if (this.project){
+       pr = this.project.id;
+     }
+     else {
+       pr = 0;
+     }
+     this.projectService.getIterationStatusByProjectId(pr).subscribe(
+       (data: IterationStatus[]) => {
+         this.iterationStatus = data;
+       },
+       error => console.error('Error al obtener reporte de iteraciones', error)
+     );
+
+     this.projectService.getCategoryStatusByProjectId(pr).subscribe(
+          (data: CategoryStatus[]) => {
+            this.categoryStatus = data;
+          },
+          error => console.error('Error al obtener reporte de categorías', error)
+        );
+
+     this.projectService.getMatrix(pr).subscribe((data) => {
+           this.matrix = data;
+
+           if (data.length > 0) {
+             this.columns = Object.keys(data[0]);
+           }
+         });
+   }
+
+   getStorageValues() {
+    const user = localStorage.getItem('user');
+    if (user){
+       this.user = JSON.parse(user);
+    }
+
+    const roles = sessionStorage.getItem('userRoles');
+    if (roles){
+      this.roleAssigments = JSON.parse(roles);
+    }
+
+    const project = sessionStorage.getItem('project');
+      if (project){
+        this.project = JSON.parse(project);
+      }
+  }
+
+    hasRole(roleCode: string): boolean {
+    return this.roleAssigments.some((assignment: RoleAssigment) => assignment.role?.code === roleCode);
+  }
+
+  isAdmin() {
+     return this.user?.admin;
+  }
+  isGestor() {
+       return this.hasRole('GESTOR');
+    }
+
+  loadApprovalStatuses(): void {
+      if (this.projects) {
+          this.projects.forEach(project => {
+
+              this.approvalStatuses[project.id] = 0;
+              this.projectService.getApprovalStatus(project.id).subscribe(
+                  (status) => {
+                      this.approvalStatuses[project.id] = status.approvalPercentage || 0; // Almacena el porcentaje
+                  },
+                  error => {
+                       alert(error);
+                      console.error(`Error al obtener el porcentaje de aprobación para el proyecto ${project.id}`, error);
+                      this.approvalStatuses[project.id] = 0; // Valor predeterminado en caso de error
+                  }
+              );
+          });
+      }
+  }
+
+getProjectProgress(projectId: number): number {
+    return this.approvalStatuses[projectId] || 0;
+}
+
+  getProgressBarClass(progress: number): string {
+    if (progress >= 75) {
+        return 'bg-success'; // Verde si el progreso es >= 75%
+    } else if (progress >= 50) {
+        return 'bg-warning'; // Amarillo si el progreso es >= 50%
+    } else {
+        return 'bg-danger'; // Rojo si el progreso es < 50%
+    }
+  }
+
+isTextOverflow(text: string): boolean {
+  const tempSpan = document.createElement('span');
+  tempSpan.style.visibility = 'hidden';
+  tempSpan.style.whiteSpace = 'nowrap';
+  tempSpan.style.position = 'absolute';
+  tempSpan.innerText = text;
+  document.body.appendChild(tempSpan);
+
+  const isOverflow = tempSpan.offsetWidth > 200; // Compara con el max-width
+  document.body.removeChild(tempSpan);
+
+  return isOverflow;
+}
 }

@@ -48,7 +48,7 @@ public class TypeService {
       type.setName(typeDetails.getName());
       return typeRepository.save(type);
     } else {
-      throw new ResourceNotFoundException("Tipo no encontrado con id: " + id);
+      throw new ResourceNotFoundException("Tipo no encontrado con ID: " + id);
     }
   }
 

@@ -19,12 +19,12 @@ export class DeleteIterationComponent {
   onConfirm(): void {
       this.iterationService.deleteIteration(this.data.iteration.id).subscribe({
         next: (response: string) => {
-          console.log(`Iteracion ${this.data.iteration.name} eliminada`);
-          console.log('Respuesta del servidor:', response);  // El texto "Iteracion eliminada correctamente."
+          console.log(`Iteración ${this.data.iteration.name} eliminada`);
+          console.log('Respuesta del servidor:', response);
           this.dialogRef.close(true);
         },
         error: (err) => {
-          console.error('Error al eliminar la iteracion', err);
+          console.error('Error al eliminar la iteración', err);
           this.dialogRef.close(false);
         }
       });

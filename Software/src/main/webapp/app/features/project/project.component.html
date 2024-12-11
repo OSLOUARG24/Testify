@@ -5,10 +5,12 @@
     </div>
     <div class="card-body">
     <p class="d-flex justify-content-end">
+      @if(isAdmin() ){
       <button type="button" class="btn btn-success" [routerLink]="['/project/create']">
         <span class="oi oi-plus"></span> Nuevo Proyecto
       </button>
-    <button class="btn btn-danger float-right " (click)="Cancel()">Volver</button>
+      }
+    <!--button class="btn btn-danger float-right " (click)="Cancel()">Volver</button-->
     </p>
   <!-- Tabla para mostrar los proyectos -->
   <table class="table table-hover table-sm">
@@ -16,6 +18,7 @@
         <tr class="table-info">
       <th>Nombre</th>
       <th>Tasa de Aprobación</th>
+      <th>Aprobado</th>
       <th>Estado</th>
       <th>Opciones</th>
     </tr>
@@ -25,14 +28,30 @@
     <tr>
       <td>{{ project.name || '' }}</td>
       <td>{{ project.rateApproval || '' }}</td>
+
+      <!-- Porcentaje aprobado-->
+      <td>
+        <div class="d-flex align-items-center">
+          <div class="progress mx-2" style="height: 8px; width: 70px;">
+            <div class="progress-bar" [ngClass]="getProgressBarClass(getProjectProgress(project.id))"
+                 [style.width]="getProjectProgress(project.id) + '%'" role="progressbar">
+            </div>
+          </div>
+          <span class="ml-1">{{ getProjectProgress(project.id) }}%</span>
+        </div>
+      </td>
+       <!--Fin porcentaje aprobado-->
       <td>{{ getStatusDescription(project.status!) }}</td>
       <td>
-        <a title="Export" class="btn btn-outline-info" [routerLink]="['/project/export', project.id]">
+        @if(isAdmin() || isGestor()){
+        <a title="Exportar" class="btn btn-outline-info" [routerLink]="['/project/export', project.id]">
           <span class="oi oi-file"></span>
         </a>
+        }
         <a title="Iteraciones" class="btn btn-outline-info" [routerLink]="['/iteration', project.id]">
           <span class="oi oi-zoom-in"></span>
         </a>
+        @if (isAdmin()){
         <a title="Modificar" [routerLink]="['/project/edit', project.id]">
           <button type="button" class="btn btn-outline-warning">
             <span class="oi oi-pencil"></span>
@@ -41,6 +60,7 @@
           <button type="button" class="btn btn-outline-danger">
             <span class="oi oi-trash"></span>
           </button></a>
+        }
       </td>
     </tr>
     }
@@ -51,14 +71,137 @@
     <p>No hay proyectos disponibles.</p>
   }
   </div>
-    <div style="display: block; width: 50%; margin: auto;">
-      <h2>Distribución de escenarios por Estado</h2>
-      <canvas baseChart
-              [data]="pieChartData"
-              [labels]="pieChartLabels"
-              [options]="pieChartOptions"
-              [type]="pieChartType">
-      </canvas>
+
+    <div class="container">
+      <div class="row">
+        <!-- Estados por Iteración -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header text-center">
+              <strong>Estados por Iteración</strong>
+            </div>
+            <div class="card-body">
+              <div style="max-height: 200px; overflow-y: auto;">
+                <table class="table table-bordered table-sm text-center">
+                  <thead>
+                  <tr class="table-info">
+                    <th>Iteración</th>
+                    <th>Pendientes</th>
+                    <th>En Error</th>
+                    <th>Aprobadas</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <!-- Mostrar solo 5 filas -->
+                  <tr *ngFor="let it of iterationStatus | slice:0:5">
+                    <td>{{ it.iterationName }}</td>
+                    <td>{{ it.pendingQuantity }}%</td>
+                    <td>{{ it.errorQuantity }}%</td>
+                    <td>{{ it.approvedQuantity }}%</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estados por Categoría -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header text-center">
+              <strong>Estados por Categoría</strong>
+            </div>
+            <div class="card-body">
+              <div style="max-height: 200px; overflow-y: auto;">
+                @if(categoryStatus!.length > 0){
+                <table class="table table-bordered table-sm text-center">
+                  <thead>
+                  <tr class="table-info">
+                    <th>Categoría</th>
+                    <th>Casos Pendientes</th>
+                    <th>Casos con Errores</th>
+                    <th>Casos Aprobados</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <!-- Mostrar solo 5 filas -->
+                  <tr *ngFor="let cat of categoryStatus | slice:0:5">
+                    <td>{{ cat.categoryName }}</td>
+                    <td>{{ cat.pendingQuantity }}%</td>
+                    <td>{{ cat.errorQuantity }}%</td>
+                    <td>{{ cat.approvedQuantity }}%</td>
+                  </tr>
+                  </tbody>
+                </table>}
+                @if(categoryStatus!.length === 0){
+                <p>No se realizaron pruebas.</p>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+
+    <div class="container">
+      <div class="row">
+        <!-- Estados por Iteración -->
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header text-center">
+              <strong>Total pruebas realizadas</strong>
+            </div>
+            <div class="card-body">
+              <div style="max-height: 200px; overflow-y: auto; max-width: 1200px; overflow-x: auto;">
+              @if(columns.length > 0){
+              <table class="table table-bordered table-sm">
+                <thead>
+                <tr class="table-info">
+                  <th *ngFor="let column of columns"
+                      [ngClass]="{'truncate-text': isTextOverflow(column)}"
+                      [title]="isTextOverflow(column) ? column : ''"
+                  > {{ column }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let row of matrix">
+                  <td *ngFor="let column of columns"
+                      [ngClass]="{'truncate-text': isTextOverflow(row[column])}"
+                      [title]="isTextOverflow(row[column]) ? row[column] : ''">
+                    {{ row[column] }}</td>
+                </tr>
+                </tbody>
+              </table>}
+              @if(columns.length === 0){
+              <p>No se realizaron pruebas.</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header text-center">
+              <strong>Estado Escenarios</strong>
+            </div>
+              <div style="display: block; width: 50%; margin: auto;">
+                <canvas baseChart
+                        [data]="pieChartData"
+                        [labels]="pieChartLabels"
+                        [options]="pieChartOptions"
+                        [type]="pieChartType">
+                </canvas>
+              </div>
+          </div>
+      </div>
+    </div>
+
+</div>
+</div>
 </div>

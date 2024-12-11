@@ -1,0 +1,38 @@
+services:
+  backend:
+    image: software-backend:latest
+    container_name: backend
+    ports:
+      - "8080:8080"
+    restart: always
+    networks:
+      - app-network
+
+  frontend:
+    image: software-frontend:latest
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    restart: always
+    networks:
+      - app-network
+
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ****
+      MYSQL_DATABASE: testify
+      MYSQL_USER: ******
+      MYSQL_PASSWORD: *******
+    ports:
+      - "3306:3306"
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

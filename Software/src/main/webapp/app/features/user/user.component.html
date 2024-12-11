@@ -23,9 +23,10 @@
     <tr>
       <td>{{ user.name }}<br />{{ user.email }}</td>
       <td>
-        <a title="Roles Asignados" class="btn btn-outline-info" [routerLink]="['/roleAssigment', user.id]">
+        <a title="Roles Asignados" (click)="goRoleAssigment(user)">
+          <button type="button" class="btn btn-outline-info">
           <span class="oi oi-zoom-in"></span>
-        </a>
+          </button></a>
         <a title="Modificar" [routerLink]="['/user/edit', user.id]">
           <button type="button" class="btn btn-outline-warning">
             <span class="oi oi-pencil"></span>
