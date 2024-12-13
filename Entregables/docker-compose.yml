@@ -5,14 +5,21 @@ services:
     ports:
       - "8080:8080"
     restart: always
+    depends_on:
+      mysql-db:
+        condition: service_healthy
     networks:
       - app-network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/testify?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: *******
+      SPRING_DATASOURCE_PASSWORD: *******
 
   frontend:
     image: software-frontend:latest
     container_name: frontend
     ports:
-      - "3000:3000"
+      - "4200:80"
     depends_on:
       - backend
     restart: always
@@ -25,13 +32,18 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ****
       MYSQL_DATABASE: testify
-      MYSQL_USER: ******
+      MYSQL_USER: *******
       MYSQL_PASSWORD: *******
     ports:
       - "3306:3306"
     restart: always
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
 
 networks:
   app-network:
