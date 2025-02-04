@@ -14,6 +14,8 @@ export class NavbarService {
 
   private roleChangedSubject = new Subject<void>();
 
+  private iterationChangedSubject = new Subject<void>();
+
   // Observable para que el navbar se suscriba
   projectChanged$ = this.projectChangedSubject.asObservable();
 
@@ -22,6 +24,8 @@ export class NavbarService {
   userChanged$ = this.userChangedSubject.asObservable();
 
   roleChanged$ = this.roleChangedSubject.asObservable();
+
+  iterationChanged$ = this.iterationChangedSubject.asObservable();
 
   // Método para emitir el evento de cambio de proyecto
   notifyProjectChanged() {
@@ -38,5 +42,9 @@ export class NavbarService {
 
   notifyRoleChanged() {
    this.roleChangedSubject.next();
+  }
+
+  notifyIterationChanged() {
+    this.iterationChangedSubject.next();
   }
 }

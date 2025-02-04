@@ -93,7 +93,7 @@
                   </thead>
                   <tbody>
                   <!-- Mostrar solo 5 filas -->
-                  <tr *ngFor="let it of iterationStatus | slice:0:5">
+                  <tr *ngFor="let it of iterationStatus">
                     <td>{{ it.iterationName }}</td>
                     <td>{{ it.pendingQuantity }}%</td>
                     <td>{{ it.errorQuantity }}%</td>
@@ -126,7 +126,7 @@
                   </thead>
                   <tbody>
                   <!-- Mostrar solo 5 filas -->
-                  <tr *ngFor="let cat of categoryStatus | slice:0:5">
+                  <tr *ngFor="let cat of categoryStatus">
                     <td>{{ cat.categoryName }}</td>
                     <td>{{ cat.pendingQuantity }}%</td>
                     <td>{{ cat.errorQuantity }}%</td>

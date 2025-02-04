@@ -38,9 +38,11 @@ export class TypeComponent implements OnInit {
     localStorage.removeItem('NameType');
     localStorage.removeItem('NameUser');
     localStorage.removeItem('NameRole');
+    localStorage.removeItem('NameIteration');
     this.navbarService.notifyTypeChanged();
     this.navbarService.notifyUserChanged();
     this.navbarService.notifyRoleChanged();
+    this.navbarService.notifyIterationChanged();
     this.loadFromStorage();
     this.loadTypes();
   }

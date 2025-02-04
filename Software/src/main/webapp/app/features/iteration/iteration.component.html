@@ -30,8 +30,14 @@
         <td>{{ iteration.endDate | date:'dd/MM/yyyy' }}</td>
         <td>
           <!-- Botón para ver casos de prueba -->
-          <a title="Escenarios" class="btn btn-outline-info" [routerLink]="['/stage', iteration.id]">
+          <!--<a title="Escenarios" class="btn btn-outline-info" [routerLink]="['/stage', iteration.id]">
             <span class="oi oi-zoom-in"></span>
+          </a>-->
+
+          <a title="Escenarios" (click)="goStage(iteration)">
+            <button type="button" class="btn btn-outline-info" >
+              <span class="oi oi-zoom-in"></span>
+            </button>
           </a>
 
           <!-- Botones de editar y eliminar, visibles solo si el usuario es admin -->

@@ -9,6 +9,7 @@ import { Project } from '../project/project.model';
 import { User } from '../user/user.model';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteIterationComponent } from './delete-iteration/delete-iteration.component';
+import { NavbarService } from '../../core/components/navbar/navbar.service'; // Importa el servicio
 
 @Component({
   selector: 'app-iteration',
@@ -29,10 +30,20 @@ export class IterationComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authGoogleService: AuthGoogleService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private navbarService: NavbarService
   ) {}
 
   ngOnInit(): void {
+
+        localStorage.removeItem('NameType');
+        localStorage.removeItem('NameUser');
+        localStorage.removeItem('NameRole');
+        localStorage.removeItem('NameIteration');
+        this.navbarService.notifyTypeChanged();
+        this.navbarService.notifyUserChanged();
+        this.navbarService.notifyRoleChanged();
+        this.navbarService.notifyIterationChanged();
 
     // Obtener el ID del proyecto desde la URL y convertirlo a número
     const projectIdParam = this.route.snapshot.paramMap.get('id');
@@ -100,4 +111,11 @@ export class IterationComponent implements OnInit {
              }
            return this.user?.admin;
          }
+
+
+   goStage(iteration: Iteration): void {
+     localStorage.setItem('NameIteration',iteration.name!);
+     this.navbarService.notifyIterationChanged();
+     this.router.navigate(['/stage',iteration.id]);
+     }
 }
