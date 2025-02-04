@@ -61,8 +61,18 @@ ngOnInit(): void {
             const link = document.createElement('a');
             link.href = url;
 
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son 0-indexados
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            const formattedDateTime = `${year}${month}${day}_${hours}${minutes}${seconds}`;
+
             const sanitizedProjectName = this.projectName.replace(/[<>:"/\\|?*]+/g, ''); // Eliminar caracteres no válidos
-            link.download = `${sanitizedProjectName}.pdf`;
+            link.download = `${sanitizedProjectName}_${formattedDateTime}.pdf`;
             link.click();
 
             /*link.download = `project_report_${this.projectId}.pdf`;
