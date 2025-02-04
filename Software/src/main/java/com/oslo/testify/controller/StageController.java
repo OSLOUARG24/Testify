@@ -54,6 +54,12 @@ public class StageController {
     return stageService.getAllStagesByUserId(id);
   }
 
+  @GetMapping("/stages/user")
+  public List<Stage> getAllStagesByUserIdAndProjectId( @RequestParam("sId") Long sId,
+                                                       @RequestParam("pId") Long pId) {
+    return stageService.getAllStagesByUserIdAndProjectId(sId,pId);
+  }
+
   @GetMapping("/stage/{id}")
   public ResponseEntity<Stage> getStageById(@PathVariable(value = "id", required = false) final Long id) {
     Optional<Stage> stage = stageService.getStageById(id);

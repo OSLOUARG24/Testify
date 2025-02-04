@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { Stage, Document } from './stage.model';
 import { tap, catchError } from 'rxjs/operators';
@@ -53,6 +53,14 @@ export class StageService {
 
   getStagesForUser(id: number): Observable<Stage[]> {
     return this.http.get<Stage[]>(`${this.apiUrl}/stages/user/${id}`);
+  }
+
+  getStagesForUserAndProjectId(stageId: number,projectId: number): Observable<Stage[]> {
+    const params = new HttpParams()
+                 .set('sId', stageId)
+                 .set('pId', projectId);
+
+    return this.http.get<Stage[]>(`${this.apiUrl}/stages/user`, { params });
   }
 
   createDocument(id: number, documents: Document[]): Observable<any> {

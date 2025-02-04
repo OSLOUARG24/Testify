@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StageService } from '../stage.service'; // Servicio que trae los stages
 import { Stage, StageStatus } from '../stage.model';
 import { User } from '../../user/user.model';
+import { Project } from '../../project/project.model';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterOutlet, RouterLinkActive, RouterLink } from '@angular/router';
 
@@ -17,6 +18,7 @@ export class TesterStageComponent implements OnInit {
   stagesToDo: any[] = [];  // Stages pendientes
   stagesCompleted: any[] = [];  // Stages finalizados
   user?: User;
+  project?: Project;
 
   constructor(private stageService: StageService) { }
 
@@ -26,13 +28,16 @@ export class TesterStageComponent implements OnInit {
     if (user){
       this.user = JSON.parse(user);
     }
+    const project = sessionStorage.getItem('project');
+    if (project){
+      this.project = JSON.parse(project);
+    }
     this.loadStages();
   }
 
   // Cargar los stages
   loadStages(): void {
-    this.stageService.getStagesForUser(this.user?.id!).subscribe((stages: Stage[]) => {
-      console.log(JSON.stringify(stages));
+    this.stageService.getStagesForUserAndProjectId(this.user?.id!,this.project?.id!).subscribe((stages: Stage[]) => {
       // Separar los stages según el estado
       this.stagesToDo = stages.filter(stage => stage.status === StageStatus.PENDIENTE);
       this.stagesCompleted = stages.filter(stage => stage.status !== StageStatus.PENDIENTE);

@@ -56,6 +56,11 @@ public class UserController {
       return userService.getTestersByProjectId(id);
     }
 
+    @GetMapping("/user/project/{id}")
+    public List<User> getUsersByProjectId(@PathVariable(value = "id", required = false) final Long id) {
+      return userService.getUsersByProjectId(id);
+    }
+
     @PutMapping("/user/{id}")
     public ResponseEntity<User> updateUser(@PathVariable(value = "id", required = false) final Long id, @RequestBody User userDetails) {
       log.debug("REST request to save User : {}", userDetails);

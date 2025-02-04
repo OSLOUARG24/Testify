@@ -19,6 +19,9 @@ public interface StageRepository extends JpaRepository<Stage, Long> {
 
     List<Stage> findByTesterId(Long id);
 
+    @Query("SELECT s FROM Stage s WHERE s.iteration.project.id = :pId and s.tester.id = :sId")
+    List<Stage> findByTesterIdAndProjectId(@Param("sId") Long sId, @Param("pId") Long pId);
+
     boolean existsByNameAndIteration(String name, Iteration iteration);
 
     @Query("SELECT s FROM Stage s WHERE s.iteration.project.id = :projectId")

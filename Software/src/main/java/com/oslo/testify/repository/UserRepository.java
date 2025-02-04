@@ -13,11 +13,14 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
   User getUserByEmail(String email);
   Optional<User> findByEmail(String email);
-  
+
   boolean existsByName(String name);
-  
+
   boolean existsByEmail(String email);
 
   @Query("SELECT u FROM User u JOIN RoleAssigment ra ON ra.user.id = u.id JOIN Role r ON ra.role.id = r.id WHERE r.name = 'Tester' AND ra.project.id = :projectId")
   List<User> findUsersByRoleTesterAndProjectId(@Param("projectId") Long id);
+
+  @Query("SELECT u FROM User u JOIN RoleAssigment ra ON ra.user.id = u.id WHERE not isAdmin  AND ra.project.id = :projectId")
+  List<User> findUsersByProjectId(@Param("projectId") Long id);
 }
