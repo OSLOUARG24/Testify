@@ -32,6 +32,7 @@ export class NavbarComponent implements OnInit {
   type?: string;
   role?: string;
   Nameuser?: string;
+  iteration?: string;
 
   constructor(
     protected navbarService: NavbarService,
@@ -68,7 +69,10 @@ export class NavbarComponent implements OnInit {
       });
       this.navbarService.roleChanged$.subscribe(() => {
                  this.getRoleValues();
-          });
+      });
+      this.navbarService.iterationChanged$.subscribe(() => {
+                 this.getIterationValues();
+      });
     }
 
    getRoleValues() {
@@ -96,6 +100,15 @@ export class NavbarComponent implements OnInit {
         }
       else
       {this.Nameuser = '';}
+  }
+
+  getIterationValues() {
+    const Nameiteration = localStorage.getItem('NameIteration');
+        if (Nameiteration){
+           this.iteration = Nameiteration;
+        }
+      else
+      {this.iteration = '';}
   }
 
   getStorageValues() {
