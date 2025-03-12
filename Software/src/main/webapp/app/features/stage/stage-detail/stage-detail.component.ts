@@ -5,7 +5,9 @@ import { StageService } from '../stage.service';
 import { Stage, Document, StageStatus, Priority } from '../stage.model';
 import { RoleAssigment } from '../../../features/role-assigment/role-assigment.model';
 import { User } from '../../../features/user/user.model';
+import { Project } from '../../../features/project/project.model';
 import { MIME_TYPES } from '../../../app.constants';
+import { RoleAssigmentService } from '../../../features/role-assigment/role-assigment.service';
 
 @Component({
   selector: 'app-stage-detail',
@@ -20,15 +22,20 @@ export class StageDetailComponent implements OnInit {
   stageId?: number;
   roleAssigments: RoleAssigment[] = [];
   user?: User;
+  project?: Project;
+
+  permissions: string[] = []; // Lista de permisos del usuario
 
   constructor(
     private route: ActivatedRoute,
     private stageService: StageService,
+    private roleAssigmentService: RoleAssigmentService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.getStorageValues();
+    this.loadPermissions();
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
@@ -86,29 +93,15 @@ export class StageDetailComponent implements OnInit {
     if (roles){
       this.roleAssigments = JSON.parse(roles);
     }
+
+    const project = sessionStorage.getItem('project');
+    if (project){
+      this.project = JSON.parse(project);
+    }
   }
 
   hasRole(roleCode: string): boolean {
     return this.roleAssigments.some((assignment: RoleAssigment) => assignment.role?.code === roleCode);
-  }
-
-  canCopy() {
-     if (this.user?.admin || this.hasRole('GESTOR')){
-       return true;
-     }
-     return false;
-   }
-
-  isGestor() {
-     return ;
-  }
-
-  isInvitado() {
-     return this.hasRole('GUEST');
-  }
-
-  isTester(): boolean {
-     return this.hasRole('TESTER');
   }
 
   downloadFile(fileData: string | Blob, fileName: string) {
@@ -191,6 +184,37 @@ export class StageDetailComponent implements OnInit {
               console.error('Error downloading PDF', error);
             }
           );
+    }
+
+    
+    loadPermissions() {
+
+      if (!this.user || this.project?.id!) {
+        this.permissions = [];
+        return;
+      }
+    
+     this.roleAssigmentService.getPermissionsByUserIdAndProjectId(this.user.id!,this.project?.id!).subscribe((data) => {
+      this.permissions = data;
+    });
+    
+      
+    }
+    
+    hasPermission(permission: string): boolean {
+      // Dividir el permiso en palabras
+      const words = permission.split('_');
+    
+      // Si hay menos de 2 palabras, hacer la verificación normal
+      if (words.length < 2) {
+        return this.permissions.includes(permission);
+      }
+    
+      // Obtener las dos primeras palabras del permiso
+      const prefix = words.slice(0, 2).join('_'); // Ejemplo: "Consultar Iteraciones"
+    
+      // Buscar si algún permiso almacenado empieza con esas dos palabras
+      return this.permissions.some(perm => perm.startsWith(prefix));
     }
 
 }

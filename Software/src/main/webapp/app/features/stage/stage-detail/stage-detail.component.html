@@ -6,14 +6,16 @@
     <div class="card-body">
       <div class="row mb-3">
         <div class="d-flex justify-content-end">
-          @if(canCopy()){
+          @if(hasPermission("COPIAR_ESCENARIOS")){
           <button type="button" class="btn btn-outline-primary mr-2" (click)="copyStage()">
             <span class="oi oi-clipboard"></span> Copiar Escenario
           </button>
           }
+          @if(hasPermission("EXPORTAR_ESCENARIOS")){
           <button class="btn btn-outline-primary mr-2" (click)="exportStage()">
             <span class="oi oi-file"></span> Exportar
           </button>
+        }
           <button class="btn btn-outline-secondary mr-2" (click)="goBack()">
             <span class="oi oi-arrow-left"></span> Volver
           </button>

@@ -8,9 +8,28 @@
       <button type="button" class="btn btn-success" [routerLink]="['/role/create']">
         <span class="oi oi-plus"></span> Nuevo Rol
       </button>
-    <button class="btn btn-danger float-right" (click)="Cancel()">Volver</button>
-    </p>
+    <button class="btn btn-danger float-right ml-2" (click)="Cancel()">Volver</button>
 
+      <button class="btn btn-secondary float-right ml-2" (click)="toggleSearch()">
+          @if (showSearch) {
+          <span class="oi oi-search"></span>
+          Ocultar Búsqueda
+          }
+          @if (!showSearch) {
+          <span class="oi oi-search"></span>
+          Buscar
+          }
+        </button>
+        </p>
+        @if(showSearch){
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar Rol por nombre"
+          (input)="applyFilter($event)"
+        />
+      </div>}
     <table class="table table-hover table-sm">
     <thead>
     <tr class="table-info">
@@ -19,7 +38,7 @@
     </tr>
     </thead>
     <tbody>
-    @for (role of roles; track role.id) {
+    @for (role of paginatedRoles; track role.id) {
     <tr>
       <td>{{ role.name }}</td>
       <td>
@@ -41,6 +60,15 @@
     }
     </tbody>
   </table>
+  @if (roles.length === 0){
+      <p>No hay Roles disponibles.</p>
+      }
+            <mat-paginator
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        (page)="onPageChange($event)">
+      </mat-paginator>
     </div>
   </div>
 </div>

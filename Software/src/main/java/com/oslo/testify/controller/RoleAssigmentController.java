@@ -84,5 +84,11 @@ public class RoleAssigmentController {
     RoleAssigment updatedRoleAssigment = roleAssigmentService.saveRoleAssigment(existingRoleAssigment);
 
     return ResponseEntity.ok(updatedRoleAssigment);
-  }
+    }
+
+    @GetMapping("/roleAssigments/permissions/user")
+    public List<String> getPermissionsByUserId( @RequestParam("uId") Long idUser,
+                                                @RequestParam("pId") Long idProject) {
+      return roleAssigmentService.getPermissionsByUserIdAndProjectId(idUser,idProject);
+    }
 }

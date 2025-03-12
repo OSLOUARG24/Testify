@@ -7,20 +7,24 @@ import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
-import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.io.font.FontProgram;
 import com.itextpdf.io.font.FontProgramFactory;
+import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.kernel.font.PdfFontFactory.EmbeddingStrategy;
+import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.VerticalAlignment;
 import com.oslo.testify.entity.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -66,6 +70,13 @@ public class PDFReportService {
     PdfDocument pdfDoc = new PdfDocument(writer);
     Document document = new Document(pdfDoc);
 
+    float topMargin = 90; // Margen superior más grande para el encabezado
+    float rightMargin = 36;
+    float bottomMargin = 36;
+    float leftMargin = 36;
+
+    document.setMargins(topMargin, rightMargin, bottomMargin, leftMargin);
+
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     DateTimeFormatter formatterVersion = DateTimeFormatter.ofPattern("yyyy.MM.dd.HHmmss");
@@ -78,22 +89,30 @@ public class PDFReportService {
     }
     FontProgram fontProgram = FontProgramFactory.createFont(fontStream.readAllBytes());
 
-    PdfFont normalFont = PdfFontFactory.createFont(fontProgram, "WinAnsi", EmbeddingStrategy.FORCE_EMBEDDED);
+    PdfFont normalFont = PdfFontFactory.createFont(fontProgram,PdfEncodings.IDENTITY_H, EmbeddingStrategy.FORCE_EMBEDDED);
     //PdfFont normalFont = PdfFontFactory.createFont("Courier");
 
-    pdfDoc.addEventHandler(PdfDocumentEvent.END_PAGE, new HeaderFooterEventHandler());
+    InputStream imageStream = getClass().getClassLoader().getResourceAsStream("logo_unpa.png");
+    if (imageStream == null) {
+      throw new IllegalArgumentException("Archivo no encontrado: logo_unpa.png");
+    }
+    ImageData imageData = ImageDataFactory.create(imageStream.readAllBytes());
+    Image image1 = new Image(imageData);
+    image1.scaleToFit(200, 100); // Escala la imagen para que quepa en un área de 200x100 puntos
 
+    
+
+    imageStream = getClass().getClassLoader().getResourceAsStream("logo.png");
+    if (imageStream == null) {
+      throw new IllegalArgumentException("Archivo no encontrado: logo.png");
+    }
+    imageData = ImageDataFactory.create(imageStream.readAllBytes());
+    Image image2 = new Image(imageData);
+    image2.scaleToFit(200, 100); // Escala la imagen para que quepa en un área de 200x100 puntos
 
     Project project = projectService.getProjectById(projectId);
 
-    // Calcular el espacio restante en la página para centrar la tabla
-    float pageHeight = pdfDoc.getDefaultPageSize().getHeight();
-    float tableHeight = 100; // Aproximar el tamaño de la tabla en píxeles
-    float topMargin = (pageHeight - tableHeight) / 4;
-
-    // Agregar espacio superior
-    //document.setMargins(topMargin, 36, 36, 36); // Márgenes dinámicos: superior, derecho, inferior, izquierdo
-
+    pdfDoc.addEventHandler(PdfDocumentEvent.START_PAGE, new HeaderFooterEventHandler(normalFont, image1, image2,project.getName()));
 
     Paragraph title = new Paragraph("DOCUMENTACIÓN DE ESCENARIOS DE PRUEBAS")
       .setFont(normalFont)
@@ -143,15 +162,12 @@ public class PDFReportService {
     document.add(new Paragraph("Fecha Documento: " + lt.format(formatter))
       .setTextAlignment(TextAlignment.LEFT));
 
-    InputStream imageStream = getClass().getClassLoader().getResourceAsStream("logo.png");
-    if (imageStream == null) {
-      throw new IllegalArgumentException("Archivo no encontrado: logo.png");
-    }
-    ImageData imageData = ImageDataFactory.create(imageStream.readAllBytes());
-    Image image = new Image(imageData);
-    image.scaleToFit(200, 100); // Escala la imagen para que quepa en un área de 200x100 puntos
+    Table table = new Table(2);
 
-    document.add(image);
+    table.addCell(new Cell().add(image1).setBorder(Border.NO_BORDER));
+    table.addCell(new Cell().add(image2).setBorder(Border.NO_BORDER));
+
+    document.add(table);
 
     document.add(new com.itextpdf.layout.element.AreaBreak());
 
@@ -189,8 +205,6 @@ public class PDFReportService {
         .setFont(normalFont)
         .setFontSize(14)
         .setTextAlignment(TextAlignment.LEFT));
-
-      document.setMargins(36, 36, 36, 36);
 
       // Incluir gráfico de barras si se especifica
       if (includeStatus) {
@@ -483,15 +497,34 @@ public class PDFReportService {
     }
     FontProgram fontProgram = FontProgramFactory.createFont(fontStream.readAllBytes());
 
-    PdfFont normalFont = PdfFontFactory.createFont(fontProgram, "WinAnsi", EmbeddingStrategy.FORCE_EMBEDDED);
+    PdfFont normalFont = PdfFontFactory.createFont(fontProgram,PdfEncodings.IDENTITY_H, EmbeddingStrategy.FORCE_EMBEDDED);
     //PdfFont normalFont = PdfFontFactory.createFont("Courier");
 
-    pdfDoc.addEventHandler(PdfDocumentEvent.END_PAGE, new HeaderFooterEventHandler());
+    InputStream imageStream = getClass().getClassLoader().getResourceAsStream("logo_unpa.png");
+    if (imageStream == null) {
+      throw new IllegalArgumentException("Archivo no encontrado: logo_unpa.png");
+    }
+    ImageData imageData = ImageDataFactory.create(imageStream.readAllBytes());
+    Image image1 = new Image(imageData);
+    image1.scaleToFit(200, 100); // Escala la imagen para que quepa en un área de 200x100 puntos
+
+    
+
+    imageStream = getClass().getClassLoader().getResourceAsStream("logo.png");
+    if (imageStream == null) {
+      throw new IllegalArgumentException("Archivo no encontrado: logo.png");
+    }
+    imageData = ImageDataFactory.create(imageStream.readAllBytes());
+    Image image2 = new Image(imageData);
+    image2.scaleToFit(200, 100); // Escala la imagen para que quepa en un área de 200x100 puntos
 
     Optional<Stage> stageOpt = stageService.getStageById(stageId);
 
     if (stageOpt.isPresent()) {
+
       Stage stage = stageOpt.get();
+
+      pdfDoc.addEventHandler(PdfDocumentEvent.START_PAGE, new HeaderFooterEventHandler(normalFont, image1, image2,stage.getIteration().getProject().getName()));
 
       Paragraph title = new Paragraph("DOCUMENTACIÓN DE ESCENARIOS DE PRUEBAS")
         .setFont(normalFont)
@@ -541,15 +574,12 @@ public class PDFReportService {
       document.add(new Paragraph("Fecha Documento: " + lt.format(formatter))
         .setTextAlignment(TextAlignment.LEFT));
 
-      InputStream imageStream = getClass().getClassLoader().getResourceAsStream("logo.png");
-      if (imageStream == null) {
-        throw new IllegalArgumentException("Archivo no encontrado: logo.png");
-      }
-      ImageData imageData = ImageDataFactory.create(imageStream.readAllBytes());
-      Image image = new Image(imageData);
-      image.scaleToFit(200, 100); // Escala la imagen para que quepa en un área de 200x100 puntos
+        Table table = new Table(2);
 
-      document.add(image);
+        table.addCell(new Cell().add(image1).setBorder(Border.NO_BORDER));
+        table.addCell(new Cell().add(image2).setBorder(Border.NO_BORDER));
+    
+        document.add(table);
 
       document.add(new com.itextpdf.layout.element.AreaBreak());
 
@@ -728,39 +758,101 @@ public class PDFReportService {
   }
 
   class HeaderFooterEventHandler implements IEventHandler {
+    private final PdfFont font;
+    private final Image logo1;
+    private final Image logo2;
+    private final String projectName;
+
+    public HeaderFooterEventHandler(PdfFont font, Image logo1, Image logo2, String projectName) {
+      this.font = font;
+      this.logo1 = logo1;
+      this.logo2 = logo2;
+      this.projectName = projectName;
+  }
 
     @Override
     public void handleEvent(Event event) {
       PdfDocumentEvent docEvent = (PdfDocumentEvent) event;
-      PdfCanvas canvas = new PdfCanvas(docEvent.getPage());
       PdfDocument pdfDoc = docEvent.getDocument();
       PdfPage page = docEvent.getPage();
+      PdfCanvas canvas = new PdfCanvas(page.newContentStreamBefore(), page.getResources(), pdfDoc);
+      
       PdfFont font;
 
       try {
 
         font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
-        float xCenter = pdfDoc.getDefaultPageSize().getWidth() / 2 + pdfDoc.getDefaultPageSize().getWidth() / 4;
-        float yHeader = pdfDoc.getDefaultPageSize().getTop() - 20;
-        float yFooter = pdfDoc.getDefaultPageSize().getBottom() + 20;
+        
+        float x = pdfDoc.getDefaultPageSize().getLeft() + 36;
+        float y = pdfDoc.getDefaultPageSize().getTop() - 20;
+
+        float footerY = pdfDoc.getDefaultPageSize().getBottom() + 20;
 
 
-        /*canvas.beginText()
-          .setFontAndSize(font, 12)
-          .moveText(xCenter - 50, yHeader)
-          .showText("Proyecto: ")
-          .endText();*/
+        //Table table = new Table(new float[]{1, 1, 4});
+        Table table = new Table(new float[]{0.5f, 8, 0.5f});
+        table.setWidth(pdfDoc.getDefaultPageSize().getWidth() - 72);
+        table.setFixedLayout();
 
-        String currentDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:MM:ss"));
+        Cell leftBar = new Cell()
+                .setBackgroundColor(new DeviceRgb(255, 153, 102)) // Color naranja
+                .setBorder(Border.NO_BORDER); // Sin bordes
+        table.addCell(leftBar);
 
-        // Pie de página
-        canvas.beginText()
-          .setFontAndSize(font, 10)
-          .moveText(xCenter, yFooter)
-          .showText("Página " + pdfDoc.getPageNumber(page))
-          .endText();
+        Table contentTable = new Table(new float[]{1, 3, 1}); 
+        contentTable.setWidth(pdfDoc.getDefaultPageSize().getWidth() - 92);
 
-        canvas.release();
+        Cell leftLogoCell = new Cell()
+        .add(logo1.scaleToFit(50, 50))
+        .setBorder(Border.NO_BORDER)
+        .setTextAlignment(TextAlignment.LEFT)
+        .setVerticalAlignment(VerticalAlignment.MIDDLE);
+        contentTable.addCell(leftLogoCell);
+
+        Cell textCell = new Cell()
+        .add(new Paragraph("DOCUMENTACIÓN DE ESCENARIOS DE PRUEBAS\nProyecto: " + projectName)
+                .setFont(font)
+                .setFontSize(10)
+                .setTextAlignment(TextAlignment.LEFT))
+        .setBorder(Border.NO_BORDER)
+        .setVerticalAlignment(VerticalAlignment.MIDDLE);
+        contentTable.addCell(textCell);
+
+        Cell rightLogoCell = new Cell()
+                .add(logo2.scaleToFit(50, 50))
+                .setBorder(Border.NO_BORDER)
+                .setTextAlignment(TextAlignment.RIGHT)
+                .setVerticalAlignment(VerticalAlignment.MIDDLE);
+        contentTable.addCell(rightLogoCell);
+
+        Cell contentCell = new Cell().add(contentTable)
+                .setBorder(Border.NO_BORDER);
+        table.addCell(contentCell);
+
+        Cell rightBar = new Cell()
+                .setBackgroundColor(new DeviceRgb(255, 153, 102)) // Color naranja
+                .setBorder(Border.NO_BORDER);
+        table.addCell(rightBar);
+
+
+            new com.itextpdf.layout.Canvas(canvas, new Rectangle(x, y - 60, pdfDoc.getDefaultPageSize().getWidth() - 72, 60))
+                    .add(table)
+                    .close();
+
+            canvas.beginText()
+              .setFontAndSize(font, 10)
+              .moveText(36, footerY) // Posición X e Y
+              .showText("Creado con Testify")
+              .endText();
+
+
+            canvas.beginText()
+                  .setFontAndSize(font, 10)
+                  .moveText(pdfDoc.getDefaultPageSize().getWidth() -100, footerY)
+                  .showText("Página " + pdfDoc.getPageNumber(page))
+                  .endText();
+
+                  canvas.release();
 
       } catch (Exception e) {
         e.printStackTrace();

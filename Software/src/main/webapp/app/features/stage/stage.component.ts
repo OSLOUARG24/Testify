@@ -8,6 +8,7 @@ import { ActivatedRoute, Router, RouterOutlet, RouterLinkActive, RouterLink  } f
 import { CommonModule } from '@angular/common';
 import { DeleteStageComponent } from './delete-stage/delete-stage.component';
 import { RoleAssigment } from '../role-assigment/role-assigment.model';
+import { RoleAssigmentService } from '../../features/role-assigment/role-assigment.service';
 
 @Component({
   selector: 'app-stage',
@@ -23,9 +24,12 @@ export class StageComponent implements OnInit {
   user?: User;
   roleAssigments: RoleAssigment[] = [];
 
+  permissions: string[] = []; // Lista de permisos del usuario
+
   constructor(private stageService: StageService,
     private route: ActivatedRoute,
     private router: Router,
+    private roleAssigmentService: RoleAssigmentService,
     public dialog: MatDialog) {}
 
   ngOnInit(): void {
@@ -120,17 +124,26 @@ getStorageValues() {
     else {
       this.project = undefined;
       }
+
+      this.roleAssigmentService.getPermissionsByUserIdAndProjectId(this.user?.id!,this.project?.id!).subscribe((data) => {
+        this.permissions = data;
+      });
   }
 
-  hasRole(roleCode: string): boolean {
-    return this.roleAssigments.some((assignment: RoleAssigment) => assignment.role?.code === roleCode);
+hasPermission(permission: string): boolean {
+  // Dividir el permiso en palabras
+  const words = permission.split('_');
+
+  // Si hay menos de 2 palabras, hacer la verificación normal
+  if (words.length < 2) {
+    return this.permissions.includes(permission);
   }
 
-  isAdmin() {
-     return this.user?.admin;
-  }
-  isGestor() {
-       return this.hasRole('GESTOR');
-    }
+  // Obtener las dos primeras palabras del permiso
+  const prefix = words.slice(0, 2).join('_'); // Ejemplo: "Consultar Iteraciones"
+
+  // Buscar si algún permiso almacenado empieza con esas dos palabras
+  return this.permissions.some(perm => perm.startsWith(prefix));
+}
 }
 

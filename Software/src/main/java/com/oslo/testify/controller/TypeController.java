@@ -1,11 +1,9 @@
 package com.oslo.testify.controller;
 
 
-import com.oslo.testify.entity.Category;
 import com.oslo.testify.entity.Type;
 import com.oslo.testify.service.TypeService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +14,6 @@ import java.util.List;
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:4200") // Permite peticiones desde Angular
 public class TypeController {
-
-    private final Logger log = LoggerFactory.getLogger(TypeController.class);
 
     @Autowired
     private TypeService typeService;

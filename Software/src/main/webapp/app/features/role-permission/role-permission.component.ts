@@ -16,7 +16,7 @@ import { DeleteRolePermissionComponent } from './delete-role-permission/delete-r
 
 export class RolePermissionComponent {
 rolePermissions?: RolePermission[];
-roleAssigmentid?: number;
+roleId?: number;
 
   constructor(protected rolePermissionService: RolePermissionService
              ,protected router: Router
@@ -24,9 +24,10 @@ roleAssigmentid?: number;
              ,public dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.roleAssigmentid = Number(this.route.snapshot.params['id']); // Asegúrate de que sea un número
-    if (this.roleAssigmentid) {
-      this.rolePermissionService.getPermissionsByRoleId(this.roleAssigmentid).subscribe(
+    this.roleId = Number(this.route.snapshot.params['id']); // Asegúrate de que sea un número
+    if (this.roleId) {
+      localStorage.setItem('IdRole',this.roleId.toString());
+      this.rolePermissionService.getPermissionsByRoleId(this.roleId).subscribe(
         (data: RolePermission[]) => {
           this.rolePermissions = data;
         },
@@ -51,7 +52,7 @@ roleAssigmentid?: number;
   }
 
   fetchRolePermissions(): void {
-    this.rolePermissionService.getPermissionsByRoleId(this.roleAssigmentid!).subscribe(perms => {
+    this.rolePermissionService.getPermissionsByRoleId(this.roleId!).subscribe(perms => {
       this.rolePermissions = perms;
     });
   }

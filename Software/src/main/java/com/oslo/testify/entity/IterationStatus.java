@@ -2,8 +2,6 @@ package com.oslo.testify.entity;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
-
 @Entity
 @Table(name = "iteration_status_v")
 public class IterationStatus {

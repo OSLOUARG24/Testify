@@ -16,31 +16,40 @@
             <span class="oi oi-home"></span>
             Inicio
           </a>
-          @if(isAdmin()){
+          @if(selectedProjectId){
+          @if(hasPermission("CATEGORIAS")){
 		      <li class="nav-item">
             <a class="nav-link" routerLink="/category">
               <span class="oi oi-list"></span>
               Categorías
             </a>
           </li>
+        }
+        @if(hasPermission("TIPOS")){
           <li class="nav-item">
             <a class="nav-link" routerLink="/type">
               <span class="oi oi-list"></span>
               Tipos
             </a>
           </li>
+        }
+        @if(hasPermission("USUARIOS")){
           <li class="nav-item">
             <a class="nav-link" routerLink="/user">
             <span class="oi oi-person"></span>
               Usuarios
             </a>
           </li>
+        }
+        @if(hasPermission("ROLES")){
           <li class="nav-item">
             <a class="nav-link" routerLink="/role">
             <span class = "oi oi-graph"> </span>
               Roles
             </a>
           </li>
+        }
+        @if(hasPermission("PERMISOS")){
           <li class="nav-item">
             <a class="nav-link" routerLink="/permission">
             <span class = "oi oi-lock-locked"> </span>
@@ -48,6 +57,7 @@
             </a>
           </li>
           }
+        }
           <li class="nav-item">
             <a class="nav-link" routerLink="/projectSelect">
               <span class = "oi oi-loop-circular"></span>

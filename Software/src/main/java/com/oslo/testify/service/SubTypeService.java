@@ -3,7 +3,6 @@ package com.oslo.testify.service;
 import com.oslo.testify.ResourceNotFoundException;
 import com.oslo.testify.entity.SubType;
 import com.oslo.testify.repository.SubTypeRepository;
-import com.oslo.testify.repository.TypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

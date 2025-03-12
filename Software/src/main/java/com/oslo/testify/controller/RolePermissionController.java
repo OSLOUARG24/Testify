@@ -1,9 +1,7 @@
 package com.oslo.testify.controller;
 
 
-import com.oslo.testify.ResourceNotFoundException;
-import com.oslo.testify.entity.Permission;
-import com.oslo.testify.entity.RoleAssigment;
+
 import com.oslo.testify.entity.RolePermission;
 import com.oslo.testify.service.RolePermissionService;
 import org.slf4j.Logger;

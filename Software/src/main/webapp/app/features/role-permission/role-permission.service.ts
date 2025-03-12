@@ -22,6 +22,7 @@ export class RolePermissionService {
    }
 
    updateRolePermission(rolePermission: RolePermission): Observable<RolePermission> {
+       alert(JSON.stringify(rolePermission));
        return this.http.put<RolePermission>(`${this.apiUrl}/rolePermission/${rolePermission.id}`, rolePermission);
      }
 

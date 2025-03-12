@@ -1,13 +1,10 @@
 package com.oslo.testify.controller;
 
 import com.oslo.testify.entity.Project;
-import com.oslo.testify.entity.Iteration;
 import com.oslo.testify.service.PDFReportService;
 import com.oslo.testify.service.ProjectService;
-import com.oslo.testify.service.IterationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,20 +12,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ProjectController {
 
-    private final Logger log = LoggerFactory.getLogger(ProjectController.class);
-
     @Autowired
     private ProjectService projectService;
-
-    @Autowired
-    private IterationService iterationService;
 
     @Autowired
     private PDFReportService pdfReportService;

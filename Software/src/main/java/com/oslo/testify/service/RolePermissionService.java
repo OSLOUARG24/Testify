@@ -1,15 +1,11 @@
 package com.oslo.testify.service;
 
-import com.oslo.testify.ResourceNotFoundException;
-import com.oslo.testify.entity.Role;
 import com.oslo.testify.entity.RolePermission;
 import com.oslo.testify.repository.RolePermissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -32,8 +28,8 @@ public class RolePermissionService {
       RolePermission existingRolePermission = rolePermissionRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Asignación Rol-Permiso no encontrado"));
 
-      existingRolePermission.setRole(existingRolePermission.getRole());
-      existingRolePermission.setPermission(existingRolePermission.getPermission());
+      existingRolePermission.setRole(updatedRolePermission.getRole());
+      existingRolePermission.setPermission(updatedRolePermission.getPermission());
       return rolePermissionRepository.save(existingRolePermission);
     }
 

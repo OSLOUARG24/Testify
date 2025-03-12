@@ -5,7 +5,7 @@
     </div>
     <div class="card-body">
     <p class="d-flex justify-content-end">
-      @if (isAdmin() || isGestor()) {
+      @if(hasPermission("CREAR_ESCENARIOS")){
       <button type="button" class="btn btn-success" [routerLink]="['/stage/create']">
         <span class="oi oi-plus"></span>
           Nuevo Escenario de prueba
@@ -50,14 +50,16 @@
         </div>
       </td>
       <td>
-        <a title="visualizar" class="btn btn-outline-info" [routerLink]="['/stage/detail', stage.id]">
+        <a title="consultar" class="btn btn-outline-info" [routerLink]="['/stage/detail', stage.id]">
           <span class="oi oi-zoom-in"></span>
         </a>
-        @if (isAdmin()|| isGestor()) {
+        @if(hasPermission("MODIFICAR_ESCENARIOS")){
           <a title="Modificar" [routerLink]="['/stage/edit', stage.id]">
             <button type="button" class="btn btn-outline-warning">
               <span class="oi oi-pencil"></span>
             </button></a>
+          }
+          @if(hasPermission("ELIMINAR_ESCENARIOS")){
           <a title="Eliminar" mat-button color="warn" (click)="openDeleteModal(stage)">
             <button type="button" class="btn btn-outline-danger">
               <span class="oi oi-trash"></span>

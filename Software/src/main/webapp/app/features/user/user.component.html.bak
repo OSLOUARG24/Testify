@@ -1,19 +1,19 @@
 <div class="container">
   <div class="card">
     <div class="card-header">
-    <h3>Permisos</h3>
+       <h3>Usuarios</h3>
     </div>
     <div class="card-body">
     <p class="d-flex justify-content-end">
-      <button type="button" class="btn btn-success" [routerLink]="['/permission/create']">
-        <span class="oi oi-plus"></span> Agregar Permiso
+      <button type="button" class="btn btn-success" [routerLink]="['/user/create']">
+        <span class="oi oi-plus"></span> Nuevo Usuario
       </button>
     <button class="btn btn-danger float-right ml-2" (click)="Cancel()">Volver</button>
 
       <button class="btn btn-secondary float-right ml-2" (click)="toggleSearch()">
           @if (showSearch) {
           <span class="oi oi-search"></span>
-          Ocultar BÃºsqueda
+          Ocultar Búsqueda
           }
           @if (!showSearch) {
           <span class="oi oi-search"></span>
@@ -33,20 +33,24 @@
     <table class="table table-hover table-sm">
     <thead>
     <tr class="table-info">
-      <th>Permiso</th>
+      <th>Usuario</th>
       <th>Opciones</th>
     </tr>
     </thead>
     <tbody>
-    @for (perm of paginatedPermissions; track perm.id) {
+    @for (user of users; track user.id) {
     <tr>
-      <td>{{ perm.name }}</td>
+      <td>{{ user.name }}<br />{{ user.email }}</td>
       <td>
-        <a title="Modificar" [routerLink]="['/permission/edit', perm.id]">
-        <button type="button" class="btn btn-outline-warning">
+        <a title="Roles Asignados" (click)="goRoleAssigment(user)">
+          <button type="button" class="btn btn-outline-info">
+          <span class="oi oi-zoom-in"></span>
+          </button></a>
+        <a title="Modificar" [routerLink]="['/user/edit', user.id]">
+          <button type="button" class="btn btn-outline-warning">
             <span class="oi oi-pencil"></span>
           </button></a>
-        <a title="Eliminar" mat-button color="warn" (click)="openDeleteModal(perm)">
+        <a title="Eliminar" mat-button color="warn" (click)="openDeleteModal(user)">
           <button type="button" class="btn btn-outline-danger">
             <span class="oi oi-trash"></span>
           </button></a>
@@ -55,15 +59,6 @@
     }
     </tbody>
   </table>
-  @if (permissions.length === 0){
-      <p>No hay Permisos disponibles.</p>
-      }
-            <mat-paginator
-        [length]="totalItems"
-        [pageSize]="pageSize"
-        [pageIndex]="pageIndex"
-        (page)="onPageChange($event)">
-      </mat-paginator>
-    </div>
+  </div>
   </div>
 </div>

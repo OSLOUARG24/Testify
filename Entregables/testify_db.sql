@@ -3,18 +3,18 @@ use testify;
 DROP TABLE category_status_v;
 
 CREATE OR REPLACE VIEW `testify`.`category_status_v` AS 
-select md5(concat(`it`.`id`,'_',coalesce(`st`.`status`,'NO_STATUS'),'_',`cat`.`name`)) AS `id`
+select md5(concat(`cat`.`id`,'_',coalesce(`st`.`status`,'NO_STATUS'),'_',`cat`.`name`)) AS `id`
 ,`pr`.`id` AS `project_id`,`pr`.`name` AS `project_name`
 ,`cat`.`name` AS `category_name`
 ,coalesce(round(((sum((case when (`st`.`status` = 'PENDIENTE') then 1 else 0 end)) * 100.0) / nullif(count(`st`.`id`),0)),2),0) AS `pending_quantity`
 ,coalesce(round(((sum((case when (`st`.`status` = 'ERROR') then 1 else 0 end)) * 100.0) / nullif(count(`st`.`id`),0)),2),0) AS `error_quantity`
 ,coalesce(round(((sum((case when (`st`.`status` = 'APROBADO') then 1 else 0 end)) * 100.0) / nullif(count(`st`.`id`),0)),2),0) AS `approved_quantity` 
-from ((`testify`.`iterations` `it` 
-left join `testify`.`stages` `st` on((`it`.`id` = `st`.`iteration_id`))) 
-join `testify`.`projects` `pr` on((`pr`.`id` = `it`.`project_id`))) 
-join categories cat on (st.category_id = cat.id)
+from `testify`.`iterations` `it` 
+left join `testify`.`stages` `st` on `it`.`id` = `st`.`iteration_id`
+join `testify`.`projects` `pr` on`pr`.`id` = `it`.`project_id`
+join categories cat on st.category_id = cat.id
 where ((`st`.`previous_stage_id` is null) or ((`st`.`previous_stage_id` is not null) and (`st`.`status` = 'APROBADO'))) 
-group by md5(concat(`it`.`id`,'_',coalesce(`st`.`status`,'NO_STATUS'),'_',`cat`.`name`))
+group by md5(concat(`cat`.`id`,'_',coalesce(`st`.`status`,'NO_STATUS'),'_',`cat`.`name`))
 ,`pr`.`id`,`pr`.`name`
 ,`cat`.`name`
 order by 3,1;
@@ -45,11 +45,11 @@ where ((`st`.`previous_stage_id` is null) or ((`st`.`previous_stage_id` is not n
 
 INSERT INTO users VALUES (1,'slyeduardo@gmail.com',1,'Eduardo');
 
-INSERT INTO `roles` VALUES (1,'TESTER','Tester'),(2,'GESTOR','Gestor de pruebas'),(3,'GUEST','Invitado');
+INSERT INTO `roles` VALUES (1,'GESTOR','Gestor de Pruebas'),(2,'TESTER','Tester'),(3,'GUEST','Invitado');
 
-INSERT INTO `permissions` VALUES (1,'Insertar Escenario'),(2,'Actualizar Escenario'),(3,'Eliminar Escenario'),(4,'Insertar Usuario'),(5,'Actualizar Usuario'),(6,'Eliminar Usuario'),(7,'Insertar Proyecto'),(8,'Actualizar Proyecto'),(9,'Eliminar Proyecto'),(10,'Insertar Iteracion'),(11,'Actualizar Iteracion'),(12,'Eliminar Iteracion'),(13,'Insertar Rol'),(14,'Modificar Rol'),(15,'Eliminar Rol'),(16,'Insertar Permiso'),(17,'Modificar Permiso'),(18,'Eliminar permiso'),(19,'Insertar Categoria'),(20,'Modificar Categoria'),(21,'Eliminar Categoria');
+INSERT INTO `permissions` VALUES (22,'Usuarios'),(23,'Roles'),(24,'Permisos'),(25,'Tipos'),(26,'Subtipos'),(27,'Categorias'),(28,'Consultar Proyectos'),(29,'Consultar Iteraciones'),(30,'Modificar Iteraciones'),(31,'Eliminar Iteraciones'),(32,'Modificar Proyectos'),(33,'Eliminar Proyectos'),(34,'Exportar Proyectos'),(35,'Consultar Escenarios'),(36,'Modificar Escenarios'),(37,'Eliminar Escenarios'),(38,'Realizar Pruebas'),(39,'Crear Iteraciones'),(40,'Crear Proyectos'),(41,'Crear Escenarios'),(42,'Exportar Escenarios');
 
-INSERT INTO `role_permissions` VALUES (1,1,1),(2,2,1),(3,3,1),(5,2,2);
+INSERT INTO `role_permissions` VALUES (6,28,1),(20,28,3),(21,29,1),(22,35,1),(23,36,1),(24,37,1),(25,41,1),(26,42,1),(27,38,2),(28,29,3),(29,35,3),(30,34,1),(31,22,2),(33,24,2),(34,36,2);
 
 INSERT INTO `types` VALUES (21,'Prueba Funcional'),(22,'Prueba de Integración'),(23,'Prueba de Regresión'),(24,'Prueba de Usabilidad'),(25,'Prueba de Seguridad'),(26,'Prueba de Compatibilidad'),(27,'Prueba de mantenimiento'),(28,'Prueba de Rendimiento'),(29,'Revisión Documento Clave'),(30,'Revisión documentos soporte'),(31,'Revisión Tecnica Formal (RTF)'),(32,'Pruebas de Calidad de Contenido');
 

@@ -61,4 +61,11 @@ export class RoleAssigmentService {
            return this.http.get<RoleAssigment[]>(`${this.apiUrl}/roleAssigments/roles`, { params });
      }
 
+     getPermissionsByUserIdAndProjectId(idUser: number,idProject: number): Observable<string[]> {
+      const params = new HttpParams()
+             .set('uId', idUser.toString())
+             .set('pId', idProject.toString());
+      return this.http.get<string[]>(`${this.apiUrl}/roleAssigments/permissions/user`, { params });
+    }
+
 }

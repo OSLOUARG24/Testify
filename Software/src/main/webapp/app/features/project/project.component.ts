@@ -12,6 +12,7 @@ import { BaseChartDirective } from 'ng2-charts';
 import { Router, RouterOutlet,RouterLinkActive,RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteProjectComponent } from './delete-project/delete-project.component';
+import { RoleAssigmentService } from '../../features/role-assigment/role-assigment.service';
 import { CommonModule } from '@angular/common';
 import { RoleAssigment } from '../role-assigment/role-assigment.model';
 
@@ -36,6 +37,8 @@ export class ProjectComponent {
    columns: string[] = [];
    approvalStatuses: { [projectId: number]: number } = {};
 
+   permissions: string[] = []; // Lista de permisos del usuario
+
    public pieChartOptions: ChartOptions = {
            responsive: true,
          };
@@ -48,6 +51,7 @@ export class ProjectComponent {
 
    constructor(protected route: ActivatedRoute
               ,protected projectService: ProjectService
+              ,protected roleAssigmentService: RoleAssigmentService
               ,public dialog: MatDialog
               ,protected stageService: StageService) {}
 
@@ -57,15 +61,18 @@ export class ProjectComponent {
            this.projects = this.projects || []; // Inicializa el array si está undefined
            this.projects.push(this.project); // Agrega el proyecto del sessionStorage
            this.loadStages(this.project.id!);
+           this.loadPermissions(this.project?.id!);
            this.loadIterationStatus();
            this.loadApprovalStatuses();
       }
       else {
          this.projects = [];
          this.getAllProjects();
+         this.loadPermissions(0);
          this.loadIterationStatus();
          this.loadAllStages();
       }
+      
       this.generateChartData();
    }
 
@@ -143,6 +150,7 @@ export class ProjectComponent {
         else if (stage.status === 'ERROR') statusCounts.EnError++;
       });
 
+
       this.pieChartData = {
         labels: this.pieChartLabels,
         datasets: [{ data: [statusCounts.Pendiente, statusCounts.Aprobado, statusCounts.EnError], label: 'Estados de Escenarios' }]
@@ -198,17 +206,6 @@ export class ProjectComponent {
       }
   }
 
-    hasRole(roleCode: string): boolean {
-    return this.roleAssigments.some((assignment: RoleAssigment) => assignment.role?.code === roleCode);
-  }
-
-  isAdmin() {
-     return this.user?.admin;
-  }
-  isGestor() {
-       return this.hasRole('GESTOR');
-    }
-
   loadApprovalStatuses(): void {
       if (this.projects) {
           this.projects.forEach(project => {
@@ -254,5 +251,34 @@ isTextOverflow(text: string): boolean {
   document.body.removeChild(tempSpan);
 
   return isOverflow;
+}
+
+loadPermissions(projectId: number) {
+  if (!this.user) {
+    this.permissions = [];
+    return;
+  }
+
+ this.roleAssigmentService.getPermissionsByUserIdAndProjectId(this.user.id!,projectId).subscribe((data) => {
+  this.permissions = data;
+});
+
+  
+}
+
+hasPermission(permission: string): boolean {
+  // Dividir el permiso en palabras
+  const words = permission.split('_');
+
+  // Si hay menos de 2 palabras, hacer la verificación normal
+  if (words.length < 2) {
+    return this.permissions.includes(permission);
+  }
+
+  // Obtener las dos primeras palabras del permiso
+  const prefix = words.slice(0, 2).join('_'); // Ejemplo: "Consultar Iteraciones"
+
+  // Buscar si algún permiso almacenado empieza con esas dos palabras
+  return this.permissions.some(perm => perm.startsWith(prefix));
 }
 }

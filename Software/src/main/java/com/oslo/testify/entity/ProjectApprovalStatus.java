@@ -2,8 +2,6 @@ package com.oslo.testify.entity;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "project_approval_status")
 public class ProjectApprovalStatus {

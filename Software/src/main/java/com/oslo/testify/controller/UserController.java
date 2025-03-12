@@ -1,7 +1,6 @@
 package com.oslo.testify.controller;
 
 
-import com.oslo.testify.service.RoleAssigmentService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.oslo.testify.entity.User;
@@ -22,9 +21,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private RoleAssigmentService roleAssigmentService;
 
     @GetMapping("/users")
     public List<User> getAllUsers() {

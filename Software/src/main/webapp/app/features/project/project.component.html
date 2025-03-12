@@ -5,7 +5,7 @@
     </div>
     <div class="card-body">
     <p class="d-flex justify-content-end">
-      @if(isAdmin() ){
+      @if(hasPermission("CREAR_PROYECTOS")){
       <button type="button" class="btn btn-success" [routerLink]="['/project/create']">
         <span class="oi oi-plus"></span> Nuevo Proyecto
       </button>
@@ -43,19 +43,23 @@
        <!--Fin porcentaje aprobado-->
       <td>{{ getStatusDescription(project.status!) }}</td>
       <td>
-        @if(isAdmin() || isGestor()){
+        @if(hasPermission("EXPORTAR_PROYECTOS")){
         <a title="Exportar" class="btn btn-outline-info" [routerLink]="['/project/export', project.id]">
           <span class="oi oi-file"></span>
         </a>
         }
+        @if(hasPermission("CONSULTAR_ITERACIONES")){
         <a title="Iteraciones" class="btn btn-outline-info" [routerLink]="['/iteration', project.id]">
           <span class="oi oi-zoom-in"></span>
         </a>
-        @if (isAdmin()){
+        }
+        @if(hasPermission("MODIFICAR_PROYECTOS")){
         <a title="Modificar" [routerLink]="['/project/edit', project.id]">
           <button type="button" class="btn btn-outline-warning">
             <span class="oi oi-pencil"></span>
           </button></a>
+        }
+        @if(hasPermission("ELIMINAR_PROYECTOS")){
         <a title="Eliminar" mat-button color="warn" (click)="openDeleteModal(project)">
           <button type="button" class="btn btn-outline-danger">
             <span class="oi oi-trash"></span>
@@ -85,6 +89,9 @@
                 <table class="table table-bordered table-sm text-center">
                   <thead>
                   <tr class="table-info">
+                    @if(!project){
+                    <th>Proyecto</th>
+                    }
                     <th>Iteración</th>
                     <th>Pendientes</th>
                     <th>En Error</th>
@@ -94,6 +101,9 @@
                   <tbody>
                   <!-- Mostrar solo 5 filas -->
                   <tr *ngFor="let it of iterationStatus">
+                    @if(!project){
+                    <td>{{ it.projectName }}</td>
+                    }
                     <td>{{ it.iterationName }}</td>
                     <td>{{ it.pendingQuantity }}%</td>
                     <td>{{ it.errorQuantity }}%</td>
@@ -118,6 +128,9 @@
                 <table class="table table-bordered table-sm text-center">
                   <thead>
                   <tr class="table-info">
+                    @if(!project){
+                    <th>Proyecto</th>
+                    }
                     <th>Categoría</th>
                     <th>Casos Pendientes</th>
                     <th>Casos con Errores</th>
@@ -127,6 +140,9 @@
                   <tbody>
                   <!-- Mostrar solo 5 filas -->
                   <tr *ngFor="let cat of categoryStatus">
+                    @if(!project){
+                    <td>{{ cat.projectName }}</td>
+                    }
                     <td>{{ cat.categoryName }}</td>
                     <td>{{ cat.pendingQuantity }}%</td>
                     <td>{{ cat.errorQuantity }}%</td>
