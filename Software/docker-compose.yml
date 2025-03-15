@@ -31,7 +31,8 @@ services:
     container_name: spring-boot-container
     restart: no
     depends_on:
-      - database
+      database:
+        condition: service_healthy  # <- Espera a que MySQL esté saludable
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/testify
       SPRING_DATASOURCE_USERNAME: testify

@@ -34,6 +34,8 @@ export class NavbarComponent implements OnInit {
   Nameuser?: string;
   iteration?: string;
 
+   permissions: string[] = []; // Lista de permisos del usuario
+
   constructor(
     protected navbarService: NavbarService,
     protected router: Router,
@@ -54,11 +56,13 @@ export class NavbarComponent implements OnInit {
         if (this.isAuthenticated) {
           this.googleAccount = this.authGoogleService.getProfile();
           this.name = this.googleAccount.family_name + ', ' + this.googleAccount.given_name;
+          this.loadPermissions(); // Cargar permisos cuando el usuario está autenticado
         }
       });
 
       this.navbarService.projectChanged$.subscribe(() => {
          this.getStorageValues();
+         this.loadPermissions(); // Recargar permisos cuando cambia el proyecto
       });
 
       this.navbarService.typeChanged$.subscribe(() => {
@@ -66,9 +70,11 @@ export class NavbarComponent implements OnInit {
       });
       this.navbarService.userChanged$.subscribe(() => {
              this.getUserValues();
+             this.loadPermissions(); // Recargar permisos cuando cambia el proyecto
       });
       this.navbarService.roleChanged$.subscribe(() => {
                  this.getRoleValues();
+                 this.loadPermissions(); // Recargar permisos cuando cambia el proyecto
       });
       this.navbarService.iterationChanged$.subscribe(() => {
                  this.getIterationValues();
@@ -125,30 +131,43 @@ export class NavbarComponent implements OnInit {
     const project = sessionStorage.getItem('project');
       if (project){
         this.project = JSON.parse(project);
+        if (this.project){
+        this.selectedProjectId = this.project.id;
+        }
       }
     else {
       this.project = undefined;
+      this.selectedProjectId = 0;
       }
   }
 
-  hasRole(roleCode: string): boolean {
-    return this.roleAssigments.some((assignment: RoleAssigment) => assignment.role?.code === roleCode);
+  loadPermissions() {
+    if (!this.user) {
+      this.permissions = [];
+      return;
+    }
+    
+   this.roleAssigmentService.getPermissionsByUserIdAndProjectId(this.user.id!,this.selectedProjectId).subscribe((data) => {
+    this.permissions = data;
+  });
+  
+    
   }
 
-  isAdmin() {
-     return this.user?.admin;
-   }
-
-  isGestor() {
-     return this.hasRole('GESTOR');
-  }
-
-  isInvitado() {
-     return this.hasRole('GUEST');
-  }
-
-  isTester(): boolean {
-     return this.hasRole('TESTER');
+  hasPermission(permission: string): boolean {
+    // Dividir el permiso en palabras
+    const words = permission.split('_');
+  
+    // Si hay menos de 2 palabras, hacer la verificación normal
+    if (words.length < 2) {
+      return this.permissions.includes(permission);
+    }
+  
+    // Obtener las dos primeras palabras del permiso
+    const prefix = words.slice(0, 2).join('_'); // Ejemplo: "Consultar Iteraciones"
+  
+    // Buscar si algún permiso almacenado empieza con esas dos palabras
+    return this.permissions.some(perm => perm.startsWith(prefix));
   }
 
   isAuth() {
@@ -162,15 +181,15 @@ export class NavbarComponent implements OnInit {
 
   redirect() {
     this.getStorageValues();
-    if (this.isGestor() || this.isInvitado() || this.isAdmin()){
-      if (this.isAdmin() || (this.project && (this.isGestor() || this.isInvitado()))){
+    if (this.hasPermission("CONSULTAR_PROYECTOS")){
+      if (this.project ){
         this.router.navigate(['/project']);
       }
       else {
         this.router.navigate(['/projectSelect']);
       }
     } else {
-      if (this.isTester()){
+      if (this.hasPermission("REALIZAR_PRUEBAS")){
         if (this.project){
           this.router.navigate(['/tester']);
         } else {
