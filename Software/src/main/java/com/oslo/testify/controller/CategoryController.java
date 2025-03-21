@@ -48,8 +48,18 @@ public class CategoryController {
         }
     }
 
-    @DeleteMapping("/category/{id}")
+    /*@DeleteMapping("/category/{id}")
     public void deleteCategory(@PathVariable(value = "id", required = false) final  Long id) {
       categoryService.deleteCategory(id);
+    }*/
+
+    @DeleteMapping("/category/{id}")
+    public ResponseEntity<?> deleteCategory(@PathVariable(value = "id", required = false) final Long id) {
+    try {
+        categoryService.deleteCategory(id);
+        return ResponseEntity.ok("Categoría eliminada correctamente");
+    } catch (RuntimeException ex) {
+        return ResponseEntity.badRequest().body("Error al eliminar la categoría (Controller): " + ex.getMessage());
     }
+  }
 }

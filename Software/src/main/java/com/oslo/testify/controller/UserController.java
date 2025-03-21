@@ -1,8 +1,6 @@
 package com.oslo.testify.controller;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.oslo.testify.entity.User;
 import com.oslo.testify.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,10 +61,16 @@ public class UserController {
       User updatedUser = userService.updateUser(id, userDetails);
       return ResponseEntity.ok(updatedUser);
     }
-
-    @DeleteMapping("/user/{id}")
-    public void deleteUser(@PathVariable(value = "id", required = false) final  Long id) {
+    
+  @DeleteMapping("/user/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable(value = "id", required = false) final Long id) throws Exception {
+      try {
         userService.deleteUser(id);
+          return ResponseEntity.ok("Subtipo eliminado correctamente.");
+      } catch (RuntimeException ex) {
+          return ResponseEntity.badRequest().body("Error al eliminar el subtipo: " + ex.getMessage());
+      }
     }
+
 
 }

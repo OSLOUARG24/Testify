@@ -49,9 +49,14 @@ public class TypeController {
       }
     }
 
-    @DeleteMapping("/type/{id}")
-    public void deleteType(@PathVariable(value = "id", required = false) final  Long id) {
-    typeService.deleteType(id);
-  }
+  @DeleteMapping("/type/{id}")
+    public ResponseEntity<?> deleteType(@PathVariable(value = "id", required = false) final Long id) throws Exception {
+      try {
+        typeService.deleteType(id);
+          return ResponseEntity.ok("Subtipo eliminado correctamente.");
+      } catch (RuntimeException ex) {
+          return ResponseEntity.badRequest().body("Error al eliminar el subtipo: " + ex.getMessage());
+      }
+    }
 
 }

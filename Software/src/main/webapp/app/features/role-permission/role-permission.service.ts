@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, throwError } from 'rxjs';
 import { RolePermission } from './role-permission.model';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -30,9 +31,13 @@ export class RolePermissionService {
       return this.http.post<RolePermission>(this.apiUrl + '/rolePermission', rolePermission);
    }
 
-   deleteRolePermission(rolePermissionId: number): Observable<string>  {
-     return this.http.delete(`${this.apiUrl}/rolePermission/${rolePermissionId}`, { responseType: 'text' });
-   }
+   deleteRolePermission(id: number): Observable<string> {
+      return this.http.delete(`${this.apiUrl}/rolePermission/${id}`, { responseType: 'text' }).pipe(
+        catchError(error => {
+          return throwError(() => new Error(error.error || 'Error al eliminar el Permiso Asignado'));
+        })
+      );
+    }
 
 
 }

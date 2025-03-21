@@ -98,9 +98,13 @@ public class StageController {
   }
 
   @DeleteMapping("/stage/{id}")
-  public ResponseEntity<Void> deleteStage(@PathVariable(value = "id", required = false) final Long id) {
-    stageService.deleteStage(id);
-    return ResponseEntity.noContent().build();
+  public ResponseEntity<?> deleteStage(@PathVariable(value = "id", required = false) final Long id) throws Exception {
+    try {
+      stageService.deleteStage(id);
+        return ResponseEntity.ok("Escenario eliminado correctamente.");
+    } catch (RuntimeException ex) {
+        return ResponseEntity.badRequest().body("Error al eliminar el escenario: " + ex.getMessage());
+    }
   }
 
   @GetMapping("/stages/project/{id}")

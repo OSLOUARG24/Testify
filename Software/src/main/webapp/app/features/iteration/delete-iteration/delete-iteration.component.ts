@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IterationService } from '../iteration.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-delete-iteration',
@@ -13,18 +14,24 @@ export class DeleteIterationComponent {
   constructor(
     public dialogRef: MatDialogRef<DeleteIterationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { iteration: any },
-    private iterationService: IterationService
+    private iterationService: IterationService,
+    private snackBar: MatSnackBar
   ) {}
 
-  onConfirm(): void {
+    onConfirm(): void {
       this.iterationService.deleteIteration(this.data.iteration.id).subscribe({
-        next: (response: string) => {
-          console.log(`Iteración ${this.data.iteration.name} eliminada`);
-          console.log('Respuesta del servidor:', response);
+        next: () => {
+          this.snackBar.open(`Iteración ${this.data.iteration.name} eliminada`, 'Cerrar', {
+            duration: 3000,
+            panelClass: ['success-snackbar']
+          });
           this.dialogRef.close(true);
         },
         error: (err) => {
-          console.error('Error al eliminar la iteración', err);
+          this.snackBar.open(`Error al eliminar la iteración: Verifique que la iteración no este en uso y reintente nuevamente`, 'Cerrar', {
+            duration: 5000,
+            panelClass: ['error-snackbar']
+          });
           this.dialogRef.close(false);
         }
       });

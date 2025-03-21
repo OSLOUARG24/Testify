@@ -52,8 +52,13 @@ public class ProjectController {
     }
 
     @DeleteMapping("/project/{id}")
-    public void deleteProject(@PathVariable(value = "id", required = false) final Long id) {
+    public ResponseEntity<?> deleteProject(@PathVariable(value = "id", required = false) final Long id) {
+      try {
         projectService.deleteProject(id);
+          return ResponseEntity.ok("Proyecto eliminado correctamente.");
+      } catch (RuntimeException ex) {
+          return ResponseEntity.badRequest().body("Error al eliminar el proyecto: " + ex.getMessage());
+      }
     }
 
     @GetMapping("/projects/user-email/{email}")

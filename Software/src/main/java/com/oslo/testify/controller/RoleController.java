@@ -49,13 +49,14 @@ public class RoleController {
        return ResponseEntity.ok(roleService.updateRole(id, role));
     }
 
+
     @DeleteMapping("/role/{id}")
-    public ResponseEntity<String> deleteRole(@PathVariable(value = "id", required = false) final  Long id) {
+    public ResponseEntity<?> deleteRole(@PathVariable(value = "id", required = false) final Long id) throws Exception {
       try {
         roleService.deleteRole(id);
-        return new ResponseEntity<>("Rol eliminado correctamente.", HttpStatus.OK);
-      } catch (Exception e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+          return ResponseEntity.ok("Rol eliminado correctamente.");
+      } catch (RuntimeException ex) {
+          return ResponseEntity.badRequest().body("Error al eliminar el rol: " + ex.getMessage());
       }
     }
 }

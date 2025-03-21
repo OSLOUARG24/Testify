@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { Project, ProjectApprovalStatus } from './project.model';
 import { IterationStatus } from '../iteration/iteration.model';
 import { CategoryStatus } from '../category/category.model';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -31,10 +32,13 @@ export class ProjectService {
     return this.http.put<Project>(`${this.apiUrl}/project/${id}`, project);
   }
 
-  // Eliminar un proyecto por ID
-  deleteProject(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/project/${id}`);
-  }
+  deleteProject(id: number): Observable<string> {
+      return this.http.delete(`${this.apiUrl}/project/${id}`, { responseType: 'text' }).pipe(
+        catchError(error => {
+          return throwError(() => new Error(error.error || 'Error al eliminar el proyecto'));
+        })
+      );
+    }
 
   // Obtener un proyecto por ID
   getProjectById(id: number): Observable<Project> {

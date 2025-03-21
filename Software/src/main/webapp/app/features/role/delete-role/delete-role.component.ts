@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RoleService } from '../role.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -14,18 +15,24 @@ export class DeleteRoleComponent {
   constructor(
     public dialogRef: MatDialogRef<DeleteRoleComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { role: any },
-    private roleService: RoleService
+    private roleService: RoleService,
+    private snackBar: MatSnackBar
   ) {}
 
   onConfirm(): void {
       this.roleService.deleteRole(this.data.role.id).subscribe({
-        next: (response: string) => {
-          console.log(`Rol ${this.data.role.name} eliminado`);
-          console.log('Respuesta del servidor:', response);  // El texto "Rol eliminado correctamente."
+        next: () => {
+          this.snackBar.open(`Rol ${this.data.role.name} eliminado`, 'Cerrar', {
+            duration: 3000,
+            panelClass: ['success-snackbar']
+          });
           this.dialogRef.close(true);
         },
         error: (err) => {
-          console.error('Error al eliminar el rol', err);
+          this.snackBar.open(`Error al eliminar el rol: Verifique que el rol no este en uso y reintente nuevamente`, 'Cerrar', {
+            duration: 5000,
+            panelClass: ['error-snackbar']
+          });
           this.dialogRef.close(false);
         }
       });
