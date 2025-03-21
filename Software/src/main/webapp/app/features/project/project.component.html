@@ -49,7 +49,7 @@
         </a>
         }
         @if(hasPermission("CONSULTAR_ITERACIONES")){
-        <a title="Iteraciones" class="btn btn-outline-info" [routerLink]="['/iteration', project.id]">
+        <a title="Iteraciones" class="btn btn-outline-info" (click)="redirectToIterations(project)">
           <span class="oi oi-zoom-in"></span>
         </a>
         }

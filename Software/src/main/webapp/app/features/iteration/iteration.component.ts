@@ -48,10 +48,14 @@ export class IterationComponent implements OnInit {
         this.navbarService.notifyRoleChanged();
         this.navbarService.notifyIterationChanged();
 
-    // Obtener el ID del proyecto desde la URL y convertirlo a número
+        this.loadIterations();
+  }
+
+  
+  loadIterations(): void {
+      // Obtener el ID del proyecto desde la URL y convertirlo a número
     const projectIdParam = this.route.snapshot.paramMap.get('id');
     this.projectId = projectIdParam ? +projectIdParam : undefined;  // Convertir a número
-
     if (this.projectId) {
       this.getIterationsByProjectId(this.projectId);  // Buscar las iteraciones con el ID del proyecto
       this.projectService.getProjectById(this.projectId).subscribe(
@@ -68,7 +72,7 @@ export class IterationComponent implements OnInit {
         this.loadPermissions(this.project!.id);
       }
     }
-  }
+    }
 
   // Obtener iteraciones filtradas por el ID del proyecto
   getIterationsByProjectId(projectId: number): void {
@@ -94,7 +98,7 @@ export class IterationComponent implements OnInit {
 
 	        dialogRef.afterClosed().subscribe(result => {
 	          if (result) {
-	            this.fetchIterations();
+	            this.loadIterations();
 	          }
 	        });
 	      }

@@ -15,6 +15,7 @@ import { DeleteProjectComponent } from './delete-project/delete-project.componen
 import { RoleAssigmentService } from '../../features/role-assigment/role-assigment.service';
 import { CommonModule } from '@angular/common';
 import { RoleAssigment } from '../role-assigment/role-assigment.model';
+import { NavbarService } from '../../core/components/navbar/navbar.service'; // Importa el servicio
 
 @Component({
   selector: 'app-project',
@@ -53,6 +54,8 @@ export class ProjectComponent {
               ,protected projectService: ProjectService
               ,protected roleAssigmentService: RoleAssigmentService
               ,public dialog: MatDialog
+              ,protected router: Router
+              ,protected navbarService: NavbarService
               ,protected stageService: StageService) {}
 
    ngOnInit(): void {
@@ -281,4 +284,12 @@ hasPermission(permission: string): boolean {
   // Buscar si algún permiso almacenado empieza con esas dos palabras
   return this.permissions.some(perm => perm.startsWith(prefix));
 }
+
+
+redirectToIterations(project: Project) {
+       sessionStorage.setItem('project',JSON.stringify(project))
+       this.navbarService.notifyProjectChanged();
+       this.router.navigate(['/iteration',project.id]);
+}
+
 }
