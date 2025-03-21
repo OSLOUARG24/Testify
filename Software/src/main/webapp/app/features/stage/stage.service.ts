@@ -98,9 +98,12 @@ export class StageService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  // Eliminar un proyecto por ID
-  deleteStage(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/stage/${id}`);
+  deleteStage(id: number): Observable<string> {
+    return this.http.delete(`${this.apiUrl}/stage/${id}`, { responseType: 'text' }).pipe(
+      catchError(error => {
+        return throwError(() => new Error(error.error || 'Error al eliminar el Escenario'));
+      })
+    );
   }
 
 getStagesByProjectId(id: number) {
