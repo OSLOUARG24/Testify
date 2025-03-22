@@ -39,5 +39,7 @@ export class RolePermissionService {
       );
     }
 
-
+    getPermissionsByRoleAndPermissionId(roleId: number, permissionId: number): Observable<RolePermission[]> {
+      return this.http.get<RolePermission[]>(`${this.apiUrl}/rolePermissions/role/${roleId}`);
+    }
 }

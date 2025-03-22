@@ -123,6 +123,17 @@ export class UpdateRolePermissionComponent implements OnInit {
     const selectedRole = this.roles.find(role => role.id === selectedRoleId);
     const selectedPermission = this.permissions.find(permission => permission.id === selectedPermissionId);
 
+    this.rolePermissionService.getPermissionsByRoleId(selectedRoleId).subscribe(existingPermissions => {
+      const alreadyExists = existingPermissions.some(
+        rp => rp.permission!.id === selectedPermissionId
+      );
+    
+      if (alreadyExists && !this.isEditMode) {
+        alert('Este permiso ya está asignado a este rol.');
+        return;
+      }
+    });
+
     const rolePermission: RolePermission = {
       ...this.rolePermissionForm.value,
       role: selectedRole!,  // Asignamos el objeto Role completo

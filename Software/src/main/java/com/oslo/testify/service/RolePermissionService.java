@@ -21,8 +21,14 @@ public class RolePermissionService {
     }
 
     public RolePermission saveRolePermission(RolePermission rolePermission) {
-        return rolePermissionRepository.save(rolePermission);
-    }
+      Long roleId = rolePermission.getRole().getId();
+      Long permissionId = rolePermission.getPermission().getId();
+  
+      if (existsByRoleIdAndPermissionId(roleId, permissionId)) {
+          throw new RuntimeException("Ya existe este permiso asignado para el rol.");
+      }
+      return rolePermissionRepository.save(rolePermission);
+  }
 
     public RolePermission updateRolePermission(Long id, RolePermission updatedRolePermission) {
       RolePermission existingRolePermission = rolePermissionRepository.findById(id)
@@ -49,6 +55,10 @@ public class RolePermissionService {
     public Optional<RolePermission> findById(Long id) {
     return rolePermissionRepository.findById(id);
   }
+
+  public boolean existsByRoleIdAndPermissionId(Long roleId, Long permissionId) {
+    return rolePermissionRepository.existsByRoleIdAndPermissionId(roleId, permissionId);
+}
 
 }
 

@@ -37,9 +37,14 @@ public class RolePermissionController {
   }
 
     @PostMapping("/rolePermission")
-    public RolePermission createRole(@RequestBody RolePermission rolePermission) {
-        return rolePermissionService.saveRolePermission(rolePermission);
+public ResponseEntity<?> createRole(@RequestBody RolePermission rolePermission) {
+    try {
+        RolePermission saved = rolePermissionService.saveRolePermission(rolePermission);
+        return ResponseEntity.ok(saved);
+    } catch (RuntimeException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
+}
 
     @GetMapping("/rolePermission/{id}")
     public RolePermission getRolePermissionById(@PathVariable(value = "id", required = false) final  Long id) {
