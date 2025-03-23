@@ -1,9 +1,6 @@
 # Codespaces
 Repositorio para el desarrollo colaborativo.
 
-*Proyecto Testify de la materia Laboratorio de desarrollo de software (Click en el botón): [![Abrir espacio de desarrollo](https://img.shields.io/badge/Ir-a%20Testify-24292e?style=for-the-badge&logo=github)](https://codespaces.new/Levipichun/testify/tree/pruebas)
-
-
 
 *Implementación a modo de guía de UARGFlow (Click en el botón): [![Abrir espacio de desarrollo](https://img.shields.io/badge/Ir-a%20UARGFlow-24292e?style=for-the-badge&logo=github)](https://codespaces.new/Levipichun/uargflow/tree/pruebas)
 
