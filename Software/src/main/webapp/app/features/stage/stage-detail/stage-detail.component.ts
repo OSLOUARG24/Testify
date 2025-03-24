@@ -188,13 +188,12 @@ export class StageDetailComponent implements OnInit {
 
     
     loadPermissions() {
-
-      if (!this.user || this.project?.id!) {
+      if (!this.user && this.project?.id!) {
         this.permissions = [];
         return;
       }
     
-     this.roleAssigmentService.getPermissionsByUserIdAndProjectId(this.user.id!,this.project?.id!).subscribe((data) => {
+     this.roleAssigmentService.getPermissionsByUserIdAndProjectId(this.user?.id!,this.project?.id!).subscribe((data) => {
       this.permissions = data;
     });
     
