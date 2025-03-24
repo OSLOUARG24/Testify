@@ -41,8 +41,23 @@ export class ProjectComponent {
    permissions: string[] = []; // Lista de permisos del usuario
 
    public pieChartOptions: ChartOptions = {
-           responsive: true,
-         };
+    responsive: true,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (tooltipItem) => {
+            const data = tooltipItem.chart.data.datasets[0].data as number[];
+            const total = data.reduce((acc, val) => acc + val, 0);
+            const value = data[tooltipItem.dataIndex!];
+            const percentage = ((value / total) * 100).toFixed(2);
+            const label = tooltipItem.label || '';
+            return `${label}: ${value} (${percentage}%)`;
+          }
+        }
+      }
+    }
+  };
+
    public pieChartLabels: string[] = ['Pendiente', 'Aprobado', 'En Error'];
    public pieChartData: ChartData<'pie', number[], string> = {
        labels: this.pieChartLabels,
@@ -76,7 +91,7 @@ export class ProjectComponent {
          this.loadAllStages();
       }
       
-      this.generateChartData();
+      this.loadPieChartData(this.project?.id);
    }
 
       getStatusDescription(status: ProjectStatus): string {
@@ -128,7 +143,7 @@ export class ProjectComponent {
       this.stageService.getStagesByProjectId(projectId).subscribe(
         (data: Stage[]) => {
           this.stages = data;
-          this.generateChartData();
+          this.loadPieChartData(this.project?.id);
         },
         error => console.error('Error al obtener escenarios', error)
       );
@@ -138,27 +153,11 @@ export class ProjectComponent {
         this.stageService.getStages().subscribe(
           (data: Stage[]) => {
             this.stages = data;
-            this.generateChartData();
+            this.loadPieChartData(this.project?.id);
           },
           error => console.error('Error al obtener escenarios', error)
         );
       }
-
-  generateChartData(): void {
-      const statusCounts = { Pendiente: 0, Aprobado: 0, EnError: 0 };
-
-      this.stages.forEach(stage => {
-        if (stage.status === 'PENDIENTE') statusCounts.Pendiente++;
-        else if (stage.status === 'APROBADO') statusCounts.Aprobado++;
-        else if (stage.status === 'ERROR') statusCounts.EnError++;
-      });
-
-
-      this.pieChartData = {
-        labels: this.pieChartLabels,
-        datasets: [{ data: [statusCounts.Pendiente, statusCounts.Aprobado, statusCounts.EnError], label: 'Estados de Escenarios' }]
-      };
-    }
 
    loadIterationStatus(): void {
 
@@ -290,6 +289,35 @@ redirectToIterations(project: Project) {
        sessionStorage.setItem('project',JSON.stringify(project))
        this.navbarService.notifyProjectChanged();
        this.router.navigate(['/iteration',project.id]);
+}
+
+loadPieChartData(projectId?: number): void {
+  this.projectService.getStageStatusBarData(projectId).subscribe((data) => {
+    const labels = ['PENDIENTE', 'APROBADO', 'ERROR'];
+    const statusCounts: { [key: string]: number } = {
+  PENDIENTE: 0,
+  APROBADO: 0,
+  ERROR: 0
+};
+
+    data.forEach(d => {
+      if (statusCounts[d.status] !== undefined) {
+        statusCounts[d.status] += d.quantity;
+      }
+    });
+
+    this.pieChartData = {
+      labels,
+      datasets: [{
+        data: labels.map(label => statusCounts[label]),
+        backgroundColor: [
+          'rgba(255,193,7,0.6)',  // PENDIENTE - amarillo
+          'rgba(40,167,69,0.6)',  // APROBADO - verde
+          'rgba(220,53,69,0.6)'   // ERROR - rojo
+        ]
+      }]
+    };
+  });
 }
 
 }

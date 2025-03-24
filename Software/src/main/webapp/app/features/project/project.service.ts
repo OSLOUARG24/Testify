@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { Project, ProjectApprovalStatus } from './project.model';
 import { IterationStatus } from '../iteration/iteration.model';
@@ -89,6 +89,18 @@ export class ProjectService {
 
   getMatrix(projectId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/stage/matrix/${projectId}`);
+  }
+
+  getStageStatusBarData(projectId?: number): Observable<{ projectName: string, iterationName: string, status: string, quantity: number }[]> {
+    let params = new HttpParams();
+    if (projectId !== undefined) {
+      params = params.set('projectId', projectId.toString());
+    }
+  
+    return this.http.get<{ projectName: string, iterationName: string, status: string, quantity: number }[]>(
+      `${this.apiUrl}/project/stage-status-bar`,
+      { params }
+    );
   }
 
 }

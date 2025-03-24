@@ -30,4 +30,16 @@ public interface StageRepository extends JpaRepository<Stage, Long> {
     List<Stage> findByIteration_Project_Id(Long projectId);
 
     Optional<Stage> findByPreviousStage(Stage stage);
+
+    @Query(value = """
+    SELECT pr.name AS project_name, it.name AS iteration_name, st.status AS status, COUNT(st.id) AS quantity
+    FROM iterations it
+    JOIN projects pr ON pr.id = it.project_id
+    LEFT JOIN stages st ON st.iteration_id = it.id
+    WHERE (st.previous_stage_id IS NULL OR (st.previous_stage_id IS NOT NULL AND st.status = 'APROBADO'))
+    AND (:projectId IS NULL OR pr.id = :projectId)
+    GROUP BY pr.name, it.name, st.status
+    ORDER BY pr.name, it.name
+    """, nativeQuery = true)
+    List<Object[]> getStageStatusGroupedByIteration(@Param("projectId") Long projectId);
 }

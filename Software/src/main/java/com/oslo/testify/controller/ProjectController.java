@@ -3,6 +3,7 @@ package com.oslo.testify.controller;
 import com.oslo.testify.entity.Project;
 import com.oslo.testify.service.PDFReportService;
 import com.oslo.testify.service.ProjectService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -80,4 +82,11 @@ public class ProjectController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
   }
+
+  @GetMapping("/project/stage-status-bar")
+public ResponseEntity<List<Map<String, Object>>> getStageStatusBar(@RequestParam(name = "projectId", required = false) Long projectId) {
+    List<Map<String, Object>> data = projectService.getStageStatusGroupedByIteration(projectId);
+    return ResponseEntity.ok(data);
+}
+
 }
