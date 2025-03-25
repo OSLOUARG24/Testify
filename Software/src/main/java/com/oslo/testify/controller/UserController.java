@@ -1,9 +1,6 @@
 package com.oslo.testify.controller;
 
 
-import com.oslo.testify.service.RoleAssigmentService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.oslo.testify.entity.User;
 import com.oslo.testify.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +19,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private RoleAssigmentService roleAssigmentService;
 
     @GetMapping("/users")
     public List<User> getAllUsers() {
@@ -56,16 +50,27 @@ public class UserController {
       return userService.getTestersByProjectId(id);
     }
 
+    @GetMapping("/user/project/{id}")
+    public List<User> getUsersByProjectId(@PathVariable(value = "id", required = false) final Long id) {
+      return userService.getUsersByProjectId(id);
+    }
+
     @PutMapping("/user/{id}")
     public ResponseEntity<User> updateUser(@PathVariable(value = "id", required = false) final Long id, @RequestBody User userDetails) {
       log.debug("REST request to save User : {}", userDetails);
       User updatedUser = userService.updateUser(id, userDetails);
       return ResponseEntity.ok(updatedUser);
     }
-
-    @DeleteMapping("/user/{id}")
-    public void deleteUser(@PathVariable(value = "id", required = false) final  Long id) {
+    
+  @DeleteMapping("/user/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable(value = "id", required = false) final Long id) throws Exception {
+      try {
         userService.deleteUser(id);
+          return ResponseEntity.ok("Subtipo eliminado correctamente.");
+      } catch (RuntimeException ex) {
+          return ResponseEntity.badRequest().body("Error al eliminar el subtipo: " + ex.getMessage());
+      }
     }
+
 
 }

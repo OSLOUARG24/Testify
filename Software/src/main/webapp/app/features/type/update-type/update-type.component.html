@@ -17,11 +17,11 @@
         </div>
     <div class="card-footer">
       <div class="form-group d-flex justify-content-end">
-        <button type="submit" class="btn btn-primary" [disabled]="typeForm.invalid">
+        <button type="submit" class="btn btn-outline-success" [disabled]="typeForm.invalid">
           <span class="oi oi-check"></span>
           {{ isEditMode ? 'Actualizar' : 'Crear' }} Tipo de Escenario
         </button>
-        <button type="button" class="btn btn-secondary" (click)="cancel()">
+        <button type="button" class="btn btn-outline-danger" (click)="cancel()">
         <span class="oi oi-x"></span>
         Cancelar
         </button>

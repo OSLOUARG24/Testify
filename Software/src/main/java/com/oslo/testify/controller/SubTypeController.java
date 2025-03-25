@@ -3,8 +3,6 @@ package com.oslo.testify.controller;
 
 import com.oslo.testify.entity.SubType;
 import com.oslo.testify.service.SubTypeService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +13,6 @@ import java.util.List;
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:4200") // Permite peticiones desde Angular
 public class SubTypeController {
-
-    private final Logger log = LoggerFactory.getLogger(SubTypeController.class);
 
     @Autowired
     private SubTypeService subTypeService;
@@ -58,9 +54,15 @@ public class SubTypeController {
         return ResponseEntity.badRequest().body(ex.getMessage());
       }
     }
-
+    
     @DeleteMapping("/subType/{id}")
-    public void deleteSubType(@PathVariable(value = "id", required = false) final  Long id) {
-      subTypeService.deleteSubType(id);
+    public ResponseEntity<?> deleteSubType(@PathVariable(value = "id", required = false) final Long id) throws Exception {
+      try {
+        subTypeService.deleteSubType(id);
+          return ResponseEntity.ok("Subtipo eliminado correctamente.");
+      } catch (RuntimeException ex) {
+          return ResponseEntity.badRequest().body("Error al eliminar el subtipo: " + ex.getMessage());
+      }
     }
+  
 }

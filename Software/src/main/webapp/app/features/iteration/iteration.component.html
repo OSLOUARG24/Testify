@@ -5,7 +5,7 @@
     </div>
     <div class="card-body">
       <p class="d-flex justify-content-end">
-        @if (isAdmin()) {
+        @if(hasPermission("CREAR_ITERACIONES")){
         <button type="button" class="btn btn-success" [routerLink]="['/iteration/create']">
           <span class="oi oi-plus"></span> Nueva Iteración
         </button>
@@ -30,16 +30,24 @@
         <td>{{ iteration.endDate | date:'dd/MM/yyyy' }}</td>
         <td>
           <!-- Botón para ver casos de prueba -->
-          <a title="Escenarios" class="btn btn-outline-info" [routerLink]="['/stage', iteration.id]">
+          <!--<a title="Escenarios" class="btn btn-outline-info" [routerLink]="['/stage', iteration.id]">
             <span class="oi oi-zoom-in"></span>
+          </a>-->
+          @if(hasPermission("CONSULTAR_ESCENARIOS")){
+          <a title="Escenarios" (click)="goStage(iteration)">
+            <button type="button" class="btn btn-outline-info" >
+              <span class="oi oi-zoom-in"></span>
+            </button>
           </a>
-
+        }
           <!-- Botones de editar y eliminar, visibles solo si el usuario es admin -->
-          @if (isAdmin()) {
+          @if(hasPermission("MODIFICAR_ITERACIONES")){
           <a title="Modificar" [routerLink]="['/iteration/edit', iteration.id]">
             <button type="button" class="btn btn-outline-warning">
               <span class="oi oi-pencil"></span>
             </button></a>
+          }
+          @if(hasPermission("ELIMINAR_ITERACIONES")){
           <a title="Eliminar" mat-button color="warn" (click)="openDeleteModal(iteration)">
             <button type="button" class="btn btn-outline-danger">
               <span class="oi oi-trash"></span>

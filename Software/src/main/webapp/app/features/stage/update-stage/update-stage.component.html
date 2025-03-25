@@ -30,7 +30,7 @@
         </div>
         <div class="col-md-2">
           <div class="form-group">
-            <label for="number">Numero</label>
+            <label for="number">Número</label>
             <input id="number" formControlName="number" type="number" class="form-control" readonly
                    [ngClass]="{'is-invalid': stageForm.get('number')?.invalid && stageForm.get('number')?.touched}"/>
             @if (stageForm.get('number')?.invalid && stageForm.get('number')?.touched) {
@@ -237,6 +237,11 @@
             <textarea id="comment" formControlName="comment" type="text" class="form-control" rows="5"
                       placeholder="Ingresa un comentario">
               </textarea>
+            @if (stageForm.get('comment')?.invalid && stageForm.get('comment')?.touched){
+              <div class="text-danger">
+                La longitud del comentario no puede ser mayor a 250
+              </div>
+              }
           </div>
         </div>
       </div>

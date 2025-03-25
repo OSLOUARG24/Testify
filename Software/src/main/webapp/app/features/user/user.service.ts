@@ -48,10 +48,14 @@ export class UserService {
      updateUser(user: User): Observable<User> {
        return this.http.put<User>(`${this.apiUrl}/user/${user.id}`, user);
      }
-
-     deleteUser(userId: number): Observable<void> {
-       return this.http.delete<void>(`${this.apiUrl}/user/${userId}`);
-     }
+     
+     deleteUser(id: number): Observable<string> {
+        return this.http.delete(`${this.apiUrl}/user/${id}`, { responseType: 'text' }).pipe(
+          catchError(error => {
+            return throwError(() => new Error(error.error || 'Error al eliminar el Usuario'));
+          })
+        );
+      }
 
      getUsersByRole(projectId: number): Observable<User[]> {
       return this.http.get<User[]>(`${this.apiUrl}/user/role/${projectId}`);

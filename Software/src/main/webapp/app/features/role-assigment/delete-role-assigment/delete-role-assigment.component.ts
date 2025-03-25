@@ -2,6 +2,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RoleAssigmentService } from '../role-assigment.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-delete-role-assigment',
@@ -14,18 +15,24 @@ export class DeleteRoleAssigmentComponent {
   constructor(
     public dialogRef: MatDialogRef<DeleteRoleAssigmentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { roleAssigment: any },
-    private roleAssigmentService: RoleAssigmentService
+    private roleAssigmentService: RoleAssigmentService,
+    private snackBar: MatSnackBar
   ) {}
 
   onConfirm(): void {
       this.roleAssigmentService.deleteRoleAssigment(this.data.roleAssigment.id).subscribe({
-        next: (response: string) => {
-          console.log(`Rol ${this.data.roleAssigment.role?.name} eliminado`);
-          console.log('Respuesta del servidor:', response);  // El texto "Rol eliminado correctamente."
+        next: () => {
+          this.snackBar.open(`Rol ${this.data.roleAssigment.role.name} desasignado`, 'Cerrar', {
+            duration: 3000,
+            panelClass: ['success-snackbar']
+          });
           this.dialogRef.close(true);
         },
         error: (err) => {
-          console.error('Error al eliminar el rol', err);
+          this.snackBar.open(`Error al desasignar el rol: Verifique que el rol no este en uso y reintente nuevamente`, 'Cerrar', {
+            duration: 5000,
+            panelClass: ['error-snackbar']
+          });
           this.dialogRef.close(false);
         }
       });

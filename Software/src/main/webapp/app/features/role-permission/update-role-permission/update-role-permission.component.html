@@ -13,7 +13,14 @@
       <option [value]="role.id"> {{ role.name }}</option>
       }
     </select>
+    @if (rolePermissionForm.get('type')?.invalid && rolePermissionForm.get('type')?.touched) {
+      <div class="error">
+        El Rol es obligatorio.
+      </div>
+    }
+
   </div>
+  
   <div class="form-group">
     <label for="permission">Permiso</label>
     <select id="permission" formControlName="permission" class="form-select">
@@ -28,7 +35,7 @@
   <div class="form-group d-flex justify-content-end">
     <button type="submit" class="btn btn-outline-success" [disabled]="rolePermissionForm.invalid">
     <span class="oi oi-check"></span>
-      {{ isEditMode ? 'Actualizar' : 'Crear' }}
+      {{ isEditMode ? 'Actualizar' : 'Asignar' }} Permiso
     </button>
     <button type="button" class="btn btn-outline-danger" (click)="cancel()">
     <span class="oi oi-x"></span>

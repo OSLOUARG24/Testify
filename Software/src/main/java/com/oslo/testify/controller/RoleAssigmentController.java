@@ -62,9 +62,15 @@ public class RoleAssigmentController {
       return roleAssigmentService.getRolesAssigmentsByEmailAndProjectId(email,id);
     }
 
+
     @DeleteMapping("/roleAssigment/{id}")
-    public void deleteRoleAssigment(@PathVariable(value = "id", required = false) final  Long id) {
-      roleAssigmentService.deleteRoleAssigment(id);
+    public ResponseEntity<?> deleteRoleAssigment(@PathVariable(value = "id", required = false) final Long id) {
+      try {
+        roleAssigmentService.deleteRoleAssigment(id);
+          return ResponseEntity.ok("Rol Asignado eliminado correctamente.");
+      } catch (RuntimeException ex) {
+          return ResponseEntity.badRequest().body("Error al eliminar el rol asignado: " + ex.getMessage());
+      }
     }
 
     @PutMapping("/roleAssigment/{id}")
@@ -84,5 +90,11 @@ public class RoleAssigmentController {
     RoleAssigment updatedRoleAssigment = roleAssigmentService.saveRoleAssigment(existingRoleAssigment);
 
     return ResponseEntity.ok(updatedRoleAssigment);
-  }
+    }
+
+    @GetMapping("/roleAssigments/permissions/user")
+    public List<String> getPermissionsByUserId( @RequestParam("uId") Long idUser,
+                                                @RequestParam("pId") Long idProject) {
+      return roleAssigmentService.getPermissionsByUserIdAndProjectId(idUser,idProject);
+    }
 }

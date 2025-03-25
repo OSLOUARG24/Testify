@@ -42,8 +42,12 @@ export class IterationService {
        );
     }
 
-  deleteIteration(iterationId: number): Observable<string> {
-    return this.http.delete(`${this.apiUrl}/iteration/${iterationId}`, { responseType: 'text' });
+  deleteIteration(id: number): Observable<string> {
+    return this.http.delete(`${this.apiUrl}/iteration/${id}`, { responseType: 'text' }).pipe(
+      catchError(error => {
+        return throwError(() => new Error(error.error || 'Error al eliminar la iteración'));
+      })
+    );
   }
 
 }

@@ -9,6 +9,8 @@ import { Project } from '../project/project.model';
 import { User } from '../user/user.model';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteIterationComponent } from './delete-iteration/delete-iteration.component';
+import { NavbarService } from '../../core/components/navbar/navbar.service'; // Importa el servicio
+import { RoleAssigmentService } from '../../features/role-assigment/role-assigment.service';
 
 @Component({
   selector: 'app-iteration',
@@ -22,6 +24,7 @@ export class IterationComponent implements OnInit {
   project?: Project;
   projectId?: number;
   user?: User;
+  permissions: string[] = []; // Lista de permisos del usuario
 
   constructor(
     private iterationService: IterationService,
@@ -29,15 +32,30 @@ export class IterationComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authGoogleService: AuthGoogleService,
-    public dialog: MatDialog
+    private roleAssigmentService: RoleAssigmentService,
+    public dialog: MatDialog,
+    private navbarService: NavbarService
   ) {}
 
   ngOnInit(): void {
 
-    // Obtener el ID del proyecto desde la URL y convertirlo a número
+        localStorage.removeItem('NameType');
+        localStorage.removeItem('NameUser');
+        localStorage.removeItem('NameRole');
+        localStorage.removeItem('NameIteration');
+        this.navbarService.notifyTypeChanged();
+        this.navbarService.notifyUserChanged();
+        this.navbarService.notifyRoleChanged();
+        this.navbarService.notifyIterationChanged();
+
+        this.loadIterations();
+  }
+
+  
+  loadIterations(): void {
+      // Obtener el ID del proyecto desde la URL y convertirlo a número
     const projectIdParam = this.route.snapshot.paramMap.get('id');
     this.projectId = projectIdParam ? +projectIdParam : undefined;  // Convertir a número
-
     if (this.projectId) {
       this.getIterationsByProjectId(this.projectId);  // Buscar las iteraciones con el ID del proyecto
       this.projectService.getProjectById(this.projectId).subscribe(
@@ -45,14 +63,16 @@ export class IterationComponent implements OnInit {
           sessionStorage.setItem('project', JSON.stringify(project));
         }
       );
+      this.loadPermissions(this.projectId);
     } else {
       const project = sessionStorage.getItem('project');
       if (project) {
         this.project = JSON.parse(project);
         this.getIterationsByProjectId(this.project!.id);
+        this.loadPermissions(this.project!.id);
       }
     }
-  }
+    }
 
   // Obtener iteraciones filtradas por el ID del proyecto
   getIterationsByProjectId(projectId: number): void {
@@ -78,7 +98,7 @@ export class IterationComponent implements OnInit {
 
 	        dialogRef.afterClosed().subscribe(result => {
 	          if (result) {
-	            this.fetchIterations();
+	            this.loadIterations();
 	          }
 	        });
 	      }
@@ -93,11 +113,45 @@ export class IterationComponent implements OnInit {
           }
 	      }
 
-     isAdmin() {
-           const user = localStorage.getItem('user');
-             if (user){
-                this.user = JSON.parse(user);
-             }
-           return this.user?.admin;
-         }
+   goStage(iteration: Iteration): void {
+     localStorage.setItem('NameIteration',iteration.name!);
+     this.navbarService.notifyIterationChanged();
+     this.router.navigate(['/stage',iteration.id]);
+     }
+
+     
+loadPermissions(projectId: number) {
+  
+  const user = localStorage.getItem('user');
+  if (user){
+     this.user = JSON.parse(user);
+  }
+
+  if (!this.user || !projectId) {
+    this.permissions = [];
+    return;
+  }
+
+ this.roleAssigmentService.getPermissionsByUserIdAndProjectId(this.user.id!,projectId).subscribe((data) => {
+  this.permissions = data;
+});
+
+  
+}
+
+hasPermission(permission: string): boolean {
+  // Dividir el permiso en palabras
+  const words = permission.split('_');
+
+  // Si hay menos de 2 palabras, hacer la verificación normal
+  if (words.length < 2) {
+    return this.permissions.includes(permission);
+  }
+
+  // Obtener las dos primeras palabras del permiso
+  const prefix = words.slice(0, 2).join('_'); // Ejemplo: "Consultar Iteraciones"
+
+  // Buscar si algún permiso almacenado empieza con esas dos palabras
+  return this.permissions.some(perm => perm.startsWith(prefix));
+}
 }

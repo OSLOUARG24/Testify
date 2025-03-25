@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild  } from '@angular/core';
-import { ActivatedRoute, Router, RouterOutlet,RouterLinkActive,RouterLink  } from '@angular/router';
+import { RouterLink  } from '@angular/router';
 import { Category } from './category.model';
 import { CategoryService } from './category.service';
 import { User } from '../user/user.model';
@@ -7,12 +7,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { DeleteCategoryComponent } from './delete-category/delete-category.component';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator'; // Asegúrate de importar MatPaginatorModule correctamente
 import { ITEMS_PER_PAGE } from '../../app.constants';
-import { getCustomPaginatorIntl } from '../../custom-paginator-intl';
 
 @Component({
   selector: 'app-category',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatPaginatorModule],
+  imports: [RouterLink, MatPaginatorModule],
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.css']
 })
@@ -87,7 +86,7 @@ onPageChange(event: PageEvent): void {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.fetchCategories();
+        this.loadCategories();
       }
     });
   }

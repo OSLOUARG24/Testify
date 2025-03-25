@@ -41,8 +41,11 @@ export class SubTypeService {
     return this.http.get<SubType[]>(`${this.apiUrl}/subTypes/type/${id}`);
   }
 
-  // Método para eliminar un subtipo por su ID
   deleteSubType(id: number): Observable<string> {
-    return this.http.delete(`${this.apiUrl}/subType/${id}`, { responseType: 'text' });
+    return this.http.delete(`${this.apiUrl}/subType/${id}`, { responseType: 'text' }).pipe(
+      catchError(error => {
+        return throwError(() => new Error(error.error || 'Error al eliminar el Subtipo'));
+      })
+    );
   }
 }

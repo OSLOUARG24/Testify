@@ -36,8 +36,13 @@ export class TypeService {
          })
        );
   }
-  
+
+
   deleteType(id: number): Observable<string> {
-    return this.http.delete(`${this.apiUrl}/type/${id}`, { responseType: 'text' });
+    return this.http.delete(`${this.apiUrl}/type/${id}`, { responseType: 'text' }).pipe(
+      catchError(error => {
+        return throwError(() => new Error(error.error || 'Error al eliminar el Tipo'));
+      })
+    );
   }
 }

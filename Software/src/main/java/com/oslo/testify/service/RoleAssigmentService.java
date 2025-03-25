@@ -48,4 +48,8 @@ public class RoleAssigmentService {
   public Optional<RoleAssigment> findById(Long id) {
     return roleAssigmentRepository.findById(id);
   }
+
+  public List<String> getPermissionsByUserIdAndProjectId(Long idUser,Long idProject){
+    return roleAssigmentRepository.findPermissionsByUserIdAndProjectId(idUser,idProject);
+  }
 }

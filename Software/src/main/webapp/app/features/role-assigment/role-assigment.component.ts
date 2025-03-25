@@ -39,7 +39,7 @@ export class RoleAssigmentComponent implements OnInit {
   }
 
   Cancel(): void {
-      window.history.back();
+      this.router.navigate(['/user']);
   }
 
    openDeleteModal(roleAssigment: any): void {

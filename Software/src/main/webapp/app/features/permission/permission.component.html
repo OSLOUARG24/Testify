@@ -8,9 +8,28 @@
       <button type="button" class="btn btn-success" [routerLink]="['/permission/create']">
         <span class="oi oi-plus"></span> Agregar Permiso
       </button>
-    <button class="btn btn-danger float-right" (click)="Cancel()">Volver</button>
-    </p>
+    <button class="btn btn-danger float-right ml-2" (click)="Cancel()">Volver</button>
 
+      <button class="btn btn-secondary float-right ml-2" (click)="toggleSearch()">
+          @if (showSearch) {
+          <span class="oi oi-search"></span>
+          Ocultar Búsqueda
+          }
+          @if (!showSearch) {
+          <span class="oi oi-search"></span>
+          Buscar
+          }
+        </button>
+        </p>
+        @if(showSearch){
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar Rol por nombre"
+          (input)="applyFilter($event)"
+        />
+      </div>}
     <table class="table table-hover table-sm">
     <thead>
     <tr class="table-info">
@@ -19,7 +38,7 @@
     </tr>
     </thead>
     <tbody>
-    @for (perm of permissions; track perm.id) {
+    @for (perm of paginatedPermissions; track perm.id) {
     <tr>
       <td>{{ perm.name }}</td>
       <td>
@@ -36,6 +55,15 @@
     }
     </tbody>
   </table>
-</div>
+  @if (permissions.length === 0){
+      <p>No hay Permisos disponibles.</p>
+      }
+            <mat-paginator
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        (page)="onPageChange($event)">
+      </mat-paginator>
+    </div>
   </div>
 </div>

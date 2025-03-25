@@ -4,7 +4,6 @@ package com.oslo.testify.controller;
 import com.oslo.testify.entity.Permission;
 import com.oslo.testify.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,15 +37,16 @@ public class PermissionController {
       return ResponseEntity.ok(permissionService.updatePermission(id, permission));
     }
 
+
   @DeleteMapping("/permission/{id}")
-  public ResponseEntity<String> deletePermission(@PathVariable(value = "id", required = false) final  Long id) {
-    try {
-      permissionService.deletePermission(id);
-      return new ResponseEntity<>("Permiso eliminado correctamente.", HttpStatus.OK);
-    } catch (Exception e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> deletePermission(@PathVariable(value = "id", required = false) final Long id) {
+      try {
+        permissionService.deletePermission(id);
+          return ResponseEntity.ok("Permiso eliminado correctamente.");
+      } catch (RuntimeException ex) {
+          return ResponseEntity.badRequest().body("Error al eliminar el permiso: " + ex.getMessage());
+      }
     }
-  }
 
 
 }

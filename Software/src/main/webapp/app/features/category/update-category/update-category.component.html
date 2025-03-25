@@ -17,11 +17,11 @@
     </div>
     <div class="card-footer">
     <div class="form-group d-flex justify-content-end">
-      <button type="submit" class="btn btn-primary" [disabled]="categoryForm.invalid">
+      <button type="submit" class="btn btn-outline-success" [disabled]="categoryForm.invalid">
         <span class="oi oi-check"></span>
         {{ isEditMode ? 'Actualizar' : 'Crear' }} Categoría
       </button>
-      <button type="button" class="btn btn-secondary" (click)="cancel()">
+      <button type="button" class="btn btn-outline-danger" (click)="cancel()">
       <span class="oi oi-x"></span>
       Cancelar
       </button>
@@ -30,7 +30,7 @@
     </div>
   </form>
   @if (errorMessage){
-  <div class="text-danger">
+  <div class="alert alert-danger">
     {{ errorMessage }}
   </div>
   }

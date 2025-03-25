@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { Stage, Document } from './stage.model';
 import { tap, catchError } from 'rxjs/operators';
@@ -55,6 +55,14 @@ export class StageService {
     return this.http.get<Stage[]>(`${this.apiUrl}/stages/user/${id}`);
   }
 
+  getStagesForUserAndProjectId(stageId: number,projectId: number): Observable<Stage[]> {
+    const params = new HttpParams()
+                 .set('sId', stageId)
+                 .set('pId', projectId);
+
+    return this.http.get<Stage[]>(`${this.apiUrl}/stages/user`, { params });
+  }
+
   createDocument(id: number, documents: Document[]): Observable<any> {
     const formData = new FormData();
     formData.append('stageId', id.toString());
@@ -90,9 +98,12 @@ export class StageService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  // Eliminar un proyecto por ID
-  deleteStage(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/stage/${id}`);
+  deleteStage(id: number): Observable<string> {
+    return this.http.delete(`${this.apiUrl}/stage/${id}`, { responseType: 'text' }).pipe(
+      catchError(error => {
+        return throwError(() => new Error(error.error || 'Error al eliminar el Escenario'));
+      })
+    );
   }
 
 getStagesByProjectId(id: number) {

@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -54,6 +53,12 @@ public class StageController {
     return stageService.getAllStagesByUserId(id);
   }
 
+  @GetMapping("/stages/user")
+  public List<Stage> getAllStagesByUserIdAndProjectId( @RequestParam("sId") Long sId,
+                                                       @RequestParam("pId") Long pId) {
+    return stageService.getAllStagesByUserIdAndProjectId(sId,pId);
+  }
+
   @GetMapping("/stage/{id}")
   public ResponseEntity<Stage> getStageById(@PathVariable(value = "id", required = false) final Long id) {
     Optional<Stage> stage = stageService.getStageById(id);
@@ -93,9 +98,13 @@ public class StageController {
   }
 
   @DeleteMapping("/stage/{id}")
-  public ResponseEntity<Void> deleteStage(@PathVariable(value = "id", required = false) final Long id) {
-    stageService.deleteStage(id);
-    return ResponseEntity.noContent().build();
+  public ResponseEntity<?> deleteStage(@PathVariable(value = "id", required = false) final Long id) throws Exception {
+    try {
+      stageService.deleteStage(id);
+        return ResponseEntity.ok("Escenario eliminado correctamente.");
+    } catch (RuntimeException ex) {
+        return ResponseEntity.badRequest().body("Error al eliminar el escenario: " + ex.getMessage());
+    }
   }
 
   @GetMapping("/stages/project/{id}")

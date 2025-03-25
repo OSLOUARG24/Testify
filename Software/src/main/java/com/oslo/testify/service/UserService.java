@@ -27,6 +27,10 @@ public class UserService {
       return userRepository.findUsersByRoleTesterAndProjectId(id);
     }
 
+    public List<User> getUsersByProjectId(Long id) {
+      return userRepository.findUsersByProjectId(id);
+    }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }

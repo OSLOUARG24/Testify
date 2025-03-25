@@ -2,10 +2,7 @@ package com.oslo.testify.controller;
 
 
 import com.oslo.testify.entity.Category;
-import com.oslo.testify.entity.Iteration;
 import com.oslo.testify.service.CategoryService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +13,6 @@ import java.util.List;
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:4200") // Permite peticiones desde Angular
 public class CategoryController {
-
-    private final Logger log = LoggerFactory.getLogger(CategoryController.class);
 
     @Autowired
     private CategoryService categoryService;
@@ -53,8 +48,18 @@ public class CategoryController {
         }
     }
 
-    @DeleteMapping("/category/{id}")
+    /*@DeleteMapping("/category/{id}")
     public void deleteCategory(@PathVariable(value = "id", required = false) final  Long id) {
       categoryService.deleteCategory(id);
+    }*/
+
+    @DeleteMapping("/category/{id}")
+    public ResponseEntity<?> deleteCategory(@PathVariable(value = "id", required = false) final Long id) {
+    try {
+        categoryService.deleteCategory(id);
+        return ResponseEntity.ok("Categoría eliminada correctamente");
+    } catch (RuntimeException ex) {
+        return ResponseEntity.badRequest().body("Error al eliminar la categoría (Controller): " + ex.getMessage());
     }
+  }
 }

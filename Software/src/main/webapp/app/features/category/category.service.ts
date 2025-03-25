@@ -37,7 +37,15 @@ export class CategoryService {
        );
   }
   
-  deleteCategory(id: number): Observable<string> {
+  /*deleteCategory(id: number): Observable<string> {
     return this.http.delete(`${this.apiUrl}/category/${id}`, { responseType: 'text' });
+  }*/
+
+  deleteCategory(id: number): Observable<string> {
+    return this.http.delete(`${this.apiUrl}/category/${id}`, { responseType: 'text' }).pipe(
+      catchError(error => {
+        return throwError(() => new Error(error.error || 'Error al eliminar la categoría'));
+      })
+    );
   }
 }

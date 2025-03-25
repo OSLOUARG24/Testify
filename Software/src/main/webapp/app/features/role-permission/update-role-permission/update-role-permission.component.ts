@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl  } from '@angular/forms';
 import { RolePermissionService } from '../role-permission.service';
 import { PermissionService } from '../../permission/permission.service';
 import { RoleService } from '../../role/role.service';
@@ -8,6 +8,8 @@ import { RolePermission } from '../role-permission.model';
 import { Permission } from '../../permission/permission.model';
 import { Role } from '../../role/role.model';
 import { CommonModule } from '@angular/common';
+import { startWith, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-update-role-permission',
@@ -43,6 +45,20 @@ export class UpdateRolePermissionComponent implements OnInit {
 
     if (this.isEditMode) {
       this.loadRolePermission();  // Cargamos la relación existente entre rol y permiso
+    } else {
+      const idRole = localStorage.getItem('IdRole');
+          if (idRole) {
+            // Cargar un tipo específico según el ID almacenado
+            this.roleService.getRoleById(+idRole).subscribe(
+              (role: Role) => {
+                this.roles = [role]; // Solo se carga un tipo
+                this.rolePermissionForm.patchValue({ role: role.id });
+              },
+              (error) => {
+                console.error('Error al cargar el role por ID desde el LocalStorage', error);
+              }
+            );
+          }
     }
   }
 
@@ -101,12 +117,22 @@ export class UpdateRolePermissionComponent implements OnInit {
     if (this.rolePermissionForm.invalid) {
       return;
     }
-
     // Obtenemos los IDs seleccionados de rol y permiso
     const selectedRoleId = Number(this.rolePermissionForm.get('role')?.value);
     const selectedPermissionId = Number(this.rolePermissionForm.get('permission')?.value);
     const selectedRole = this.roles.find(role => role.id === selectedRoleId);
     const selectedPermission = this.permissions.find(permission => permission.id === selectedPermissionId);
+
+    this.rolePermissionService.getPermissionsByRoleId(selectedRoleId).subscribe(existingPermissions => {
+      const alreadyExists = existingPermissions.some(
+        rp => rp.permission!.id === selectedPermissionId
+      );
+    
+      if (alreadyExists && !this.isEditMode) {
+        alert('Este permiso ya está asignado a este rol.');
+        return;
+      }
+    });
 
     const rolePermission: RolePermission = {
       ...this.rolePermissionForm.value,
@@ -118,7 +144,7 @@ export class UpdateRolePermissionComponent implements OnInit {
       this.rolePermissionService.updateRolePermission(rolePermission).subscribe(
         () => {
           console.log('RolePermission actualizado exitosamente');
-          this.router.navigate(['/role']);
+          this.router.navigate(['/rolePermission',selectedRole!.id!]);
         },
         error => {
           console.error('Error al actualizar el role assignment:', error);
@@ -128,7 +154,7 @@ export class UpdateRolePermissionComponent implements OnInit {
       this.rolePermissionService.createRolePermission(rolePermission).subscribe(
         () => {
           console.log('RolePermission creado exitosamente');
-          this.router.navigate(['/role']);
+          this.router.navigate(['/rolePermission',selectedRole!.id!]);
         },
         error => {
           console.error('Error al crear el role assignment:', error);

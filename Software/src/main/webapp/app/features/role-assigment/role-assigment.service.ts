@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, throwError } from 'rxjs';
 import { RoleAssigment } from './role-assigment.model';
+import { catchError } from 'rxjs/operators';
 
 export type EntityResponseType = HttpResponse<RoleAssigment>;
 export type EntityArrayResponseType = HttpResponse<RoleAssigment[]>;
@@ -48,10 +49,13 @@ export class RoleAssigmentService {
        return this.http.put<RoleAssigment>(`${this.apiUrl}/roleAssigment/${roleAssigment.id}`, roleAssigment);
      }
 
-
-     deleteRoleAssigment(roleAssigmentId: number): Observable<string>  {
-       return this.http.delete(`${this.apiUrl}/roleAssigment/${roleAssigmentId}`, { responseType: 'text' });
-     }
+     deleteRoleAssigment(id: number): Observable<string> {
+              return this.http.delete(`${this.apiUrl}/roleAssigment/${id}`, { responseType: 'text' }).pipe(
+                catchError(error => {
+                  return throwError(() => new Error(error.error || 'Error al eliminar el Rol Asignado'));
+                })
+              );
+            }
 
      getRoleAssigmentsByEmailAndProject(email: string, id: number): Observable<RoleAssigment[]> {
        const params = new HttpParams()
@@ -60,5 +64,12 @@ export class RoleAssigmentService {
 
            return this.http.get<RoleAssigment[]>(`${this.apiUrl}/roleAssigments/roles`, { params });
      }
+
+     getPermissionsByUserIdAndProjectId(idUser: number,idProject: number): Observable<string[]> {
+      const params = new HttpParams()
+             .set('uId', idUser.toString())
+             .set('pId', idProject.toString());
+      return this.http.get<string[]>(`${this.apiUrl}/roleAssigments/permissions/user`, { params });
+    }
 
 }

@@ -43,6 +43,10 @@ public class StageService {
     return stageRepository.findByTesterId(id);
   }
 
+  public List<Stage> getAllStagesByUserIdAndProjectId(Long sId, Long pId) {
+    return stageRepository.findByTesterIdAndProjectId(sId,pId);
+  }
+
   public Optional<Stage> getStageById(Long id) {
     return stageRepository.findById(id);
   }

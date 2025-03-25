@@ -40,7 +40,7 @@ export class TestStageComponent implements OnInit {
 
     initializeForm(): void {
       this.stageForm = this.fb.group({
-            name: ['', Validators.required],
+            name: ['', [Validators.required, Validators.maxLength(250)]],
             number: [null],
             iteration: [null, Validators.required],
             category: [null, Validators.required],
@@ -55,10 +55,10 @@ export class TestStageComponent implements OnInit {
             checkLists: this.fb.array([]),
             documents: this.fb.array([]),
             status: [null, Validators.required],
-            comment: [''],
-            expectedResult: ['', Validators.required],
+            comment: ['', [Validators.maxLength(250)]],
+            expectedResult: ['', [Validators.required, Validators.maxLength(250)]],
             gotResult: [''],
-            estimatedTime: ['']
+            estimatedTime: [null, [Validators.required, Validators.min(0)]]
           });
     }
 

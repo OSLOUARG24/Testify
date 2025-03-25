@@ -50,8 +50,13 @@ public class IterationController {
     }
 
     @DeleteMapping("/iteration/{id}")
-    public void deleteIteration(@PathVariable(value = "id", required = false) final  Long id) {
-      iterationService.deleteIteration(id);
+    public ResponseEntity<?> deleteIteration(@PathVariable(value = "id", required = false) final Long id) {
+      try {
+        iterationService.deleteIteration(id);
+          return ResponseEntity.ok("Iteracion eliminada correctamente");
+      } catch (RuntimeException ex) {
+          return ResponseEntity.badRequest().body("Error al eliminar la iteracion: " + ex.getMessage());
+      }
     }
 
     @PutMapping("/iteration/{id}")

@@ -2,7 +2,6 @@ package com.oslo.testify.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import java.sql.Blob;
 
 @Entity
 @Table(name = "documents")

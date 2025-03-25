@@ -16,8 +16,8 @@ Pasos para instalar Testify en su servidor Docker.
 4) Descargar las imágenes testify-backend.tar y testify-frontend.tar que forman parte del entregable del proyecto y colócalos en la carpeta de instalación.
 
 5) Cargar las imágenes testify-backend.tar y testify-frontend.jar en Docker  mediante los siguientes comando:
-docker load -i software-backend.tar
-docker load -i software-frontend.tar
+docker load -i testify-backend.tar
+docker load -i testify-frontend.tar
 
 6) Verificar que las imágenes se encuentren cargadas correctamente, ejecutando el comando:
 docker images
@@ -34,7 +34,7 @@ MYSQL_PASSWORD: <Ingresar la contraseña de la bbdd provista junto con la docume
 El usuario y contraseña es "testify"
 
 10) Ejecuta el archivo docker-compose.yml utilizando el siguiente comando:
-docker-compose up -d
+docker-compose up
 
 Testify se desplegará por defecto en el puerto 4200 indicado en el archivo Docker-compose.yml. Si desea utilizar otro puerto, modifique el archivo.
 
