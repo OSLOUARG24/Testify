@@ -1,6 +1,6 @@
-Repositorio para la documentacion de los requisitos a cumplir.
+Repositorio para la documentación de los requisitos a cumplir.
 
-La siguiente documentacion mencionada es a modo de guia:
-1) Especificacion de requerimiento.
+La siguiente documentación mencionada es a modo de guía:
+1) Especificación de requerimiento.
 2) Glosario.
 3) Modelo de vision.
