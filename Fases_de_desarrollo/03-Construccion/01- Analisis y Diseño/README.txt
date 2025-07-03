@@ -1,8 +1,8 @@
-Repositorio para la documentacion relacionada a la especificacion de los requerimientos y descripcion de como van a ser implementados en el sistema.
+Repositorio para la documentación relacionada a la especificación de los requerimientos y descripción de como van a ser implementados en el sistema.
 
-La siguiente documentacion mencionada es a modo de guia:
+La siguiente documentación mencionada es a modo de guía:
 
-1) Especificacion de requerimientos.
+1) Especificación de requerimientos.
 2) Modelo de casos de uso.
 3) Modelo de datos.
 4) Modelo de diseño.

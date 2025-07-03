@@ -1,6 +1,6 @@
-Repositorio para la documentacion relacionada a la gestion de calidad.
+Repositorio para la documentación relacionada a la gestion de calidad.
 
-La siguiente documentacion mencionada es a modo de guia:
+La siguiente documentación mencionada es a modo de guía:
 
 1) Plan SQA.
 2) Revisión de SQA.
@@ -13,12 +13,3 @@ La siguiente documentacion mencionada es a modo de guia:
 	g)Revisión de SQA – Manual de usuario.
 
 2) Informe final de SQA.
-
-#Sugerencias:
-
-En el repositorio "datapicker" encontrara un complemento para excel.
-  Con este complemento podra cargar las fechas de forma rapida y eficiente en el ChecklistProductoClave.
-     Copie el contenido de datapicker en su directorio de Microsoft office.
-
-Ejemplo de ubicación del directorio:
-    C:\Program Files (x86)\Microsoft Office\(ingrese_su_version_office)\XLSTART
