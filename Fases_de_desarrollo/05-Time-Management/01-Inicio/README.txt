@@ -1,1 +1,0 @@
-Gestion del tiempo invertido en la fase de desarrollo (Inicio)
